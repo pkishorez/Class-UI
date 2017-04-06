@@ -1,5 +1,6 @@
 @import 'compass/css3';
 
-@import 'vendor/reset',
-		'partials/reset',
-		'partials/typography';
+@import 'partial/variables';
+
+// Reset
+@import	'partial/reset';
