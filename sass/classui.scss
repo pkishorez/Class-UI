@@ -4,3 +4,18 @@
 
 // Reset
 @import	'partial/reset';
+
+// NavBar Component
+@import 'component/navbar';
+
+body {
+	background-color: #F4FFF4;
+}
+.classui {
+	.mainContent {
+		background-color: white;
+		box-shadow: 0px 0px 3px grey;
+		padding: 10px;
+		margin: auto;
+	}
+}
