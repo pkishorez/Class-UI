@@ -23,8 +23,9 @@
 		color: white;
 
 		.logo {
-			letter-spacing: -1px;
 			cursor: pointer;
+			@include user-select(none);
+			letter-spacing: -px;
 			text-shadow: 0px 0px 10px white;
 			&::first-letter {
 				font-size: 30px;
