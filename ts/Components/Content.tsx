@@ -18,11 +18,11 @@ class Content extends React.Component<IProps, IState> {
 		return <div className="mainContent" ref={(ref)=>{
 			Content._ref = ref;
 			ClassUI.onMounted(()=>{
-				ref.style.marginTop = NavBar.ref?NavBar.ref.getBoundingClientRect().height+'px':'0px';
+				ref.style.paddingTop = NavBar.ref?NavBar.ref.getBoundingClientRect().height+'px':'0px';
 			})
 		}} style={{
 			...this.props.style,
-			width: ClassUI.contentWidth
+			maxWidth: ClassUI.contentWidth
 		}}>
 			{this.props.children}
 		</div>;
