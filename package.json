@@ -10,8 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "classnames": "^2.2.5",
+    "lodash": "^4.17.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-motion": "^0.4.7",
     "react-redux": "^5.0.3",
     "react-router": "^4.0.0",
     "redux": "^3.6.0",
@@ -23,8 +25,10 @@
   },
   "devDependencies": {
     "@types/classnames": "0.0.32",
+    "@types/lodash": "^4.14.62",
     "@types/react": "^15.0.21",
     "@types/react-dom": "^0.14.23",
+    "@types/react-motion": "0.0.21",
     "@types/react-redux": "^4.4.38",
     "@types/react-router": "^4.0.3"
   }
