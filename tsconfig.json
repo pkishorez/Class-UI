@@ -5,10 +5,10 @@
         "noImplicitAny": false,
         "sourceMap": true,
         "jsx": "react",
-
+        
         "baseUrl": ".",
         "paths": {
-            "classui/*": ["./ts/Components/*"]
+            "classui/*": ["./ts/*"]
         }
     }
 }
