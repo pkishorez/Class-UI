@@ -2,8 +2,8 @@
 @import 'typography';
 
 html, body {
-	height: 100%;
-	width: 100%;
+	min-height: 100%;
+	min-width: 100%;
 	font-size: 14px;
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: white;
@@ -19,4 +19,9 @@ input[type='text'], input[type='password'], textarea {
 		outline: 0px;
 		resize: none;
 	}
+}
+
+a, a:active, a:hover{
+	color: black;
+	text-decoration: none;
 }
