@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
+import * as _ from 'lodash';
 import ClassUI from '../ClassUI';
 
 interface IProps {
@@ -19,6 +20,26 @@ class NavBar extends React.Component<IProps, IState> {
 
 	constructor() {
 		super();
+		this.Scroll = _.throttle(this.Scroll.bind(this), 100);
+	}
+
+	componentDidMount() {
+		if (this.props.fixed){
+			window.addEventListener("scroll", this.Scroll);
+		}
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener("scroll", this.Scroll);
+	}
+
+	Scroll(e) {
+		if (window.scrollY>0) {
+			NavBar._ref.classList.add("light");
+		}
+		else {
+			NavBar._ref.classList.remove("light");
+		}
 	}
 
 	/**
@@ -29,7 +50,7 @@ class NavBar extends React.Component<IProps, IState> {
 	}
 
 	render() {
-		let cls = classNames("navbar", {
+		let cls = classNames("card-2", "navbar",  {
 			fixed: this.props.fixed
 		});
 		return <div className={cls} ref={(ref)=>{NavBar._ref=ref;}}>

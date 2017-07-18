@@ -1,5 +1,5 @@
 module.exports = {
-	entry: './index.tsx',
+	entry: './docs/index.tsx',
 	
 	output: {
 		filename: 'classui.js',
@@ -24,9 +24,6 @@ module.exports = {
 		]
 	},
 	resolve: {
-		alias: {
-			'classui': __dirname+'/ts/'
-		},
 		extensions: [".tsx", ".ts", ".js"]
 	},
 
