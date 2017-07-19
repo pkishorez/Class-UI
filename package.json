@@ -2,9 +2,20 @@
 	"name": "classui",
 	"version": "0.0.5",
 	"description": "Class-UI - A Web based User interface Framework.",
-	"main": "index.js",
+	"main": "./index.js",
+	"types": "./index.d.ts",
+
+	"files": [
+		"Components",
+		"Helper",
+		"ClassUI.d.ts",
+		"ClassUI.js",
+		"bundle"
+	],
+
 	"scripts": {
-		"start": "./node_modules/.bin/webpack-dev-server"
+		"test": "./node_modules/.bin/webpack-dev-server",
+		"production": "tsc"
 	},
 	"author": "Kishore",
 	"license": "ISC",

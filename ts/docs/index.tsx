@@ -8,7 +8,6 @@ ReactDOM.render(<ClassUI contentWidth={1024}>
 			<NavBar logo="Alumnies">
 			</NavBar>
 			<Content>
-				{console.log("Hello")}
 				<h2>Hello Class-UI</h2>
 			</Content>
 	</ClassUI>,

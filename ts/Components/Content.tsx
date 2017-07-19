@@ -3,11 +3,11 @@ import * as ReactDOM from 'react-dom';
 import ClassUI from '../ClassUI';
 import NavBar from './Navbar';
 
-interface IProps {
+export interface IProps {
 	style?:JSON
 };
 
-interface IState {};
+export interface IState {};
 
 class Content extends React.Component<IProps, IState> {
 	private static _ref: HTMLDivElement | null;

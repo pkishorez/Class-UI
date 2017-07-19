@@ -1,5 +1,5 @@
 module.exports = {
-	entry: './docs/index.tsx',
+	entry: './ts/docs/index.tsx',
 	
 	output: {
 		filename: 'classui.js',

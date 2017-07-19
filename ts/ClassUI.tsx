@@ -3,18 +3,18 @@ import * as ReactDOM from 'react-dom';
 
 let _instance: ClassUI;
 
-interface propInterface {
+export interface IProps {
 	contentWidth?: number // ContentWidth is the maxWidth of the UI.
 };
 
 /**
  * Wrapper Component for the whole of Class-UI.
  */
-class ClassUI extends React.Component<propInterface, any> {
+class ClassUI extends React.Component<IProps, any> {
 	private static mounted:Boolean = false;
 	private static funcs: Function[] = [];
 
-	public static defaultProps: propInterface = {
+	public static defaultProps: IProps = {
 		contentWidth: 1024
 	};
 

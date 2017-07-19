@@ -4,11 +4,11 @@ import * as classNames from 'classnames';
 import * as _ from 'lodash';
 import ClassUI from '../ClassUI';
 
-interface IProps {
+export interface IProps {
 	fixed?: boolean,	// Fixed Navbar
 	logo?: string		// Logo text if any
 };
-interface IState {};
+export interface IState {};
 
 class NavBar extends React.Component<IProps, IState> {
 

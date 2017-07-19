@@ -1,4 +1,9 @@
 node_modules
-bundle/classui.css
+bundle
 npm-debug.log
 sass/.sass-cache
+js
+Components
+Helper
+ClassUI.js
+ClassUI.d.ts
