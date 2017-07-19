@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-let _instance: ClassUI = null;
+let _instance: ClassUI;
 
 interface propInterface {
 	contentWidth?: number // ContentWidth is the maxWidth of the UI.
@@ -10,7 +10,7 @@ interface propInterface {
 /**
  * Wrapper Component for the whole of Class-UI.
  */
-class ClassUI extends React.Component<propInterface, null> {
+class ClassUI extends React.Component<propInterface, any> {
 	private static mounted:Boolean = false;
 	private static funcs: Function[] = [];
 

@@ -12,7 +12,7 @@ interface IState {};
 
 class NavBar extends React.Component<IProps, IState> {
 
-	private static _ref: HTMLDivElement = null;
+	private static _ref: HTMLDivElement;
 	public static defaultProps: IProps = {
 		fixed: false,
 		logo: null

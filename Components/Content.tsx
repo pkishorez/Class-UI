@@ -10,7 +10,7 @@ interface IProps {
 interface IState {};
 
 class Content extends React.Component<IProps, IState> {
-	private static _ref: HTMLDivElement = null;
+	private static _ref: HTMLDivElement;
 	public static get ref() {
 		return Content._ref;
 	}
