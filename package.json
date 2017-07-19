@@ -1,10 +1,9 @@
 {
 	"name": "classui",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "Class-UI - A Web based User interface Framework.",
 	"main": "./index.js",
 	"types": "./index.d.ts",
-
 	"files": [
 		"Components",
 		"Helper",
@@ -12,7 +11,6 @@
 		"ClassUI.js",
 		"bundle"
 	],
-
 	"scripts": {
 		"test": "./node_modules/.bin/webpack-dev-server",
 		"production": "tsc"
