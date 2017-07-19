@@ -12,10 +12,10 @@ interface IState {};
 
 class NavBar extends React.Component<IProps, IState> {
 
-	private static _ref: HTMLDivElement;
+	private static _ref: HTMLDivElement | null;
 	public static defaultProps: IProps = {
 		fixed: false,
-		logo: null
+		logo: undefined
 	};
 
 	constructor() {
@@ -33,12 +33,12 @@ class NavBar extends React.Component<IProps, IState> {
 		window.removeEventListener("scroll", this.Scroll);
 	}
 
-	Scroll(e) {
+	Scroll(e: UIEvent) {
 		if (window.scrollY>0) {
-			NavBar._ref.classList.add("light");
+			NavBar._ref ? NavBar._ref.classList.add("light") : null;
 		}
 		else {
-			NavBar._ref.classList.remove("light");
+			NavBar._ref ? NavBar._ref.classList.remove("light"): null;
 		}
 	}
 

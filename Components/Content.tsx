@@ -10,7 +10,7 @@ interface IProps {
 interface IState {};
 
 class Content extends React.Component<IProps, IState> {
-	private static _ref: HTMLDivElement;
+	private static _ref: HTMLDivElement | null;
 	public static get ref() {
 		return Content._ref;
 	}
@@ -18,7 +18,9 @@ class Content extends React.Component<IProps, IState> {
 		return <div className="mainContent" ref={(ref)=>{
 			Content._ref = ref;
 			ClassUI.onMounted(()=>{
-				ref.style.paddingTop = NavBar.ref?NavBar.ref.getBoundingClientRect().height+5+'px':'0px';
+				if (ref) {
+					ref.style.paddingTop = NavBar.ref?NavBar.ref.getBoundingClientRect().height+5+'px':'0px';
+				}
 			})
 		}} style={{
 			...this.props.style,

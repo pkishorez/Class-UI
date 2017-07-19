@@ -10,16 +10,16 @@ module.exports = {
 		loaders: [
 			{
 				test: /\.tsx?$/,
-				exclude: /node_modules/,
-				loader: 'ts-loader'
-			},
-			{
-				test: /\.tsx?$/,
 				loader: 'source-map-loader'
 			},
 			{
 				test: /\.jsx?$/,
 				loader: 'source-map-loader'
+			},
+			{
+				test: /\.tsx?$/,
+				exclude: /node_modules/,
+				loader: 'ts-loader'
 			}
 		]
 	},
