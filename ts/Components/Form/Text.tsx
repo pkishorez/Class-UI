@@ -1,17 +1,15 @@
 import * as React from 'react';
-import {Label} from './Label';
 
-export type IValidation = "email" | "url" | "number";
 export interface ITextProps {
 	name: string,
-	validate: IValidation[] | IValidation
+	send_value?: Function,
+	__classui_form_capture?: boolean
 };
 
 export class Text extends React.Component<ITextProps, any> {
-	private errorText: string;
-	private validationCriteria: IValidation[] = [];
-	public static defaultProps: Partial<ITextProps> = {
-		validate: []
+
+	static defaultProps = {
+		__classui_form_capture: true
 	};
 
 	constructor() {
@@ -19,45 +17,25 @@ export class Text extends React.Component<ITextProps, any> {
 		this.state = {
 			cls: ""
 		};
+		this.sendToForm = this.sendToForm.bind(this);
 		this.validate = this.validate.bind(this);
 	}
-	componentDidMount() {
-		this.validationCriteria = (typeof this.props.validate=="string"?[this.props.validate]:this.props.validate);
-	}
 
-	validate(e: React.ChangeEvent<HTMLInputElement>) {
-		let val = e.target.value;
-		let check = (criteria: IValidation[], val: string) => {
-			for (let c of criteria) {
-				switch(c) {
-					case "email": {
-						var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-						this.errorText = "Enter valid Email";
-						return re.test(val);
-					}
-					case "url": {
-						this.errorText = "Enter valid URL";
-						return true;
-					}
-					case "number": {
-						this.errorText = "Enter valid Number";
-						let re = /^[0-9]*$/;
-						return re.test(val);
-					}
-				};
-			}
-			return true;
+	sendToForm(e: React.ChangeEvent<HTMLInputElement>) {
+		if (this.props.send_value){
+			let json = {
+				name: this.props.name,
+				value: e.target.value
+			};
+			this.props.send_value(json);
 		}
-		
-		this.setState({
-			cls: check(this.validationCriteria, val)?"success": "error"
-		});
+	}
+	validate() {
+
 	}
 
 	render() {
-		return <label className={"formElement "+this.state.cls}>
-			<Label message={(this.state.cls=="error")?this.errorText:null}>{this.props.children}</Label>
-			<input type="text" name={this.props.name} placeholder="Enter text" onChange={(e)=>this.validate}/>
-		</label>;
+		console.log(this.props, "TEXT");
+		return <input type="text" autoComplete="off" spellCheck={false} name={this.props.name} placeholder="Enter text" onChange={this.sendToForm}/>
 	}
 };
