@@ -7,6 +7,8 @@
 
 // NavBar Component
 @import 'component/navbar';
+@import 'component/form';
+@import 'component/card';
 
 body {
 	background-color: #F4FFF4;
@@ -14,7 +16,6 @@ body {
 .classui {
 	.mainContent {
 		background-color: white;
-		box-shadow: 0px 0px 3px grey;
 		padding: 10px;
 		margin: auto;
 	}
