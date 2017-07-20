@@ -24,10 +24,7 @@ export class Form extends React.Component<IProps, IState> {
 	}
 
 	getValue(data: any) {
-		this.data = {
-			...this.data,
-			...data
-		}
+		this.data[data.name] = data.value;
 	}
 
 	renderFormElements() {

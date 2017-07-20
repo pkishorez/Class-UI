@@ -14,7 +14,6 @@ export class TextField extends React.Component<IProps, {}> {
 		__classui_form_capture: true
 	}
 	render() {
-		console.log(this.props, "HELLO HEY");
 		return <label className="formelement">
 			<div className="label">{this.props.children}</div>
 			<Text name={this.props.name} send_value={this.props.send_value}></Text>

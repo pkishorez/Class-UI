@@ -35,7 +35,6 @@ export class Text extends React.Component<ITextProps, any> {
 	}
 
 	render() {
-		console.log(this.props, "TEXT");
 		return <input type="text" autoComplete="off" spellCheck={false} name={this.props.name} placeholder="Enter text" onChange={this.sendToForm}/>
 	}
 };
