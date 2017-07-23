@@ -1,0 +1,43 @@
+.flexbox {
+	@include display-flex;
+	@include flex-direction(row);
+	@include flex-wrap(nowrap);
+	@include align-content(flex-start);
+	@include justify-content(center);
+	@include align-items(center);
+	margin-bottom: 10px;
+
+	&.eq-width > * {
+		@include flex(1 1 0);
+	}
+
+	&.column {
+		@include flex-direction(column);
+	}
+	&.wrap {
+		@include flex-wrap(wrap);
+	}
+
+	&.justify-start {
+		@include justify-content(flex-start);
+	}
+	&.justify-end {
+		@include justify-content(flex-end);
+	}
+	&.justify-space-between {
+		@include justify-content(space-between);
+	}
+	&.justify-space-around {
+		@include justify-content(space-around);
+	}
+
+	&.align-start {
+		@include align-items(flex-start);
+	}
+	&.align-end {
+		@include align-items(flex-end);
+	}
+	&.align-stretch {
+		@include align-items(stretch);
+	}
+}

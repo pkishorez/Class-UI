@@ -15,7 +15,7 @@ class Content extends React.Component<IProps, IState> {
 		return Content._ref;
 	}
 	render() {
-		return <div className="mainContent" ref={(ref)=>{
+		return <div className="mainContent card-1" ref={(ref)=>{
 			Content._ref = ref;
 			ClassUI.onMounted(()=>{
 				if (ref) {

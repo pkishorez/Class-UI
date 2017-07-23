@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {Flash} from './Components/Flash';
 
 let _instance: ClassUI;
 
@@ -47,6 +48,7 @@ class ClassUI extends React.Component<IProps, any> {
 	render() {
 		return <div className="classui">
 			{this.props.children}
+			<Flash />
 		</div>;
 	}
 }
