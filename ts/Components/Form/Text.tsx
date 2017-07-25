@@ -3,13 +3,14 @@ import * as React from 'react';
 export interface ITextProps {
 	name: string,
 	send_value?: Function,
-	__classui_form_capture?: boolean
+	_classui_form_capture?: boolean
 };
 
 export class Text extends React.Component<ITextProps, any> {
 
+	private input: HTMLInputElement | null;
 	static defaultProps = {
-		__classui_form_capture: true
+		_classui_form_capture: true
 	};
 
 	constructor() {
@@ -17,24 +18,30 @@ export class Text extends React.Component<ITextProps, any> {
 		this.state = {
 			cls: ""
 		};
+		this.send = this.send.bind(this);
 		this.sendToForm = this.sendToForm.bind(this);
-		this.validate = this.validate.bind(this);
 	}
 
-	sendToForm(e: React.ChangeEvent<HTMLInputElement>) {
+	send(val: string) {
 		if (this.props.send_value){
 			let json = {
 				name: this.props.name,
-				value: e.target.value
+				value: val
 			};
 			this.props.send_value(json);
-		}
+		};
 	}
-	validate() {
+	sendToForm(e: React.ChangeEvent<HTMLInputElement>) {
+		this.send(e.target.value);
+	}
 
+	componentDidMount() {
+		if (this.input) {
+			this.send(this.input.value)
+		}
 	}
 
 	render() {
-		return <input type="text" autoComplete="off" spellCheck={false} name={this.props.name} placeholder="Enter text" onChange={this.sendToForm}/>
+		return <input type="text" autoComplete="off" ref={(ref)=>{this.input=ref}} spellCheck={false} name={this.props.name} placeholder="Enter text" onChange={this.sendToForm}/>
 	}
 };

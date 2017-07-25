@@ -20,7 +20,7 @@ export class Form extends React.Component<IProps, IState> {
 		e.preventDefault();
 		console.log(this.data);
 		if (this.props.onSubmit)
-			this.props.onSubmit();
+			this.props.onSubmit(this.data);
 	}
 
 	getValue(data: any) {
@@ -31,7 +31,7 @@ export class Form extends React.Component<IProps, IState> {
 		let render = (children: React.ReactNode): React.ReactNode => {
 			return React.Children.map(children, (child: React.ReactChild)=>{
 				if (typeof child=="object") {
-					if (child.props.__classui_form_capture) {
+					if (child.props._classui_form_capture) {
 						let clone = React.cloneElement(child, {
 							send_value: (data: any)=> {
 								this.getValue(data);

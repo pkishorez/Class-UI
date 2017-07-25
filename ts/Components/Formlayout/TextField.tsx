@@ -5,13 +5,13 @@ import {Text} from '../Form/Text';
 export interface IProps {
 	children: string,
 	name: string,
-	__classui_form_capture?: boolean
+	_classui_form_capture?: boolean
 	send_value?: Function
 };
 
 export class TextField extends React.Component<IProps, {}> {
 	static defaultProps = {
-		__classui_form_capture: true
+		_classui_form_capture: true
 	}
 	render() {
 		return <label className="formelement">
