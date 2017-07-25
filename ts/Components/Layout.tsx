@@ -81,7 +81,7 @@ export interface SectionIProps {
 
 export let Section = (props: SectionIProps)=>{
 	let cls = classNames({
-		"card-2": props.card
+		"card-1": props.card
 	});
 	return <div className={cls} style={{
 		flexBasis: props.width,

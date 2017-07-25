@@ -10,14 +10,15 @@
 @import 'component/form';
 @import 'component/card';
 @import 'component/flash';
+@import 'component/button';
+@import 'component/dropdown';
 
 body {
 	background-color: #F4FFF4;
 }
 .classui {
 	.mainContent {
-		background-color: white;
-		padding: 10px;
 		margin: auto;
+		height: 100%;
 	}
 }
