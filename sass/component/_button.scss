@@ -7,6 +7,7 @@
 	cursor: pointer;
 	background-color: #DDDDDD;
 	@include user-select(none);
+	@include transition(all 0.3s);
 
 	// Accessibility
 	min-width: 48px;
@@ -14,7 +15,6 @@
 	&.flat {
 		background-color: inherit;
 	}
-
 
 	&:hover, &.active{
 		background-color: $theme-color;
@@ -24,6 +24,7 @@
 	&:active {
 		background-color: $theme-color-darker;
 		color: $theme-color-contrast;
+		@include transition(all 0s);
 	}
 }
 
@@ -31,5 +32,8 @@ input[type='submit'], input[type='button'], button {
 	&, &:hover, &:active {
 		border-width: 0px;
 		outline-width: 0px;
+	}
+	&:active{
+		background-color: #CCCCCC;
 	}
 }
