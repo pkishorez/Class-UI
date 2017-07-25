@@ -4,14 +4,15 @@ import * as classNames from 'classnames';
 
 export interface IProps {
 	width?: number|string,
-	column?: boolean,
+	inline?: boolean,
+	direction?: "row" | "column",
 	wrap?: boolean,
 	justify?: "center" | "start" | "end" | "space-between" | "space-around",
 	align?: "center" | "start" | "end" | "stretch",
 	gutter?: number,
 	margin?: number,
-	equalWidth?: boolean
-	"data-nprops"?: IProps
+	equalWidth?: boolean,
+	medianomatch?: IProps
 };
 export interface IState {};
 
@@ -19,7 +20,8 @@ export class Layout extends React.Component<IProps, IState> {
 
 	public static defaultProps:IProps = {
 		width: 'auto',
-		column: false,
+		inline: false,
+		direction: "row",
 		wrap: false,
 		justify: "center",
 		align: "center",
@@ -34,19 +36,21 @@ export class Layout extends React.Component<IProps, IState> {
 			"align-"+this.props.align,
 			{
 				"eq-width": this.props.equalWidth,
-				"column": this.props.column
-		});
+				"column": this.props.direction=="column",
+				"wrap": this.props.wrap
+			}
+		);
 		let count = React.Children.count(this.props.children);
 		let children = React.Children.map(this.props.children, (elem: React.ReactElement<any>, i)=>{
 			let style: React.CSSProperties = {};
-			if (this.props.column){
+			if (this.props.direction=="column"){
 				style.marginTop = (i==0)?this.props.margin:this.props.gutter;
 			}
 			else{
 				style.marginLeft = (i==0)?this.props.margin: this.props.gutter;
 			}
 			if (i==count-1) {
-				if (this.props.column)
+				if (this.props.direction=="column")
 					style.marginBottom = this.props.margin;
 				else
 					style.marginRight = this.props.margin;
@@ -80,7 +84,7 @@ export let Section = (props: SectionIProps)=>{
 		"card-2": props.card
 	});
 	return <div className={cls} style={{
-		width: props.width,
+		flexBasis: props.width,
 		...props.style
 	}}>
 		{props.children}

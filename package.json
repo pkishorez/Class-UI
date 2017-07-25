@@ -26,6 +26,7 @@
 		"@types/react-motion": "0.0.21",
 		"@types/react-redux": "^4.4.38",
 		"classnames": "^2.2.5",
+		"enquire.js": "^2.1.6",
 		"lodash": "^4.17.4",
 		"prop-types": "^15.5.10",
 		"react": "^15.4.2",

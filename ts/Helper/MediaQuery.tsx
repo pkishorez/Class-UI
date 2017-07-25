@@ -2,13 +2,15 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as _ from 'lodash';
 
+import * as Enquire from 'enquire.js';
+
 export interface IProps {
-	minWidth?: number,
-	maxWidth?: number
+	media: string,
+	children?: React.ReactElement<any>
 };
 export interface IState {
-	range: boolean
-};
+	matched: boolean
+}; 
 
 /**
  * Component to change layout responsively based on requirements.
@@ -20,57 +22,44 @@ export interface IState {
  */
 class MediaQuery extends React.Component<IProps, IState> {
 
-	static defaultProps: IProps = {
-		minWidth: 0,
-		maxWidth: 100000
-	};
+	private handler: any = null;
 	constructor() {
 		super();
 		this.state = {
-			range: false
+			matched: false
 		};
-		this.Event = _.throttle(this.Event.bind(this), 200);
-		this.analizeWidth = this.analizeWidth.bind(this);
-	}
-
-	Event() {
-		this.setState({
-			range: this.analizeWidth()
-		})
-	}
-    componentDidMount() {
-		window.addEventListener("resize", this.Event);
-    }
-
-    componentWillUnmount() {
-		window.removeEventListener("resize", this.Event);
-    }
-	analizeWidth() {
-		let document_width = document.body.clientWidth;
-		if ((document_width>(this.props.minWidth || 0)) && (document_width<(this.props.maxWidth || 10000))){
-			return true;
-		}
-		return false;
-	}
-	render() {
-		let children = React.Children.map(this.props.children, (elem: any)=>{
-			if (elem.props['data-populate']) {
-				let children = React.Children.map(elem.props.children, (el: any)=>{
-					let props = this.analizeWidth()?null:el.props['data-nprops'];
-					return React.cloneElement(el, {
-						...props
-					});
+		this.handler = {
+			setup: ()=>{
+				console.log("SETUP");
+			},
+			match: () => {
+				this.setState({
+					matched: true
 				});
-				elem = React.cloneElement(elem, {
-					children
+			},
+			unmatch: ()=>{
+				this.setState({
+					matched: false
 				});
 			}
-			let props = this.analizeWidth()?null:elem.props['data-nprops'];
-			return React.cloneElement(elem, {...props});
-		});
-		return <div>
-			{children}
-		</div>;
+		};
+	}
+	componentWillMount() {
+		Enquire.register(this.props.media, this.handler);
+	}
+
+    componentWillUnmount() {
+		if (this.handler)
+			Enquire.unregister(this.props.media, this.handler);
+	}
+
+	render() {
+		if (React.Children.count(this.props.children)!=1) {
+			console.error("MediaQuery should only contain 1 Child.");
+		}
+		let child: any = this.props.children;
+		child = this.state.matched?child:React.cloneElement(child, child.props["medianomatch"]);
+		return child;
 	}
 }
 
