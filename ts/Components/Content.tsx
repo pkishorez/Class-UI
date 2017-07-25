@@ -19,7 +19,7 @@ class Content extends React.Component<IProps, IState> {
 			Content._ref = ref;
 			ClassUI.onMounted(()=>{
 				if (ref) {
-					ref.style.paddingTop = NavBar.ref?NavBar.ref.getBoundingClientRect().height+5+'px':'0px';
+					ref.style.marginTop = NavBar.ref?NavBar.ref.getBoundingClientRect().height+'px':'0px';
 				}
 			})
 		}} style={{
