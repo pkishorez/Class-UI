@@ -48,7 +48,7 @@
 			}
 			&:focus {
 				& ~ .fake {
-					@include box-shadow(0 0px 10px black);
+					@include box-shadow(0 0px 10px grey);
 				}
 			}
 		}
@@ -60,7 +60,7 @@
 			width: 17px;
 			height: 17px;
 			margin-right: 10px;
-			border-radius: 3px;
+			//border-radius: 3px;
 			border: 1px solid black;
 			font-size: 15px;
 			color: white;
@@ -83,5 +83,6 @@
 	}
 	label.checkbox {
 		margin-left: -5px;
+		margin-bottom: 10px;
 	}
 }
