@@ -4,7 +4,6 @@
 
 .navbar {
 	position: absolute;
-	height: auto;
 	top: 0px;
 	left: 0px;
 	width: 100%;
@@ -14,28 +13,38 @@
 		position: fixed;
 	}
 
-	.content {
+	& > .content {
 		@include display-flex;
 		@include flex-flow(row nowrap);
 		@include align-items(center);
+		@include flex-grow(0);
 		margin: auto;
 		height: 100%;
 		color: white;
 
-		.logo {
+		>.logo {
 			cursor: pointer;
 			@include user-select(none);
-			letter-spacing: -px;
-			text-shadow: 0px 0px 10px white;
+			font-size: 20px;
+			text-shadow: 0px 0px 15px white, 0px 0px 15px white;
+			text-transform: uppercase;
+			padding: 7px;
 			&::first-letter {
 				font-size: 30px;
 			}
 			&:hover{
 				background-color: $theme-color-dark;
 			}
-			text-transform: uppercase;
-			padding: 7px;
-			font-size: 20px;
+		}
+		>.dummy {
+			@include flex-grow(1);
+		}
+
+		.button {
+			background-color: inherit;
+			&:hover, &:active, &.active{
+				background-color: $theme-color-darker;
+			}
 		}
 	}
 }
