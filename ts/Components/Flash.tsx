@@ -9,6 +9,8 @@ export interface IState {
 let _instance: Flash | null = null;
 export class Flash extends React.Component<IProps, IState> {
 
+	private content_click: boolean = false;
+
 	static flash(func: Function) {
 		let content = func(_instance? _instance.dismiss: null);
 		if (!_instance){
@@ -21,11 +23,11 @@ export class Flash extends React.Component<IProps, IState> {
 		window.addEventListener("keydown", _instance.escapeDismiss)
 	}
 	constructor() {
+		super();
 		if (_instance){
 			console.error("Only one instance of Flash component should be created...");
 			return;
 		}
-		super();
 		_instance = this;
 		this.state = {
 			content: null
@@ -41,11 +43,15 @@ export class Flash extends React.Component<IProps, IState> {
 		}
 	}
 	dismiss() {
+		if (this.content_click){
+			this.content_click = false;
+			return;
+		}
 		this.setState({content: null});
 	}
 	render() {
 		return this.state.content?<div className="flash" onClick={this.dismiss}>
-			<div onClick={(e)=>{e.stopPropagation();}} className="content card-5">
+			<div onClick={(e)=>{this.content_click=true}} className="content card-5">
 				{this.state.content}
 			</div>
 		</div>: null;
