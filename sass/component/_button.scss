@@ -1,0 +1,35 @@
+@import '../partial/variables';
+@import '../helper/utilities';
+
+.button, input[type='button'], input[type='submit'] {
+	padding: 10px;
+	@include inline-block();
+	cursor: pointer;
+	background-color: #DDDDDD;
+	@include user-select(none);
+
+	// Accessibility
+	min-width: 48px;
+
+	&.flat {
+		background-color: inherit;
+	}
+
+
+	&:hover, &.active{
+		background-color: $theme-color;
+		color: $theme-color-contrast;
+	}
+
+	&:active {
+		background-color: $theme-color-darker;
+		color: $theme-color-contrast;
+	}
+}
+
+input[type='submit'], input[type='button'], button {
+	&, &:hover, &:active {
+		border-width: 0px;
+		outline-width: 0px;
+	}
+}
