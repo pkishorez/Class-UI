@@ -1,0 +1,38 @@
+@import './card';
+@import '../partial/variables';
+@import 'compass/css3';
+
+.dropdown {
+	position: relative;
+	@include inline-block();
+
+	&.push-left {
+		ul {
+			right: 0px;
+		}
+	}
+	&.push-right {
+		ul {
+			left: 0px;
+		}
+	}
+	ul {
+		position: absolute;
+		background-color: white;
+		color: black;
+		top: 100%;
+
+		@include box-shadow(0px 0px 5px black);
+		max-width: 200px;
+		min-width: 150px;
+
+		li {
+			padding: 10px;
+			cursor: pointer;
+			&:hover{
+				background-color: $theme-color;
+				color: $theme-color-contrast;
+			}
+		}
+	}
+}
