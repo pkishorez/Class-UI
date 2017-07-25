@@ -5,10 +5,13 @@
 	@include align-content(flex-start);
 	@include justify-content(center);
 	@include align-items(center);
-	margin-bottom: 10px;
 
 	&.eq-width > * {
 		@include flex(1 1 0);
+	}
+
+	&.inline {
+		@include display-flex(inline);
 	}
 
 	&.column {
