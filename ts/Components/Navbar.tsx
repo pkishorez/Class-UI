@@ -50,7 +50,7 @@ class NavBar extends React.Component<IProps, IState> {
 	}
 
 	render() {
-		let cls = classNames("card-2", "navbar",  {
+		let cls = classNames("card-1", "navbar",  {
 			fixed: this.props.fixed
 		});
 		return <div className={cls} ref={(ref)=>{NavBar._ref=ref;}}>
@@ -60,10 +60,14 @@ class NavBar extends React.Component<IProps, IState> {
 				{
 					this.props.logo?<div className="logo">{this.props.logo}</div>:null
 				}
-
+				{this.props.children}
 			</div>
 		</div>;
 	}
 }
+
+export let NavbarRemain = ()=>{
+	return <div className="dummy"></div>;
+};
 
 export default NavBar;
