@@ -1,6 +1,6 @@
 {
 	"name": "classui",
-	"version": "0.0.18",
+	"version": "0.0.19",
 	"description": "Class-UI - A Web based User interface Framework.",
 	"main": "./index.js",
 	"types": "./index.d.ts",
@@ -11,7 +11,9 @@
 		"ClassUI.js",
 		"bundle",
 		"Navbar.d.ts",
-		"Navbar.js"
+		"Navbar.js",
+		"Content.js",
+		"Content.d.ts"
 	],
 	"scripts": {
 		"test": "./node_modules/.bin/webpack-dev-server"
