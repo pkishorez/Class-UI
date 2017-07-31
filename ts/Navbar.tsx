@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 import * as _ from 'lodash';
-import {ClassUI} from '../ClassUI';
+import {ClassUI} from './ClassUI';
 
 export interface IProps {
 	fixed?: boolean,	// Fixed Navbar

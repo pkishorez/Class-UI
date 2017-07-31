@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ClassUI} from '../ClassUI';
+import {ClassUI} from './ClassUI';
 import {NavBar} from './Navbar';
 
 export interface IProps {

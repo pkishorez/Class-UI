@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ClassUI} from '../ClassUI';
-import {NavBar, NavbarRemain} from '../Components/Navbar';
-import {Content} from '../Components/Content';
+import {NavBar, NavbarRemain} from '../Navbar';
+import {Content} from '../Content';
 import {Form} from '../Components/Form';
 import {Text} from '../Components/Form/Text';
 import {Formlayout} from '../Components/Formlayout';
