@@ -11,7 +11,7 @@ export interface IProps {
 /**
  * Wrapper Component for the whole of Class-UI.
  */
-class ClassUI extends React.Component<IProps, any> {
+export class ClassUI extends React.Component<IProps, any> {
 	private static mounted:Boolean = false;
 	private static funcs: Function[] = [];
 
@@ -52,5 +52,3 @@ class ClassUI extends React.Component<IProps, any> {
 		</div>;
 	}
 }
-
-export default ClassUI;

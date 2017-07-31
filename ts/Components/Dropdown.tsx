@@ -11,7 +11,7 @@ export interface IState {
 	active: boolean
 };
 
-class Dropdown extends React.Component<IProps, IState> {
+export class Dropdown extends React.Component<IProps, IState> {
 	static defaultProps = {
 		push: "right"
 	};
@@ -52,5 +52,3 @@ class Dropdown extends React.Component<IProps, IState> {
 		</div>;
 	}
 }
-
-export default Dropdown;

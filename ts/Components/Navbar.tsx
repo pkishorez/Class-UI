@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 import * as _ from 'lodash';
-import ClassUI from '../ClassUI';
+import {ClassUI} from '../ClassUI';
 
 export interface IProps {
 	fixed?: boolean,	// Fixed Navbar
@@ -10,7 +10,7 @@ export interface IProps {
 };
 export interface IState {};
 
-class NavBar extends React.Component<IProps, IState> {
+export class NavBar extends React.Component<IProps, IState> {
 
 	private static _ref: HTMLDivElement | null;
 	public static defaultProps: IProps = {
@@ -69,5 +69,3 @@ class NavBar extends React.Component<IProps, IState> {
 export let NavbarRemain = ()=>{
 	return <div className="dummy"></div>;
 };
-
-export default NavBar;

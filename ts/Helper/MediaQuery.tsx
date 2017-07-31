@@ -20,7 +20,7 @@ export interface IState {
  * data-populate is used for the child elements also to change
  * if layout changes. Only immediate children are allowed for now.
  */
-class MediaQuery extends React.Component<IProps, IState> {
+export class MediaQuery extends React.Component<IProps, IState> {
 
 	private handler: any = null;
 	constructor() {
@@ -30,7 +30,6 @@ class MediaQuery extends React.Component<IProps, IState> {
 		};
 		this.handler = {
 			setup: ()=>{
-				console.log("SETUP");
 			},
 			match: () => {
 				this.setState({
@@ -62,5 +61,3 @@ class MediaQuery extends React.Component<IProps, IState> {
 		return child;
 	}
 }
-
-export default MediaQuery;
