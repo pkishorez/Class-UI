@@ -12,8 +12,7 @@
 		"bundle"
 	],
 	"scripts": {
-		"test": "./node_modules/.bin/webpack-dev-server",
-		"production": "tsc"
+		"test": "./node_modules/.bin/webpack-dev-server"
 	},
 	"author": "Kishore",
 	"license": "ISC",
