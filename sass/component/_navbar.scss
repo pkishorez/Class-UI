@@ -24,13 +24,17 @@
 		color: white;
 
 		>.logo {
-			@extend .button;
-			cursor: pointer;
+			cursor: default;
+			padding: 10px 7px;
 			font-size: 20px;
 			text-shadow: 0px 0px 15px white, 0px 0px 15px white;
-			text-transform: uppercase;
+			//text-transform: uppercase;
+			@include transition(all 0.3s);
 			&::first-letter {
 				font-size: 30px;
+			}
+			&:hover {
+				text-shadow: 0px 0px 15px white, 0px 0px 15px white, 0px 0px 15px white;
 			}
 		}
 		>.dummy {
