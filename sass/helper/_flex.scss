@@ -10,6 +10,10 @@
 		@include flex(1 1 0);
 	}
 
+	> .remain{
+		@include flex(1 1 0);
+	}
+
 	&.inline {
 		@include display-flex(inline);
 	}

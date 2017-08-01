@@ -12,7 +12,11 @@ export interface IProps {
 	gutter?: number,
 	margin?: number,
 	equalWidth?: boolean,
-	medianomatch?: IProps
+	mediaNoMatch?: IProps,
+
+	// Common Child Properties.
+	cwidth?: number|string,
+	ccard?: boolean
 };
 export interface IState {};
 
@@ -27,7 +31,9 @@ export class Layout extends React.Component<IProps, IState> {
 		align: "center",
 		gutter: 0,
 		margin: 0,
-		equalWidth: false
+		equalWidth: false,
+
+		ccard: false
 	};
 
 	render() {
@@ -55,7 +61,12 @@ export class Layout extends React.Component<IProps, IState> {
 				else
 					style.marginRight = this.props.margin;
 			}
+			let props: any = {};
+			this.props.ccard?props.card = this.props.ccard : undefined;
+			this.props.cwidth?props.width = this.props.cwidth : undefined;
 			return React.cloneElement(elem, {
+				...elem.props,
+				...props,
 				style: {
 					...elem.props.style,
 					...style
@@ -75,18 +86,26 @@ export class Layout extends React.Component<IProps, IState> {
 export interface SectionIProps {
 	style?: React.CSSProperties,
 	width?: number|string,
+	minWidth?: number|string,
 	children?: any,
-	card?: boolean
+	card?: boolean,
+	remain?: boolean
 };
 
 export let Section = (props: SectionIProps)=>{
 	let cls = classNames({
-		"card-1": props.card
+		"card-1": props.card,
+		"remain": props.remain
 	});
-	return <div className={cls} style={{
-		flexBasis: props.width,
-		...props.style
-	}}>
+	let style: React.CSSProperties = {
+		...props.style,
+		width: props.width,
+		minWidth: props.minWidth
+	};
+	props.card?style.backgroundColor='white':null;
+	props.card?style.padding=10:null;
+
+	return <div className={cls} style={style}>
 		{props.children}
 	</div>;
 };

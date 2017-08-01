@@ -14,11 +14,6 @@ export interface IState {
 
 /**
  * Component to change layout responsively based on requirements.
- * Accepts minWidth and maxWidth without which the layout changes
- * as per the "data-nprops" properties.
- * 
- * data-populate is used for the child elements also to change
- * if layout changes. Only immediate children are allowed for now.
  */
 export class MediaQuery extends React.Component<IProps, IState> {
 
@@ -57,7 +52,7 @@ export class MediaQuery extends React.Component<IProps, IState> {
 			console.error("MediaQuery should only contain 1 Child.");
 		}
 		let child: any = this.props.children;
-		child = this.state.matched?child:React.cloneElement(child, child.props["medianomatch"]);
+		child = this.state.matched?child:React.cloneElement(child, child.props["mediaNoMatch"]);
 		return child;
 	}
 }
