@@ -5,15 +5,11 @@ export interface IProps {
 	name: string,
 	send_value?: (value: any)=>any,
 	children: any,
-	inline?: boolean,
-	_classui_form_capture?:boolean
+	inline?: boolean
 };
 
 export class Checkbox extends React.Component<IProps, any> {
 	private checkbox: HTMLInputElement | null;
-	static defaultProps = {
-		_classui_form_capture: true
-	};
 	constructor() {
 		super();
 		this.send = this.send.bind(this);

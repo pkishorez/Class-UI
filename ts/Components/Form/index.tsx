@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {Text} from './Text';
+import {Checkbox} from './Checkbox';
 
 export interface IProps {
 	onSubmit?: Function,
@@ -7,7 +9,6 @@ export interface IProps {
 };
 export interface IState {};
 
-let FormElements = [Text];
 
 export class Form extends React.Component<IProps, IState> {
 	private data: any = {};
@@ -31,7 +32,7 @@ export class Form extends React.Component<IProps, IState> {
 		let render = (children: React.ReactNode): React.ReactNode => {
 			return React.Children.map(children, (child: React.ReactChild)=>{
 				if (typeof child=="object") {
-					if (child.props._classui_form_capture) {
+					if (child.props.classui_form_capture || child.type==Text || child.type==Checkbox) {
 						let clone = React.cloneElement(child, {
 							send_value: (data: any)=> {
 								this.getValue(data);
@@ -53,5 +54,39 @@ export class Form extends React.Component<IProps, IState> {
 		return <form className={"form "+(this.props.cls?this.props.cls:"")} onSubmit={this.submit}>
 			{this.renderFormElements()}
 		</form>;
+	}
+}
+
+
+export function FormHOC(Component: any): any {
+	return class InjectProps extends Component {
+		static defaultProps = {
+			classui_form_capture: true
+		};
+		render() {
+			let render = (children: React.ReactNode): any => {
+				return React.Children.map(children, (child: React.ReactChild)=>{
+					if (typeof child=="object") {
+						if (child.type==Text || child.type==Checkbox) {
+							let clone = React.cloneElement(child, {
+								send_value: (data: any)=> {
+									this.props.send_value(data);
+								}
+							});
+							return clone;
+						}
+						return React.cloneElement(child, {
+							...child.props,
+							children: render(child.props.children)
+						});
+					}
+					return child;
+				});
+			}
+			console.log(super.render());
+			let children = render(super.render())[0];
+			console.log("CHILDREN", children);
+			return children;
+		}
 	}
 }

@@ -14,7 +14,7 @@ import {MAnim} from '../Helper/Animation';
 import {Layout, Section} from '../Components/Layout';
 import {MediaQuery} from '../Helper/MediaQuery';
 
-ReactDOM.render(<ClassUI contentWidth={1024}>
+ReactDOM.render(<ClassUI contentWidth={1286}>
 			<NavBar logo="Alumnies">
 				<NavbarRemain />
 				<div className="button stretch">Kittu</div>
@@ -26,14 +26,15 @@ ReactDOM.render(<ClassUI contentWidth={1024}>
 			</NavBar>
 			<Content>
 				<MediaQuery media="screen and (min-width: 500px)">
-					<Layout gutter={30} justify="start" medianomatch={{
+					<Layout gutter={15} margin={10} ccard justify="start" mediaNoMatch={{
 						direction: "column",
-						width: "100%",
-						equalWidth: true
+						cwidth: "100%",
+						gutter: 10,
+						margin: 0
 					}}>
-						<Section card width="25%" style={{backgroundColor: "white", padding: 10}}>Section1</Section>
-						<Section card width="50%" style={{backgroundColor: "white", padding: 10}}>Section1</Section>
-						<Section card width="25%" style={{backgroundColor: "white", padding: 10}}>Section1</Section>
+						<Section minWidth={250} >Section1</Section>
+						<Section remain >Section1</Section>
+						<Section minWidth={250} >Section1</Section>
 					</Layout>
 				</MediaQuery>
 			</Content>
