@@ -13,7 +13,8 @@
 		"Navbar.d.ts",
 		"Navbar.js",
 		"Content.js",
-		"Content.d.ts"
+		"Content.d.ts",
+		"sass"
 	],
 	"scripts": {
 		"test": "./node_modules/.bin/webpack-dev-server"
