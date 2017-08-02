@@ -4,7 +4,7 @@ import {ClassUI} from './ClassUI';
 import {NavBar} from './Navbar';
 
 export interface IProps {
-	style?:JSON
+	style?: React.CSSProperties
 };
 
 export interface IState {};

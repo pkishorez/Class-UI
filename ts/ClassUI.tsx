@@ -20,7 +20,9 @@ export class ClassUI extends React.Component<IProps, any> {
 	};
 
 	public static get contentWidth() {
-		return _instance.props.contentWidth;
+		if (!_instance)// THIS NEVER HAPPENS.
+			console.error("Class-UI instance not found!!!");
+		return _instance?_instance.props.contentWidth: 0;
 	}
 
 	public static onMounted(func: Function) {
