@@ -27,10 +27,9 @@ module.exports = {
 		extensions: [".tsx", ".ts", ".js"]
 	},
 
-	devtool: 'inline-source-map',
+	devtool: 'eval',
 	
 	devServer: {
-		host: '0.0.0.0',
-		port: 8080
+		host: '0.0.0.0'
 	}
 };

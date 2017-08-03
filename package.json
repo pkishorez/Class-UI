@@ -17,7 +17,7 @@
 		"sass"
 	],
 	"scripts": {
-		"start": "./node_modules/.bin/webpack-dev-server & compass watch"
+		"start": "./node_modules/.bin/webpack-dev-server"
 	},
 	"author": "Kishore",
 	"license": "ISC",
