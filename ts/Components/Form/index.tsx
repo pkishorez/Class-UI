@@ -83,9 +83,7 @@ export function FormHOC(Component: any): any {
 					return child;
 				});
 			}
-			console.log(super.render());
 			let children = render(super.render())[0];
-			console.log("CHILDREN", children);
 			return children;
 		}
 	}
