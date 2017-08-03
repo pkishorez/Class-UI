@@ -2,12 +2,10 @@
 @import '../helper/utilities';
 
 .button, input[type='button'], input[type='submit'] {
+	@extend .actionable_component;
+	background-color: #DDDDDD; 
 	padding: 10px;
-	@include inline-block();
-	cursor: pointer;
-	background-color: #DDDDDD;
 	@include user-select(none);
-	@include transition(all 0.3s);
 
 	// Accessibility
 	min-width: 48px;
@@ -16,15 +14,10 @@
 		background-color: inherit;
 	}
 
-	&:hover, &.active{
-		background-color: $theme-color;
-		color: $theme-color-contrast;
-	}
-
-	&:active {
-		background-color: $theme-color-darker;
-		color: $theme-color-contrast;
-		@include transition(all 0s);
+	&.disable {
+		&, &:hover, &:active{
+			background-color: #DDDDDD !important;
+		}
 	}
 }
 

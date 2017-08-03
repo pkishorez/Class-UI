@@ -1,6 +1,7 @@
 @import './card';
 @import '../partial/variables';
 @import 'compass/css3';
+@import '../helper/component';
 
 .dropdown {
 	position: relative;
@@ -28,11 +29,7 @@
 
 		li {
 			padding: 10px;
-			cursor: pointer;
-			&:hover{
-				background-color: $theme-color;
-				color: $theme-color-contrast;
-			}
+			@extend .hoverable_component;
 		}
 	}
 }

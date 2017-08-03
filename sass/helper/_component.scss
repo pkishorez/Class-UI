@@ -1,0 +1,25 @@
+@import '../partial/variables';
+
+.hoverable_component {
+	cursor: pointer;
+
+	&:hover, &.active{
+		background-color: $theme-color;
+		color: $theme-color-contrast;
+	}
+	&.disable {
+		&, &:hover, &:active, &.active {
+			cursor: default;
+			background-color: inherit;
+			color: grey;
+		}
+	}
+}
+
+.actionable_component {
+	@extend .hoverable_component;
+	&:active {
+		background-color: $theme-color-darker;
+		color: $theme-color-contrast;
+	}
+}
