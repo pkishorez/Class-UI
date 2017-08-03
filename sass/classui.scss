@@ -3,17 +3,20 @@
 @import 'partial/variables';
 
 // Reset
-@import	'partial/reset';
+@import	'partial/normalize';
 
 @import 'helper/flex';
 
 // NavBar Component
-@import 'component/navbar';
-@import 'component/form';
-@import 'component/card';
-@import 'component/flash';
 @import 'component/button';
 @import 'component/dropdown';
+
+@import 'component/navbar';
+@import 'component/form';
+@import 'component/flash';
+@import 'component/sidemenu';
+
+@import 'component/card';
 
 body {
 	background-color: #F4FFF4;
