@@ -3,20 +3,19 @@ import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 
 export interface IProps {
-	width?: number|string,
-	inline?: boolean,
-	direction?: "row" | "column",
-	wrap?: boolean,
-	justify?: "center" | "start" | "end" | "space-between" | "space-around",
-	align?: "center" | "start" | "end" | "stretch",
-	gutter?: number,
-	margin?: number,
-	equalWidth?: boolean,
-	mediaNoMatch?: IProps,
+	width?: number|string
+	inline?: boolean
+	direction?: "row" | "column"
+	wrap?: boolean
+	justify?: "center" | "start" | "end" | "space-between" | "space-around"
+	align?: "center" | "start" | "end" | "stretch"
+	gutter?: number
+	margin?: number
+	equalWidth?: boolean
+	mediaNoMatch?: IProps
 
 	// Common Child Properties.
-	cwidth?: number|string,
-	ccard?: boolean
+	c_props?: SectionIProps | undefined
 };
 export interface IState {};
 
@@ -33,7 +32,7 @@ export class Layout extends React.Component<IProps, IState> {
 		margin: 0,
 		equalWidth: false,
 
-		ccard: false
+		c_props: undefined
 	};
 
 	render() {
@@ -61,12 +60,9 @@ export class Layout extends React.Component<IProps, IState> {
 				else
 					style.marginRight = this.props.margin;
 			}
-			let props: any = {};
-			this.props.ccard?props.card = this.props.ccard : undefined;
-			this.props.cwidth?props.width = this.props.cwidth : undefined;
 			return React.cloneElement(elem, {
+				...this.props.c_props,
 				...elem.props,
-				...props,
 				style: {
 					...elem.props.style,
 					...style
@@ -94,16 +90,16 @@ export interface SectionIProps {
 
 export let Section = (props: SectionIProps)=>{
 	let cls = classNames({
-		"card-1": props.card,
+		"card-0": props.card,
 		"remain": props.remain
 	});
 	let style: React.CSSProperties = {
 		...props.style,
+		backgroundColor: props.card?'white':null,
+		padding: props.card?10:undefined,
 		width: props.width,
 		minWidth: props.minWidth
 	};
-	props.card?style.backgroundColor='white':null;
-	props.card?style.padding=10:null;
 
 	return <div className={cls} style={style}>
 		{props.children}
