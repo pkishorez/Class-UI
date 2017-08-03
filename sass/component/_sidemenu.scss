@@ -1,0 +1,20 @@
+@import './card';
+@import '../partial/variables';
+@import 'compass/css3';
+@import './button';
+@import '../helper/component';
+
+.sidemenu {
+	border: 1px solid #DDDDDD;
+	background-color: white;
+	padding: 10px 0px;
+
+	> .header {
+		padding: 0px 10px;
+	}
+
+	& > .item {
+		@extend .hoverable_component;
+		padding: 7px 10px;
+	}
+}
