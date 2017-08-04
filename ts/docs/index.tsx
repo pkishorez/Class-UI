@@ -61,15 +61,7 @@ ReactDOM.render(<ClassUI contentWidth={980}>
 
 Flash.flash((dismiss: Function)=>{
 	return <Formlayout label="Personal Details" onSubmit={()=>{dismiss();}}>
-		<a href="" className="button">Kishore</a>
-		<Dropdown button="Drop" push="left">
-			<li>Kishore List</li>
-			<li>Kishore List</li>
-			<li>Kishore List</li>
-			<li>Kishore List</li>
-			<li>Kishore List</li>
-		</Dropdown>
-		<TextField name="name">Name</TextField>
+		<TextField name="Kishore" autoFocus>Name</TextField>
 		<TextField name="father_name">Father's Name</TextField>
 		<TextField name="mother_name">Mother's Name</TextField>
 		<Checkbox name="Accept">Kishore</Checkbox>
