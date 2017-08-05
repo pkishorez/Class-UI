@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Text} from './Text';
 import {Checkbox} from './Checkbox';
+import {Select} from './Select';
 
 export interface IProps {
 	onSubmit?: Function,
@@ -32,7 +33,7 @@ export class Form extends React.Component<IProps, IState> {
 		let render = (children: React.ReactNode): React.ReactNode => {
 			return React.Children.map(children, (child: React.ReactChild)=>{
 				if (typeof child=="object") {
-					if (child.props.classui_form_capture || child.type==Text || child.type==Checkbox) {
+					if (child.props.classui_form_capture || child.type==Text || child.type==Checkbox || child.type==Select) {
 						let clone = React.cloneElement(child, {
 							send_value: (data: any)=> {
 								this.getValue(data);
@@ -66,8 +67,10 @@ export function FormHOC(Component: any): any {
 		render() {
 			let render = (children: React.ReactNode): any => {
 				return React.Children.map(children, (child: React.ReactChild)=>{
-					if (typeof child=="object") {
-						if (child.type==Text || child.type==Checkbox) {
+					if (child && typeof child=="object") {
+						if ((typeof child.type)=="function")
+							return child;
+						if (child.type==Text || child.type==Checkbox || child.type==Select) {
 							let clone = React.cloneElement(child, {
 								send_value: (data: any)=> {
 									this.props.send_value(data);
