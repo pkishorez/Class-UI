@@ -13,6 +13,8 @@ export interface IProps {
 	margin?: number
 	equalWidth?: boolean
 	mediaNoMatch?: IProps
+	style?: React.CSSProperties
+	cls?: string
 
 	// Common Child Properties.
 	c_props?: SectionIProps | undefined
@@ -36,7 +38,7 @@ export class Layout extends React.Component<IProps, IState> {
 	};
 
 	render() {
-		let cls = classNames("flexbox",
+		let cls = classNames("flexbox", this.props.cls,
 			"justify-"+this.props.justify,
 			"align-"+this.props.align,
 			{
@@ -70,7 +72,8 @@ export class Layout extends React.Component<IProps, IState> {
 			});
 		});
 		return <div style={{
-			maxWidth: this.props.width
+			maxWidth: this.props.width,
+			...this.props.style
 		}} className={cls} >
 			{
 				children
