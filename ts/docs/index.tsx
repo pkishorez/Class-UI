@@ -15,46 +15,45 @@ import {MediaQuery} from '../Helper/MediaQuery';
 import {SideMenu, Item} from '../Components/SideMenu';
 
 ReactDOM.render(<ClassUI contentWidth={980}>
-			<NavBar logo="Alumnies">
-				<NavbarRemain />
-				<div className="button stretch">Kittu</div>
-				<Dropdown button="Settings" push="left">
-					<li>Kishore</li>
-					<li>Kishore</li>
-					<li>Kishore</li>
-				</Dropdown>
-			</NavBar>
-			<Content>
-				<MediaQuery media="screen and (min-width: 500px)">
-					<Layout gutter={15} c_props= {{card: true}} justify="start" align="start" mediaNoMatch={{
-						direction: "column",
-						c_props: {
-							width: "100%"
-						},
-						gutter: 10,
-						margin: 0
-					}}>
-						<Section width={150} card={false}>
-							<SideMenu header="Actions">
-								<Item>Kishore</Item>
-								<Item>Kittu</Item>
-								<Item>Hello</Item>
-							</SideMenu>
-						</Section>
-						<Section remain >
-							Kishore <br/> KIttuKishore <br/> KIttuKishore <br/> KIttu
-							<h1>H1 Content</h1>
-							<h2>H2 Content</h2>
-							<h3>H3 Content</h3>
-							<div className="button">This is a button</div>
-							<h3>H4 Content</h3>
-							<h5>H5 Content</h5>
-							<h6>H6 Content</h6>
-						</Section>
-						<Section width={250} >Section1</Section>
-					</Layout>
-				</MediaQuery>
-			</Content>
+	<NavBar logo="Alumnies">
+		<NavbarRemain />
+		<div className="button stretch">Kittu</div>
+		<Dropdown button="Settings" push="left">
+			<li>Kishore</li>
+			<li>Kishore</li>
+			<li>Kishore</li>
+		</Dropdown>
+	</NavBar>
+	<Content>
+		<MediaQuery media="screen and (min-width: 500px)">
+			<Layout gutter={15} c_props= {{card: true}} justify="start" align="start" mediaNoMatch={{
+				direction: "column",
+				c_props: {
+					width: "100%"
+				},
+				gutter: 10,
+				margin: 0
+			}}>
+				<Section width={150} card={false}>
+					<SideMenu header="Actions">
+						<Item>Kishore</Item>
+						<Item>Kittu</Item>
+						<Item>Hello</Item>
+					</SideMenu>
+				</Section>
+				<Section remain >
+					<h1>H1 Content</h1>
+					<h2>H2 Content</h2>
+					<h3>H3 Content</h3>
+					<div className="button">This is a button</div>
+					<h3>H4 Content</h3>
+					<h5>H5 Content</h5>
+					<h6>H6 Content</h6>
+				</Section>
+				<Section width={250} >Section1</Section>
+			</Layout>
+		</MediaQuery>
+	</Content>
 	</ClassUI>,
 	document.getElementById('app')
 );
