@@ -26,6 +26,7 @@ export class Select extends React.Component<IProps, any> {
 	}
 	change(e: React.ChangeEvent<HTMLSelectElement>)
 	{
+		console.log("Changed", e.target.value);
 		this.send(e.target.value);
 	}
 	componentDidMount() {
@@ -34,7 +35,7 @@ export class Select extends React.Component<IProps, any> {
 		}
 	}
 	render() {
-		return <select name={this.props.name} onChange={(e)=>this.change} ref={(ref)=>{this.select = ref;}}>
+		return <select name={this.props.name} onChange={this.change} ref={(ref)=>{this.select = ref;}}>
 			{this.props.options.map((option)=>{
 				return <option key={option} value={option}>{option}</option>
 			})}
