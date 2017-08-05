@@ -62,7 +62,7 @@ ReactDOM.render(<ClassUI contentWidth={980}>
 Flash.flash((dismiss: Function)=>{
 	return <Formlayout label="Personal Details" onSubmit={()=>{dismiss();}}>
 		<TextField name="Kishore" autoFocus minSize={5}>Name</TextField>
-		<Select options={["kishore", "Kittu"]} name="done">Kishore</Select>
+		<Select options={["kishore", "Kittu"]} name="done"></Select>
 		<TextField name="father_name">Father's Name</TextField>
 		<TextField name="mother_name">Mother's Name</TextField>
 		<Checkbox name="Accept">Kishore</Checkbox>

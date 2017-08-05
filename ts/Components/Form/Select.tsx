@@ -5,7 +5,7 @@ export interface IProps {
 	name: string,
 	send_value?: (value: any)=>any
 	options: string[]
-	children: any
+	children?: any
 };
 
 export class Select extends React.Component<IProps, any> {
