@@ -67,6 +67,9 @@
 			@include transition(all 0.3s);
 		}
 	}
+	select {
+		margin-bottom: 10px;
+	}
 }
 
 .form-layout {
@@ -75,7 +78,15 @@
 		> .label{
 			color: $theme-color-darkest;
 			font-size: 15px;
-			margin-bottom: 3px;
+		}
+		&.error {
+			> .label {
+				color: red;
+			}
+			color: red;
+			> .error {
+				font-size: 10px;
+			}
 		}
 
 		display: block;

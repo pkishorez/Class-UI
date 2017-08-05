@@ -8,6 +8,7 @@ import {Text} from '../Components/Form/Text';
 import {Formlayout} from '../Components/Formlayout';
 import {TextField} from '../Components/Formlayout/TextField';
 import {Checkbox} from '../Components/Form/Checkbox';
+import {Select} from '../Components/Form/Select';
 import {Flash} from '../Components/Flash';
 import {Dropdown} from '../Components/Dropdown';
 import {Layout, Section} from '../Components/Layout';
@@ -60,7 +61,8 @@ ReactDOM.render(<ClassUI contentWidth={980}>
 
 Flash.flash((dismiss: Function)=>{
 	return <Formlayout label="Personal Details" onSubmit={()=>{dismiss();}}>
-		<TextField name="Kishore" autoFocus>Name</TextField>
+		<TextField name="Kishore" autoFocus minSize={5}>Name</TextField>
+		<Select options={["kishore", "Kittu"]} name="done">Kishore</Select>
 		<TextField name="father_name">Father's Name</TextField>
 		<TextField name="mother_name">Mother's Name</TextField>
 		<Checkbox name="Accept">Kishore</Checkbox>
