@@ -34,7 +34,7 @@ export class Text extends React.Component<ITextProps, any> {
 		if (this.props.send_value){
 			let json = {
 				name: this.props.name,
-				value: val,
+				value: (this.props.type=="number")?parseInt(val):val,
 				error: this.validate(val)
 			};
 			this.props.send_value(json);
