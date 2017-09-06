@@ -17,7 +17,7 @@ export interface IProps {
 	cls?: string
 
 	// Common Child Properties.
-	c_props?: SectionIProps | undefined
+	c_props?: ISectionProps | undefined
 };
 export interface IState {};
 
@@ -50,7 +50,12 @@ export class Layout extends React.Component<IProps, IState> {
 		let count = React.Children.count(this.props.children);
 		let children = React.Children.map(this.props.children, (elem: React.ReactElement<any>, i)=>{
 			let style: React.CSSProperties = {};
+			let colProps: ISectionProps = {};
 			if (this.props.direction=="column"){
+				colProps = {
+					minWidth: undefined,
+					width: "100%"
+				};
 				style.marginTop = (i==0)?this.props.margin:this.props.gutter;
 			}
 			else{
@@ -65,6 +70,7 @@ export class Layout extends React.Component<IProps, IState> {
 			return React.cloneElement(elem, {
 				...this.props.c_props,
 				...elem.props,
+				...colProps,
 				style: {
 					...elem.props.style,
 					...style
@@ -82,7 +88,7 @@ export class Layout extends React.Component<IProps, IState> {
 	}
 }
 
-export interface SectionIProps {
+export interface ISectionProps {
 	style?: React.CSSProperties,
 	width?: number|string,
 	minWidth?: number|string,
@@ -91,7 +97,7 @@ export interface SectionIProps {
 	remain?: boolean
 };
 
-export let Section = (props: SectionIProps)=>{
+export let Section = (props: ISectionProps)=>{
 	let cls = classNames({
 		"card-0": props.card,
 		"remain": props.remain
@@ -99,9 +105,9 @@ export let Section = (props: SectionIProps)=>{
 	let style: React.CSSProperties = {
 		...props.style,
 		backgroundColor: props.card?'white':null,
-		padding: props.card?10:undefined,
+		padding: props.card?10:0,
 		width: props.width,
-		minWidth: props.minWidth
+		flexBasis: props.minWidth
 	};
 
 	return <div className={cls} style={style}>
