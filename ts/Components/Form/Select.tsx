@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as propTypes from 'prop-types';
 
 export interface IProps {
-	name: string,
-	send_value?: (value: any)=>any
+	name: string
 	options: string[]
 	children?: any
 };
@@ -16,17 +16,21 @@ export class Select extends React.Component<IProps, any> {
 		this.change = this.change.bind(this);
 	}
 
+	static contextTypes = {
+		send_value: propTypes.func,
+		delete_value: propTypes.func
+	}
+
 	send(value: string) {
-		if (this.props.send_value){
-			this.props.send_value({
-				name: this.props.name,
+		if (this.context.send_value){
+			this.context.send_value({
+				key: this.props.name,
 				value
 			});
 		}
 	}
 	change(e: React.ChangeEvent<HTMLSelectElement>)
 	{
-		console.log("Changed", e.target.value);
 		this.send(e.target.value);
 	}
 	componentDidMount() {
@@ -34,6 +38,15 @@ export class Select extends React.Component<IProps, any> {
 			this.send(this.select.value);
 		}
 	}
+
+	componentWillUnmount()
+	{
+		if (this.context.delete_value)
+		{
+			this.context.delete_value(this.props.name);
+		}
+	}
+
 	render() {
 		return <select name={this.props.name} onChange={this.change} ref={(ref)=>{this.select = ref;}}>
 			{this.props.options.map((option)=>{

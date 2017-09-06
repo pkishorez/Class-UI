@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
+import * as propTypes from 'prop-types';
 
 export interface ITextProps {
 	name: string,
@@ -8,9 +9,6 @@ export interface ITextProps {
 	inList?: string[],
 	minSize?: number,
 	maxSize?: number
-
-	send_value?: Function
-	report?: Function
 };
 
 export class Text extends React.Component<ITextProps, any> {
@@ -21,8 +19,13 @@ export class Text extends React.Component<ITextProps, any> {
 		type: "text"
 	};
 
-	constructor() {
-		super();
+	static contextTypes = {
+		send_value: propTypes.func,
+		delete_value: propTypes.func
+	}
+
+	constructor(props: any, context: any) {
+		super(props, context);
 		this.state = {
 			cls: ""
 		};
@@ -31,21 +34,16 @@ export class Text extends React.Component<ITextProps, any> {
 	}
 
 	send(val: string) {
-		if (this.props.send_value){
+		if (this.context.send_value){
 			let json = {
-				name: this.props.name,
+				key: this.props.name,
 				value: (this.props.type=="number")?parseInt(val):val,
 				error: this.validate(val)
 			};
-			this.props.send_value(json);
+			this.context.send_value(json);
 		};
 	}
 	sendToForm(e: React.ChangeEvent<HTMLInputElement>) {
-		if (this.props.report) {
-			this.props.report({
-				error: this.validate(e.target.value)
-			});
-		}
 		this.send(e.target.value);
 	}
 
@@ -74,6 +72,13 @@ export class Text extends React.Component<ITextProps, any> {
 	componentDidMount() {
 		if (this.input) {
 			this.send(this.input.value)
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.context.delete_value)
+		{
+			this.context.delete_value(this.props.name);
 		}
 	}
 

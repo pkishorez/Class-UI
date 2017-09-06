@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {Text} from './Text';
 import {Checkbox} from './Checkbox';
 import {Select} from './Select';
+import * as propTypes from 'prop-types';
 
 export interface IProps {
 	onSubmit?: Function,
@@ -13,8 +14,25 @@ export interface IState {};
 
 export class Form extends React.Component<IProps, IState> {
 	private data: any = {};
-	constructor() {
-		super();
+
+	static childContextTypes = {
+		send_value: propTypes.func,
+		delete_value: propTypes.func
+	};
+
+	getChildContext()
+	{
+		return {
+			send_value: (json: any)=>{
+				this.data[json.key] = json.value;
+			},
+			delete_value: (key: string) => {
+				delete this.data[key];
+			}
+		};
+	}
+	constructor(props: any, context: any) {
+		super(props, context);
 		this.submit = this.submit.bind(this);
 		this.renderFormElements = this.renderFormElements.bind(this);
 	}
@@ -30,64 +48,12 @@ export class Form extends React.Component<IProps, IState> {
 	}
 
 	renderFormElements() {
-		let render = (children: React.ReactNode): React.ReactNode => {
-			return React.Children.map(children, (child: React.ReactChild)=>{
-				if (typeof child=="object") {
-					if (child.props.classui_form_capture || child.type==Text || child.type==Checkbox || child.type==Select) {
-						let clone = React.cloneElement(child, {
-							send_value: (data: any)=> {
-								this.getValue(data);
-							}
-						});
-						return clone;
-					}
-					return React.cloneElement(child, {
-						children: render(child.props.children)
-					});
-				}
-				return child;
-			});
-		}
-		return render(this.props.children);
+		return this.props.children;
 	}
 
 	render() {
 		return <form className={"form "+(this.props.cls?this.props.cls:"")} onSubmit={this.submit}>
 			{this.renderFormElements()}
 		</form>;
-	}
-}
-
-
-export function FormHOC(Component: any): any {
-	return class InjectProps extends Component {
-		static defaultProps = {
-			classui_form_capture: true
-		};
-		render() {
-			let render = (children: React.ReactNode): any => {
-				return React.Children.map(children, (child: React.ReactChild)=>{
-					if (child && typeof child=="object") {
-						if ((typeof child.type)=="function")
-							return child;
-						if (child.type==Text || child.type==Checkbox || child.type==Select) {
-							let clone = React.cloneElement(child, {
-								send_value: (data: any)=> {
-									this.props.send_value(data);
-								}
-							});
-							return clone;
-						}
-						return React.cloneElement(child, {
-							...child.props,
-							children: render(child.props.children)
-						});
-					}
-					return child;
-				});
-			}
-			let children = render(super.render())[0];
-			return children;
-		}
 	}
 }

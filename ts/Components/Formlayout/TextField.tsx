@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Text, ITextProps} from '../Form/Text';
-import {FormHOC} from '../Form';
 import {SAnim} from '../../Helper/Animation';
 import * as classNames from 'classnames';
 
@@ -10,7 +9,7 @@ export interface IProps extends ITextProps {
 	name: string
 };
 
-class _TextField extends React.Component<IProps, {error: null|string}> {
+export class TextField extends React.Component<IProps, {error: null|string}> {
 	constructor() {
 		super();
 		this.state = {
@@ -23,10 +22,7 @@ class _TextField extends React.Component<IProps, {error: null|string}> {
 		});
 		return <label className={cls}>
 			<div className="label">{this.props.children}</div>
-			<div className="error">{this.state.error}</div>
-			<Text report={(json:any)=>{this.setState({error: json.error})}} {...this.props}>Enter {this.props.children}</Text>
+			<Text {...this.props}>Enter {this.props.children}</Text>
 		</label>;
 	}
 };
-
-export let TextField: React.ComponentClass<IProps> = FormHOC(_TextField);
