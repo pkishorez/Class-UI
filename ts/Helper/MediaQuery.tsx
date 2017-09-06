@@ -52,7 +52,9 @@ export class MediaQuery extends React.Component<IProps, IState> {
 			console.error("MediaQuery should only contain 1 Child.");
 		}
 		let child: any = this.props.children;
-		child = this.state.matched?child:React.cloneElement(child, child.props["mediaNoMatch"]);
+		
+		let mProps = _.pick(child.props, Object.keys(child.props["mediaNoMatch"]));
+		child = this.state.matched?child:React.cloneElement(child, _.merge(mProps, child.props["mediaNoMatch"]));
 		return child;
 	}
 }
