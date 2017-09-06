@@ -19,14 +19,12 @@
 			background-color: #DDDDDD !important;
 		}
 	}
-}
 
-input[type='submit'], input[type='button'], button {
 	&, &:hover, &:active {
 		border-width: 0px;
 		outline-width: 0px;
 	}
-	&:active{
+	&:active, &:focus{
 		background-color: #CCCCCC;
 	}
 }
