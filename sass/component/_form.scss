@@ -4,14 +4,15 @@
 
 .form {
 	input[type='text'], input[type='number'], input[type='password'], textarea {
+		width: 100%;
 		background-color: inherit;
-		font-size: 13px;
+		font-size: 15px;
 		border-width: 0px;
 		outline-width: 0px;
-		border-bottom: 2px solid #A1A1A1;
+		border-bottom: 2px solid #DFDFDF;
 		color: black;
 		padding: 5px 0px;
-		padding-bottom: 3px;
+		padding-bottom: 4px;
 		margin: 0px;
 		@include transition(all 0.3s);
 
@@ -55,7 +56,7 @@
 		input[type='radio'] ~ .fake {
 			border-radius: 10px;
 		}
-		.fake {
+		>.fake {
 			@include ui_flex-box(center);
 			width: 17px;
 			height: 17px;
@@ -68,29 +69,35 @@
 		}
 	}
 	select {
-		margin-bottom: 10px;
+		margin-bottom: 20px;
 	}
 }
 
 .form-layout {
 	padding: 10px;
-	> .formelement {
+	> .textfield {
+
 		> .label{
 			color: $theme-color-darkest;
-			font-size: 15px;
+			font-size: 16px;
+		}
+		> .error {
+			opacity: 0;
+			padding: 5px 0px;
+			font-size: 10px;
+			color: $theme-error-color;
 		}
 		&.error {
-			> .label {
-				color: red;
+			> input[type="text"] {
+				border-bottom: 2px solid $theme-error-color;
 			}
-			color: red;
 			> .error {
-				font-size: 10px;
+				opacity: 1;
 			}
 		}
 
 		display: block;
-		margin-bottom: 15px;
+		margin-bottom: 5px;
 	}
 	label.checkbox {
 		margin-left: -5px;
