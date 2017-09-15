@@ -8,7 +8,7 @@ import {Demo2} from './Demo2';
 ReactDOM.render(<ClassUI contentWidth={1024}>
 	<NavBar logo="Class-UI">
 		<NavbarRemain />
-		<div className="button stretch">Kittu</div>
+		<div className="button">Kittu</div>
 	</NavBar>
 		<Demo1 />
 		<Demo2 />
