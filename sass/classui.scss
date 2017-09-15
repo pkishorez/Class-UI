@@ -5,9 +5,11 @@
 // Reset
 @import	'partial/normalize';
 
+// Helpers
 @import 'helper/flex';
+@import 'helper/utilities';
 
-// NavBar Component
+// Components
 @import 'component/button';
 @import 'component/dropdown';
 
@@ -15,11 +17,12 @@
 @import 'component/form';
 @import 'component/flash';
 @import 'component/sidemenu';
+@import 'component/table';
 
 @import 'component/card';
 
 body {
-	background-color: #F4FFF4;
+	background-color: #ECECEC;
 }
 .classui {
 	.mainContent {
@@ -27,3 +30,6 @@ body {
 		height: 100%;
 	}
 }
+
+// Should be placed above all.
+@import 'helper/component';

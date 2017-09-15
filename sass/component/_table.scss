@@ -1,0 +1,37 @@
+.table {
+	display: table;
+	background-color: white;
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+
+	> thead {
+		> tr {
+			font-weight: 900;
+
+			> th {
+				cursor: pointer;
+				opacity: 0.7;
+				&:hover {
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	> tbody {
+		> tr:hover{
+			background-color: rgb(245, 245, 245);
+		}
+	}
+	> thead, > tbody {
+		> tr {
+			border-bottom: 1px solid #CACACA;
+			text-align: left;
+
+			> td, >th {
+				padding: 13px 17px;
+			}
+		}
+	}
+}
