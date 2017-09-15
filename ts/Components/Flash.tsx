@@ -1,24 +1,26 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {SAnim} from '../Helper/Animation';
 
 export interface IProps {};
 export interface IState {
-	content: React.ReactElement<any> | null
+	show: boolean
 };
 
 let _instance: Flash | null = null;
 export class Flash extends React.Component<IProps, IState> {
 
 	private content_click: boolean = false;
+	private content: any;
 
 	static flash(func: Function) {
-		let content = func(_instance? _instance.dismiss: null);
 		if (!_instance){
 			console.error("Flash component should be rendered to use it.");
 			return;
 		}
+		_instance.content = func(_instance? _instance.dismiss: null);
 		_instance.setState({
-			content
+			show: true
 		});
 		window.addEventListener("keydown", _instance.escapeDismiss)
 	}
@@ -30,7 +32,7 @@ export class Flash extends React.Component<IProps, IState> {
 		}
 		_instance = this;
 		this.state = {
-			content: null
+			show: false
 		};
 		this.escapeDismiss = this.escapeDismiss.bind(this);
 		this.dismiss = this.dismiss.bind(this);
@@ -47,13 +49,15 @@ export class Flash extends React.Component<IProps, IState> {
 			this.content_click = false;
 			return;
 		}
-		this.setState({content: null});
+		this.setState({show: false});
 	}
 	render() {
-		return this.state.content?<div className="flash" onClick={this.dismiss}>
-			<div onClick={(e)=>{this.content_click=true}} className="content card-5">
-				{this.state.content}
+		return <SAnim show={this.state.show}>
+			<div className="flash" onClick={this.dismiss}>
+				<div onClick={(e)=>{this.content_click=true}} className="content card-5">
+					{this.content}
+				</div>
 			</div>
-		</div>: null;
+		</SAnim>;
 	}
 }
