@@ -1,7 +1,32 @@
 @import '../partial/variables';
 
-.hoverable_component {
+.hoverable_grey_component
+{
 	cursor: pointer;
+	color: black;
+	&:hover{
+		background-color: rgb(245, 245, 245);
+	}
+	&.active{
+		background-color: #DDDDDD;
+	}
+	&.disable {
+		&, &:hover, &:active, &.active {
+			cursor: default;
+			background-color: inherit;
+			color: grey;
+		}
+	}
+}
+.actionable_grey_component
+{
+	@extend .hoverable_grey_component;
+}
+
+.hoverable_component {
+	&{
+		cursor: pointer;
+	}
 
 	&:hover, &.active{
 		background-color: $theme-color;
