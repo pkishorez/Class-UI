@@ -15,14 +15,19 @@ export class TextField extends React.Component<IProps, {error: null|string}> {
 		this.state = {
 			error: null
 		};
+		this.setError=this.setError.bind(this);
+	}
+	setError(error: string | null)
+	{
+		this.setState({error});
 	}
 	render() {
-		let cls = classNames("formelement", {
+		let cls = classNames("textfield", {
 			"error": this.state.error?true:false
 		});
 		return <label className={cls}>
-			<div className="label">{this.props.children}</div>
-			<Text {...this.props}>Enter {this.props.children}</Text>
+			<Text {...this.props} onError={this.setError}>{this.props.children}</Text>
+			<div className="error">{this.state.error}</div>
 		</label>;
 	}
 };
