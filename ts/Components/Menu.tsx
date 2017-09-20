@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 import {TransitionMotion} from 'react-motion';
 import {MAnim} from '../Helper/Animation';
+import {RLink} from '../Helper/RLink';
 
 export interface IProps {
 	header?: string
@@ -28,6 +29,7 @@ export type IItemProps = {
 	children: any
 	style?: React.CSSProperties
 	badge?: string
+	to?: string
 };
 
 export let Divider = ()=> {
@@ -39,7 +41,7 @@ export let Item = (props: IItemProps)=>{
 		disable: props.disable,
 		active: props.active
 	});
-	return <div className={cls} style={props.style}>
+	return <RLink to={props.to}><div className={cls} style={props.style}>
 		{props.children} {props.badge?<span className="badge">{props.badge}</span>:null}
-	</div>;
+	</div></RLink>;
 }
