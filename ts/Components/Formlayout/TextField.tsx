@@ -6,14 +6,15 @@ import * as classNames from 'classnames';
 
 export interface IProps extends ITextProps {
 	children: string,
+	label?: string
 	name: string
 };
 
-export class TextField extends React.Component<IProps, {error: null|string}> {
+export class TextField extends React.Component<IProps, {error: null|string|undefined}> {
 	constructor() {
 		super();
 		this.state = {
-			error: null
+			error: undefined
 		};
 		this.setError=this.setError.bind(this);
 	}
@@ -23,9 +24,11 @@ export class TextField extends React.Component<IProps, {error: null|string}> {
 	}
 	render() {
 		let cls = classNames("textfield", {
-			"error": this.state.error?true:false
+			"error": this.state.error?true:false,
+			"success": (!this.state.error&&(this.state.error!==undefined))?true:false
 		});
 		return <label className={cls}>
+			{this.props.label?<div className="label">{this.props.label}</div>:null}
 			<Text {...this.props} onError={this.setError}>{this.props.children}</Text>
 			<div className="error">{this.state.error}</div>
 		</label>;
