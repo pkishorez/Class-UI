@@ -1,14 +1,12 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as propTypes from 'prop-types';
+import {IPropSchema, Validate} from './Schema';
 
 export interface ITextProps {
 	name: string,
 	autoFocus?: boolean
-	type?: "number" | "text" | "url" | "email" | RegExp
-	inList?: string[],
-	minSize?: number,
-	maxSize?: number
+	schema?: IPropSchema
 	onError?: Function
 	children: string
 };
@@ -43,32 +41,19 @@ export class Text extends React.Component<ITextProps, ITextState> {
 		if (this.context.send_value){
 			let json = {
 				key: this.props.name,
-				value: (this.props.type=="number")?parseInt(val):val,
+				value: val,
 				error: error
 			};
 			this.context.send_value(json);
 		};
-		(this.props.onError && this.props.onError(error));
 	}
 	sendToForm(e: React.ChangeEvent<HTMLInputElement>) {
 		this.send(e.target.value);
+		(this.props.onError && this.props.onError(this.validate(e.target.value)));
 	}
 
 	validate(text: string): string | null {
-		switch(this.props.type) {
-			case "email": {
-				let regex = "";
-			}
-			case "number": {
-			}
-		}
-		if (this.props.inList && !_.includes(this.props.inList, text)){
-			return `Should be one of (${this.props.inList})`;
-		}
-		if ((this.props.minSize && text.length<this.props.minSize) || (this.props.maxSize && text.length>this.props.maxSize)) {
-			return `Len : (${this.props.minSize?this.props.minSize:0} and ${this.props.maxSize?this.props.maxSize:'any'})`;
-		}
-		return null;
+		return Validate(this.props.schema, text);
 	}
 
 	componentDidMount() {
