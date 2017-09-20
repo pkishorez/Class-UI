@@ -24,7 +24,7 @@ export class Content extends React.Component<IProps, IState> {
 			})
 		}} style={{
 			...this.props.style,
-			maxWidth: ClassUI.contentWidth
+			width: ClassUI.contentWidth
 		}}>
 			{this.props.children}
 		</div>;
