@@ -9,6 +9,7 @@
 	left: 0px;
 	width: 100%;
 	background-color: $theme-color;
+	z-index: 10;
 
 	&.fixed {
 		position: fixed;
