@@ -7,6 +7,7 @@
   "files": [
     "Components",
     "Helper",
+    "assets",
     "ClassUI.d.ts",
     "ClassUI.js",
     "bundle",
