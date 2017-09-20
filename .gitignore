@@ -5,7 +5,6 @@ sass/.sass-cache
 js
 Components
 !ts/Components
-Helper
 ClassUI.js
 ClassUI.d.ts
 docs
