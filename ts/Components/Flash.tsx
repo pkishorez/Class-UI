@@ -44,12 +44,18 @@ export class Flash extends React.Component<IProps, IState> {
 	}
 
 	escapeDismiss(e: KeyboardEvent) {
-		if (e.key=="Escape" && !this.noDismiss) {
+		if (this.noDismiss){
+			return;			
+		}
+		if (e.key=="Escape") {
 			this.dismiss();
 			window.removeEventListener("keydown", this.escapeDismiss);
 		}
 	}
 	clickDismiss() {
+		if (this.noDismiss){
+			return;
+		}
 		if (this.content_click && !this.noDismiss){
 			this.content_click = false;
 			return;
