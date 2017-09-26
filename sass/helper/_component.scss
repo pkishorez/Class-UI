@@ -42,6 +42,7 @@
 }
 
 .actionable_component {
+	@include user-select(none);
 	@extend .hoverable_component;
 	&:active {
 		background-color: $theme-color-darker;
