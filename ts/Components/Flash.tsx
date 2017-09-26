@@ -1,10 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {SAnim} from '../Helper/Animation';
+import * as classNames from 'classnames';
 
 export interface IProps {
-	nodismiss?: boolean
 };
+
 export interface IState {
 	show: boolean
 };
@@ -66,9 +67,13 @@ export class Flash extends React.Component<IProps, IState> {
 		this.setState({show: false});
 	}
 	render() {
+		let cls = classNames("flash", {
+			"noDismiss": this.noDismiss
+		});
 		return <SAnim show={this.state.show}>
-			<div className="flash" onClick={this.clickDismiss}>
+			<div className={cls} onClick={this.clickDismiss}>
 				<div onClick={(e)=>{this.content_click=true}} className="content card-5">
+					{this.noDismiss?null:<div className="close" onClick={this.dismiss}>x</div>}
 					{this.content}
 				</div>
 			</div>
