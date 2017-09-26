@@ -21,14 +21,14 @@
 
 @import 'component/card';
 
+@import 'component/zindex';
+
 body {
 	background-color: #ECECEC;
 }
 .classui {
-	.mainContent {
-		z-index: 5;
+	> .mainContent {
 		margin: auto;
-		height: 100%;
 	}
 }
 
