@@ -21,7 +21,10 @@ export class Form extends React.Component<IProps, IState> {
 	{
 		return {
 			send_value: (json: any)=>{
-				this.data[json.key] = json.value;
+				this.data[json.key] = {
+					value: json.value,
+					error: json.error
+				}
 			},
 			delete_value: (key: string) => {
 				delete this.data[key];
@@ -35,7 +38,13 @@ export class Form extends React.Component<IProps, IState> {
 	}
 	submit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		console.log(this.data);
+		let keys = Object.keys(this.data);
+		for (let key in this.data){
+			if (this.data[key].error) {
+				console.error(`Error : ${this.data[key].error} on key : ${key}`);
+				return;
+			}
+		}
 		if (this.props.onSubmit)
 			this.props.onSubmit(this.data);
 	}

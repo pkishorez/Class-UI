@@ -71,13 +71,13 @@ export class Text extends React.Component<ITextProps, ITextState> {
 
 	render() {
 		return <input type="text" 
-				autoFocus={this.props.autoFocus}
-				autoComplete="off"
-				ref={(ref)=>{this.input=ref}}
-				spellCheck={false}
-				name={this.props.name}
-				placeholder={this.props.children || "Enter a value"}
-				onChange={this.sendToForm}
-			/>;
+			autoFocus={this.props.autoFocus}
+			autoComplete="off"
+			ref={(ref)=>{this.input=ref}}
+			spellCheck={false}
+			name={this.props.name}
+			placeholder={this.props.children || "Enter a value"}
+			onChange={this.sendToForm}
+		/>;
 	}
 };
