@@ -5,6 +5,7 @@ import {IPropSchema, Validate} from './Schema';
 
 export interface ITextProps {
 	name: string,
+	type?: "text" | "password"
 	autoFocus?: boolean
 	schema?: IPropSchema
 	onError?: Function
@@ -70,7 +71,7 @@ export class Text extends React.Component<ITextProps, ITextState> {
 	}
 
 	render() {
-		return <input type="text" 
+		return <input type={this.props.type} 
 			autoFocus={this.props.autoFocus}
 			autoComplete="off"
 			ref={(ref)=>{this.input=ref}}
