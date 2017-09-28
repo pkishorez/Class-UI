@@ -39,14 +39,16 @@ export class Form extends React.Component<IProps, IState> {
 	submit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		let keys = Object.keys(this.data);
+		let formData: any = {};
 		for (let key in this.data){
 			if (this.data[key].error) {
 				console.error(`Error : ${this.data[key].error} on key : ${key}`);
 				return;
 			}
+			formData[key]=this.data[key].value;
 		}
 		if (this.props.onSubmit)
-			this.props.onSubmit(this.data);
+			this.props.onSubmit(formData);
 	}
 
 	getValue(data: any) {
