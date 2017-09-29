@@ -30,7 +30,7 @@ export class TextField extends React.Component<IProps, {error: null|string|undef
 		return <label className={cls}>
 			{this.props.label?<div className="label">{this.props.label}</div>:null}
 			<Text {...this.props} onError={this.setError}>{this.props.children}</Text>
-			<div className="error">{this.state.error}</div>
+			<div className="error">{this.state.error}.</div>
 		</label>;
 	}
 };

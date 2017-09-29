@@ -81,10 +81,13 @@
 			font-size: 13px;
 		}
 		> .error {
+			max-height: 0px;
+			overflow: hidden;
 			opacity: 0;
 			padding: 5px 0px;
 			font-size: 13px;
 			color: #ff1744;
+			@include transition(max-height 0.5s);
 		}
 		&.error {
 			> input[type="text"], input[type='number'], input[type='password'], textarea {
@@ -94,6 +97,7 @@
 				color: #ff1744;
 			}
 			> .error {
+				max-height: 50px;
 				opacity: 1;
 			}
 		}
