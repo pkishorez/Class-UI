@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as propTypes from 'prop-types';
 import {FormElement} from './FormElement';
-import {IPropSchema, Validate} from './Schema';
+import {IPropSchema, ValidatePropSchema} from './Schema';
 
 export interface ITextProps {
 	name: string,
@@ -44,12 +44,12 @@ export class Text extends FormElement<ITextProps, ITextState> {
 	public getValue() {
 		return {
 			value: this.value,
-			error: Validate(this.props.schema, this.value?this.value:"")
+			error: ValidatePropSchema(this.props.schema, this.value?this.value:"")
 		};
 	}
 
 	public validate() {
-		let error = Validate(this.props.schema, this.value?this.value:"");
+		let error = ValidatePropSchema(this.props.schema, this.value?this.value:"");
 		(this.props.onError && this.props.onError(error));
 	}
 

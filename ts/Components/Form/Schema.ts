@@ -1,41 +1,47 @@
 import * as _ from 'lodash';
 
-export type IcommonSchema = {
+export type _ICommonSchema = {
 
 };
 
-export type IString = IcommonSchema & {
-	type: "string"
+export type _ILenghtSchema = {
 	minLength?: number
 	maxLength?: number
+	length?: number
+}
+export type IString = _ICommonSchema & _ILenghtSchema & {
+	type: "string"
 };
 
-export type INumber = IcommonSchema & {
+export type IEmail = _ICommonSchema & _ILenghtSchema & {
+	type: "email"
+};
+
+export type INumber = _ICommonSchema & _ILenghtSchema & {
 	type: "number"
-	minLength?: number,
-	maxLength?: number
 	min?: number
 	max?: number
 }
 
-export type IList = IcommonSchema & {
+export type IList = _ICommonSchema & {
 	type: "list"
 	values: string[]
 }
 
-export type IPropSchema = IString | INumber | IList;
+export type IPropSchema = IString | IEmail | INumber | IList;
 
 export interface ISchema {
 	[id: string]: IPropSchema
 }
 
-export let Validate = (schema: IPropSchema | undefined, value: string) => {
+export let ValidatePropSchema = (schema: IPropSchema | undefined, value: string) => {
 	if (!schema){
 		return null;
 	}
 	switch(schema.type)
 	{
 		case "string":
+		case "email":
 		case "number": {
 			if ((schema.maxLength && value.length>schema.maxLength) || (schema.minLength && value.length<schema.minLength)) {
 				return `Len : (${schema.minLength?schema.minLength:0} and ${schema.maxLength?schema.maxLength:'any'})`;
@@ -48,7 +54,17 @@ export let Validate = (schema: IPropSchema | undefined, value: string) => {
 		case "string": {
 			break;
 		}
+		case "email": {
+			let emailRegEx = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			if (!emailRegEx.test(value)){
+				return "Enter Valid Email";
+			}
+			break;
+		}
 		case "number": {
+			if (isNaN(parseInt(value))) {
+				return "Not a valid number :(";
+			}
 			if ((schema.max && parseInt(value)>schema.max) || (schema.min && parseInt(value)<schema.min)) {
 				return `Number should be in between : (${schema.min?schema.min:0} and ${schema.max?schema.max:'any'})`;
 			}
@@ -61,5 +77,19 @@ export let Validate = (schema: IPropSchema | undefined, value: string) => {
 			break;
 		}
 	}
+	return null;
+}
+
+export let ValidateSchema = (schema: ISchema, data: any) => {
+	let keys = Object.keys(schema);
+	let errors: string[] = [];
+	keys.map((key)=>{
+		let validation = ValidatePropSchema(schema[key], data[key]);
+		if (validation) {
+			errors.push(validation);
+		}
+	});
+	if (errors!=[])
+		return errors;
 	return null;
 }
