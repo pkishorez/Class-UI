@@ -1,11 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Form} from '../Form';
+import {Form, IProps as IFormProps} from '../Form/Form';
 import * as PropTypes from 'prop-types';
 
-export interface IProps {
-	label: string,
-	onSubmit?:Function
+export interface IProps extends IFormProps {
+	label: string
 };
 export interface IState {};
 

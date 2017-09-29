@@ -1,67 +1,74 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
+import {FormElement} from './FormElement';
 
 export interface IProps {
-	onSubmit?: Function,
 	cls?: string
+	onSubmit?: Function	
+	autocomplete?: "on" | "off"
 };
 export interface IState {};
 
-
+interface IData {
+	[id: string]: {
+		ref: FormElement<any, any>
+	}
+};
 export class Form extends React.Component<IProps, IState> {
-	private data: any = {};
+	private formElemRefs: IData = {};
+
+	static defaultProps = {
+		autocomplete: "off"
+	}
 
 	static childContextTypes = {
-		send_value: propTypes.func,
+		initialize: propTypes.func,
 		delete_value: propTypes.func
 	};
 
 	getChildContext()
 	{
 		return {
-			send_value: (json: any)=>{
-				this.data[json.key] = {
-					value: json.value,
-					error: json.error
-				}
+			initialize: (key: string, ref: any)=>{
+				this.formElemRefs[key] = {
+					ref
+				};
 			},
 			delete_value: (key: string) => {
-				delete this.data[key];
+				delete this.formElemRefs[key];
 			}
 		};
 	}
+
 	constructor(props: any, context: any) {
 		super(props, context);
 		this.submit = this.submit.bind(this);
-		this.renderFormElements = this.renderFormElements.bind(this);
 	}
+
 	submit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		let keys = Object.keys(this.data);
+		let keys = Object.keys(this.formElemRefs);
 		let formData: any = {};
-		for (let key in this.data){
-			if (this.data[key].error) {
-				console.error(`Error : ${this.data[key].error} on key : ${key}`);
-				return;
+		let hasError = false;
+
+		for (let key in this.formElemRefs){
+			let ref = this.formElemRefs[key].ref;
+			ref.validate();
+			let data = ref.getValue();
+			if (data.error) {
+				hasError = true;
 			}
-			formData[key]=this.data[key].value;
+			if (data.value || data.value=="")
+				formData[key]=data.value;
 		}
-		if (this.props.onSubmit)
+		if (this.props.onSubmit && !hasError)
 			this.props.onSubmit(formData);
 	}
 
-	getValue(data: any) {
-		this.data[data.name] = data.value;
-	}
-
-	renderFormElements() {
-		return this.props.children;
-	}
-
 	render() {
-		return <form className={"form "+(this.props.cls?this.props.cls:"")} onSubmit={this.submit}>
-			{this.renderFormElements()}
+		return <form className={"form "+(this.props.cls?this.props.cls:"")} autoComplete={this.props.autocomplete} onSubmit={this.submit}>
+			{this.props.children}
 		</form>;
 	}
 }

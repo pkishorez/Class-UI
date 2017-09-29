@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as propTypes from 'prop-types';
+import {FormElement} from './FormElement';
 import {IPropSchema, Validate} from './Schema';
 
 export interface ITextProps {
@@ -15,70 +16,52 @@ export interface ITextState {
 	cls: string
 };
 
-export class Text extends React.Component<ITextProps, ITextState> {
-
-	private input: HTMLInputElement | null;
+export class Text extends FormElement<ITextProps, ITextState> {
 	static defaultProps = {
 		autoFocus: false,
 		type: "text"
 	};
-
-	static contextTypes = {
-		send_value: propTypes.func,
-		delete_value: propTypes.func
-	}
+	private input: HTMLInputElement | null;
 
 	constructor(props: any, context: any) {
 		super(props, context);
 		this.state = {
 			cls: ""
 		};
-		this.send = this.send.bind(this);
-		this.sendToForm = this.sendToForm.bind(this);
-	}
-
-	send(val: string) {
-		let error = this.validate(val);
-		if (this.context.send_value){
-			let json = {
-				key: this.props.name,
-				value: val,
-				error: error
-			};
-			this.context.send_value(json);
-		};
-	}
-	sendToForm(e: React.ChangeEvent<HTMLInputElement>) {
-		this.send(e.target.value);
-		(this.props.onError && this.props.onError(this.validate(e.target.value)));
-	}
-
-	validate(text: string): string | null {
-		return Validate(this.props.schema, text);
-	}
-
-	componentDidMount() {
-		if (this.input) {
-			this.send(this.input.value)
-		}
+		this.context.initialize(this.props.name, this);
+		this.getValue = this.getValue.bind(this);
+		this.validate = this.validate.bind(this);
 	}
 
 	componentWillUnmount() {
-		if (this.context.delete_value)
-		{
-			this.context.delete_value(this.props.name);
-		}
+		this.context.delete_value(this.props.name);
+	}
+
+	private get value(){
+		return this.input?this.input.value:null;
+	}
+
+	public getValue() {
+		return {
+			value: this.value,
+			error: Validate(this.props.schema, this.value?this.value:"")
+		};
+	}
+
+	public validate() {
+		let error = Validate(this.props.schema, this.value?this.value:"");
+		(this.props.onError && this.props.onError(error));
 	}
 
 	render() {
 		return <input type={this.props.type} 
 			autoFocus={this.props.autoFocus}
 			autoComplete="off"
-			ref={(ref)=>{this.input=ref}}
+			ref={(ref)=>this.input = ref}
 			spellCheck={false}
 			name={this.props.name}
 			placeholder={this.props.children || "Enter a value"}
-			onChange={this.sendToForm}
+			onChange={this.validate}
 		/>;
 	}
 };
