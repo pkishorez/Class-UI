@@ -43,8 +43,11 @@ export let ValidatePropSchema = (schema: IPropSchema | undefined, value: string)
 		case "string":
 		case "email":
 		case "number": {
+			if ((schema.length && value.length!=schema.length)) {
+				return `Length should be ${schema.length}`;
+			}
 			if ((schema.maxLength && value.length>schema.maxLength) || (schema.minLength && value.length<schema.minLength)) {
-				return `Len : (${schema.minLength?schema.minLength:0} and ${schema.maxLength?schema.maxLength:'any'})`;
+				return `Len should be b/w : (${schema.minLength?schema.minLength:0} and ${schema.maxLength?schema.maxLength:'any'})`;
 			}
 			break;
 		}
@@ -57,16 +60,16 @@ export let ValidatePropSchema = (schema: IPropSchema | undefined, value: string)
 		case "email": {
 			let emailRegEx = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 			if (!emailRegEx.test(value)){
-				return "Enter Valid Email";
+				return "Invalid Email address";
 			}
 			break;
 		}
 		case "number": {
 			if (isNaN(parseInt(value))) {
-				return "Not a valid number :(";
+				return "Invalid number :(";
 			}
 			if ((schema.max && parseInt(value)>schema.max) || (schema.min && parseInt(value)<schema.min)) {
-				return `Number should be in between : (${schema.min?schema.min:0} and ${schema.max?schema.max:'any'})`;
+				return `Number should be b/w : (${schema.min?schema.min:0} and ${schema.max?schema.max:'any'})`;
 			}
 			break;
 		}
