@@ -22,13 +22,17 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		type: "text"
 	};
 	private input: HTMLInputElement | null;
+	private schema?: IPropSchema;
 
 	constructor(props: any, context: any) {
 		super(props, context);
 		this.state = {
 			cls: ""
 		};
-		this.context.initialize(this.props.name, this);
+		this.schema = this.props.schema;
+		this.context.initialize(this.props.name, this, (schema: any)=>{
+			this.schema=_.merge(this.props.schema, schema);
+		});
 		this.getValue = this.getValue.bind(this);
 		this.validate = this.validate.bind(this);
 	}
@@ -44,12 +48,12 @@ export class Text extends FormElement<ITextProps, ITextState> {
 	public getValue() {
 		return {
 			value: this.value,
-			error: ValidatePropSchema(this.props.schema, this.value?this.value:"")
+			error: ValidatePropSchema(this.schema, this.value?this.value:"")
 		};
 	}
 
 	public validate() {
-		let error = ValidatePropSchema(this.props.schema, this.value?this.value:"");
+		let error = ValidatePropSchema(this.schema, this.value?this.value:"");
 		(this.props.onError && this.props.onError(error));
 	}
 

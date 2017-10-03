@@ -1,11 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
+import {ISchema, IPropSchema} from './Schema';
 import {FormElement} from './FormElement';
 
 export interface IProps {
 	cls?: string
-	onSubmit?: Function	
+	onSubmit?: Function
+	schema?: ISchema
 	autocomplete?: "on" | "off"
 };
 export interface IState {};
@@ -30,10 +32,13 @@ export class Form extends React.Component<IProps, IState> {
 	getChildContext()
 	{
 		return {
-			initialize: (key: string, ref: any)=>{
+			initialize: (key: string, ref: any, func: (schema: IPropSchema)=>void)=>{
 				this.formElemRefs[key] = {
 					ref
 				};
+				if (this.props.schema && this.props.schema[key]){
+					func(this.props.schema[key]);
+				}
 			},
 			delete_value: (key: string) => {
 				delete this.formElemRefs[key];
