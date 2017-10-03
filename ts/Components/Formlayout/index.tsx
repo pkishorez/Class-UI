@@ -11,7 +11,7 @@ export interface IState {};
 export class Formlayout extends React.Component<IProps, IState> {
 
 	render() {
-		return <Form cls="form-layout" onSubmit={this.props.onSubmit}>
+		return <Form cls="form-layout" {...this.props}>
 			<h3 style={{marginBottom: 10}}>{this.props.label}</h3>
 			{this.props.children}
 		</Form>;
