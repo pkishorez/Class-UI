@@ -92,7 +92,7 @@ export let ValidateSchema = (schema: ISchema, data: any) => {
 			errors.push(validation);
 		}
 	});
-	if (errors!=[])
+	if (errors.length!=0)
 		return errors;
 	return null;
 }

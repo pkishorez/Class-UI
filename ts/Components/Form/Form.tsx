@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
-import {ISchema, IPropSchema} from './Schema';
+import {ISchema, IPropSchema, ValidateSchema} from './Schema';
 import {FormElement} from './FormElement';
 
 export interface IProps {
@@ -37,7 +37,11 @@ export class Form extends React.Component<IProps, IState> {
 					ref
 				};
 				if (this.props.schema && this.props.schema[key]){
-					func(this.props.schema[key]);
+					if (func)
+						func(this.props.schema[key]);
+					else {
+						console.log(`key ${key} not registered schema.`);
+					}
 				}
 			},
 			delete_value: (key: string) => {
@@ -66,6 +70,12 @@ export class Form extends React.Component<IProps, IState> {
 			}
 			if (data.value || data.value=="")
 				formData[key]=data.value;
+		}
+		if (!hasError && this.props.schema) {
+			let errors = ValidateSchema(this.props.schema, formData);
+			if (errors) {
+				console.error("Serious error in FORM. Please fix it.", errors);
+			}
 		}
 		if (this.props.onSubmit && !hasError)
 			this.props.onSubmit(formData);
