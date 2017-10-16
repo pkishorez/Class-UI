@@ -27,6 +27,7 @@ export type IItemProps = {
 	disable?: boolean
 	active?: boolean
 	children: any
+	onClick?: any
 	style?: React.CSSProperties
 	badge?: string
 	to?: string
@@ -41,7 +42,7 @@ export let Item = (props: IItemProps)=>{
 		disable: props.disable,
 		active: props.active
 	});
-	return <RLink to={props.to}><div className={cls} style={props.style}>
+	return <RLink to={props.to}><div className={cls} style={props.style} onClick={props.onClick}>
 		{props.children} {props.badge?<span className="badge">{props.badge}</span>:null}
 	</div></RLink>;
 }
