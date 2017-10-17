@@ -9,25 +9,14 @@ export interface IProps {
 };
 export interface IState {};
 
-export class _RLink extends React.Component<IProps, IState> {
-	constructor(props: any)
-	{
-		super(props);
-	}
-	render() {
-		if (!this.props.to)
-			return this.props.children;
-		return React.cloneElement(this.props.children, {
-			onClick: (e: any)=>{
-				if (this.props.children.props.onClick)
-					this.props.children.props.onClick(e)
-				this.props.history.push(this.props.to)
-			}
-		});
-	}
+let _RLink = (props: IProps) => {
+	return props.to?React.cloneElement(props.children, {
+		onClick: (e: any)=>{
+			if (props.children.props.onClick)
+				props.children.props.onClick(e)
+			props.history.push(props.to)
+		}
+	}):props.children;
 }
 
-
-
-
-export let RLink = withRouter(_RLink);
+export let RLink = withRouter<IProps>(_RLink);
