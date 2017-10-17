@@ -80,3 +80,9 @@ export class Flash extends React.Component<IProps, IState> {
 		</SAnim>;
 	}
 }
+
+export let FlashLayout = (props: any)=>{
+	return <div style={{padding: 10, backgroundColor: 'white'}}>
+		{props.children}
+	</div>;
+}
