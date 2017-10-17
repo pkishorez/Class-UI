@@ -14,14 +14,16 @@ let _instance: Flash | null = null;
 export class Flash extends React.Component<IProps, IState> {
 
 	private noDismiss = false;
+	private noAnimation = false;
 	private content_click: boolean = false;
 	private content: any;
 
-	static flash(func: (dismiss: any)=>any, noDismiss: boolean = false) {
+	static flash(func: (dismiss: any)=>any, noDismiss: boolean = false, noAnimation: boolean = false) {
 		if (!_instance){
 			console.error("Flash component should be rendered to use it.");
 			return;
 		}
+		_instance.noAnimation = noAnimation;
 		_instance.noDismiss = noDismiss;
 		_instance.content = func(_instance? _instance.dismiss: null);
 		_instance.setState({
@@ -70,13 +72,15 @@ export class Flash extends React.Component<IProps, IState> {
 		let cls = classNames("flash", {
 			"noDismiss": this.noDismiss
 		});
-		return <SAnim show={this.state.show}>
-			<div className={cls} onClick={this.clickDismiss}>
-				<div onClick={(e)=>{this.content_click=true}} className="content card-5">
-					{this.noDismiss?null:<div className="close" onClick={this.dismiss}>x</div>}
-					{this.content}
-				</div>
+		let content = <div className={cls} onClick={this.clickDismiss}>
+			<div onClick={(e)=>{this.content_click=true}} className="content card-5">
+				{this.noDismiss?null:<div className="close" onClick={this.dismiss}>x</div>}
+				{this.content}
 			</div>
+		</div>;
+
+		return this.noAnimation?(this.state.show?content:null):<SAnim show={this.state.show}>
+			{content}
 		</SAnim>;
 	}
 }
