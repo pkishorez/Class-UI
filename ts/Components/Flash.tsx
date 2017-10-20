@@ -73,7 +73,7 @@ export class Flash extends React.Component<IProps, IState> {
 			"noDismiss": this.noDismiss
 		});
 		let content = <div className={cls} onClick={this.clickDismiss}>
-			<div onClick={(e)=>{this.content_click=true}} className="content card-5">
+			<div onClick={(e)=>{this.content_click=true}} className="content">
 				{this.noDismiss?null:<div className="close" onClick={this.dismiss}>x</div>}
 				{this.content}
 			</div>
