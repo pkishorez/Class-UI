@@ -15,16 +15,6 @@
 		position: fixed;
 	}
 
-	&.offline {
-		background-color: $theme-offline-color;
-		.button {
-			background-color: inherit;
-			&:hover, &:active, &.active{
-				background-color: $theme-offline-color-darker;
-			}
-		}
-	}
-
 	& > .content {
 		@include display-flex;
 		@include flex-flow(row nowrap);
@@ -59,4 +49,15 @@
 			}
 		}
 	}
+
+	.classui.offline & {
+		background-color: $theme-offline-color;
+		.button {
+			background-color: inherit;
+			&:hover, &:active, &.active{
+				background-color: $theme-offline-color-darker;
+			}
+		}
+	}
+
 }

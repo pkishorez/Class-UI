@@ -1,11 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Flash} from './Components/Flash';
+import * as classNames from 'classnames';
 
 let _instance: ClassUI;
 
 export interface IProps {
 	contentWidth?: number // ContentWidth is the maxWidth of the UI.
+	offline?: boolean
 };
 
 /**
@@ -16,7 +18,8 @@ export class ClassUI extends React.Component<IProps, any> {
 	private static funcs: Function[] = [];
 
 	public static defaultProps: IProps = {
-		contentWidth: 1024
+		contentWidth: 1024,
+		offline: false
 	};
 
 	public static get contentWidth() {
@@ -48,7 +51,10 @@ export class ClassUI extends React.Component<IProps, any> {
 		_instance = this;
 	}
 	render() {
-		return <div className="classui">
+		let cls = classNames("classui", {
+			offline: this.props.offline
+		});
+		return <div className={cls}>
 			{this.props.children}
 			<Flash />
 		</div>;

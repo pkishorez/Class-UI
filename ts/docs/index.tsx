@@ -7,7 +7,7 @@ import {Demo1} from './Demo1';
 import {Demo2} from './Demo2';
 
 ReactDOM.render(<Router >
-		<ClassUI contentWidth={1024}>
+		<ClassUI contentWidth={1024} offline>
 			<NavBar logo="Class-UI">
 				<NavbarRemain />
 				<div className="button">Kittu</div>

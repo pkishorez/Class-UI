@@ -7,7 +7,6 @@ import {ClassUI} from './ClassUI';
 export interface IProps {
 	fixed?: boolean,	// Fixed Navbar
 	logo?: string		// Logo text if any
-	offline?: boolean
 };
 export interface IState {};
 
@@ -16,8 +15,7 @@ export class NavBar extends React.Component<IProps, IState> {
 	private static _ref: HTMLDivElement | null;
 	public static defaultProps: IProps = {
 		fixed: false,
-		logo: undefined,
-		offline: false
+		logo: undefined
 	};
 
 	constructor() {
@@ -53,8 +51,7 @@ export class NavBar extends React.Component<IProps, IState> {
 
 	render() {
 		let cls = classNames("card-1", "navbar",  {
-			fixed: this.props.fixed,
-			offline: this.props.offline
+			fixed: this.props.fixed
 		});
 		return <div className={cls} ref={(ref)=>{NavBar._ref=ref;}}>
 			<div className="content" style={{

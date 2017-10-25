@@ -28,7 +28,7 @@
 		cursor: pointer;
 	}
 
-	&:hover, &.active{
+	&:hover, &.active {
 		background-color: $theme-color;
 		color: $theme-color-contrast;
 	}
@@ -39,6 +39,12 @@
 			color: grey;
 		}
 	}
+	.classui.offline & {
+		&:hover, &.active {
+			background-color: $theme-offline-color;
+			color: $theme-offline-color-contrast;
+		}
+	}
 }
 
 .actionable_component {
@@ -47,5 +53,11 @@
 	&:active {
 		background-color: $theme-color-darker;
 		color: $theme-color-contrast;
+	}
+	.classui.offline & {
+		&:active {
+			background-color: $theme-offline-color-darker;
+			color: $theme-offline-color-contrast;	
+		}
 	}
 }
