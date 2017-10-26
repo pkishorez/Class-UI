@@ -36,8 +36,8 @@ export interface ISchema {
 
 export interface ISchemaPopulate {
 	schema: ISchema
-	include: string[]
-	exclude: string[]
+	include?: string[]
+	exclude?: string[]
 }
 
 export let PropSchema = {
@@ -115,7 +115,7 @@ export let Schema = {
 		if (populateSchema.include) {
 			return _.pick(data, populateSchema.include);
 		}
-		else {
+		if (populateSchema.exclude) {
 			return _.omit(data, populateSchema.exclude);
 		}
 	}
