@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
-import {ISchema, IPropSchema, ValidateSchema} from './Schema';
+import {ISchema, IPropSchema, Schema} from './Schema';
 import {FormElement} from './FormElement';
 
 export interface IProps {
@@ -72,7 +72,7 @@ export class Form extends React.Component<IProps, IState> {
 				formData[key]=data.value;
 		}
 		if (!hasError && this.props.schema) {
-			let errors = ValidateSchema(this.props.schema, formData);
+			let errors = Schema.validate(this.props.schema, formData);
 			if (errors) {
 				console.error("Serious error in FORM. Please fix it.", errors);
 			}

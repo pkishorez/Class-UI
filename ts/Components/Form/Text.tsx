@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as propTypes from 'prop-types';
 import {FormElement} from './FormElement';
-import {IPropSchema, ValidatePropSchema} from './Schema';
+import {IPropSchema, PropSchema} from './Schema';
 
 export interface ITextProps {
 	name: string,
@@ -12,6 +12,7 @@ export interface ITextProps {
 	onError?: Function
 	children: string
 };
+
 export interface ITextState {
 	cls: string
 };
@@ -48,12 +49,12 @@ export class Text extends FormElement<ITextProps, ITextState> {
 	public getValue() {
 		return {
 			value: this.value,
-			error: ValidatePropSchema(this.schema, this.value?this.value:"")
+			error: PropSchema.validate(this.schema, this.value?this.value:"")
 		};
 	}
 
 	public validate() {
-		let error = ValidatePropSchema(this.schema, this.value?this.value:"");
+		let error = PropSchema.validate(this.schema, this.value?this.value:"");
 		(this.props.onError && this.props.onError(error));
 	}
 
@@ -66,6 +67,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 			name={this.props.name}
 			placeholder={this.props.children || "Enter a value"}
 			onChange={this.validate}
+			value={this.props.schema?this.props.schema.defaultValue:""}
 		/>;
 	}
 };
