@@ -35,6 +35,7 @@ export interface ISchema {
 }
 
 export interface ISchemaPopulate {
+	schema: ISchema
 	include: string[]
 	exclude: string[]
 }
@@ -104,11 +105,11 @@ export let Schema = {
 			return errors;
 		return null;
 	},
-	populate(schema: ISchema, populateSchema: ISchemaPopulate, data: any) {
-		let keys = Object.keys(schema);
+	populate(populateSchema: ISchemaPopulate, data: any) {
+		let keys = Object.keys(populateSchema.schema);
 		let diff = _.difference(_.union(populateSchema.exclude, populateSchema.include), keys);
 		diff.map((key)=>{
-			console.error(`key ${key} not present in the schema : `, schema);
+			console.error(`key ${key} not present in the schema : `, populateSchema.schema);
 		});
 
 		if (populateSchema.include) {
