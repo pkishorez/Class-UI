@@ -9,7 +9,7 @@
 	left: 0px;
 	width: 100%;
 	background-color: $theme-color;
-	@include transition(all 0.3s);
+	@include transition(all 1s);
 
 	&.fixed {
 		position: fixed;
