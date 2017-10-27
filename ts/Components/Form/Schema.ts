@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 
 export type _ICommonSchema = {
 	defaultValue?: string
+	optional?: boolean
 };
 
 export type _ILenghtSchema = {
@@ -11,6 +12,10 @@ export type _ILenghtSchema = {
 }
 export type IString = _ICommonSchema & _ILenghtSchema & {
 	type: "string"
+};
+
+export type IAny = _ICommonSchema & {
+	type: "any"
 };
 
 export type IEmail = _ICommonSchema & _ILenghtSchema & {
@@ -28,10 +33,10 @@ export type IList = _ICommonSchema & {
 	values: string[]
 }
 
-export type IPropSchema = IString | IEmail | INumber | IList;
+export type IPropSchema = IString | IEmail | INumber | IList | IAny;
 
 export interface ISchema {
-	[id: string]: IPropSchema
+	[id: string]: IPropSchema | ISchema
 }
 
 export interface ISchemaPopulate {
@@ -47,6 +52,9 @@ export let PropSchema = {
 		}
 		switch(schema.type)
 		{
+			case "any": {
+				return null;
+			}
 			case "string":
 			case "email":
 			case "number": {
@@ -96,7 +104,13 @@ export let Schema = {
 		let keys = Object.keys(schema);
 		let errors: string[] = [];
 		keys.map((key)=>{
-			let validation = PropSchema.validate(schema[key], data[key]);
+			// Skip optional keys.
+			if (schema[key] && (schema[key] as IPropSchema).optional) {
+				if (!data[key]) {
+					return;
+				}
+			}
+			let validation = PropSchema.validate(schema[key] as IPropSchema, data[key]);
 			if (validation) {
 				errors.push(validation);
 			}
@@ -121,7 +135,7 @@ export let Schema = {
 		// Set default values to fields that do not contain value.
 		for (let key in populateSchema.schema) {
 			if (!data[key]) {
-				data[key] = populateSchema.schema[key].defaultValue;
+				data[key] = (populateSchema.schema[key] as IPropSchema).defaultValue;
 			}
 		}
 		return data;
