@@ -113,10 +113,17 @@ export let Schema = {
 		});
 
 		if (populateSchema.include) {
-			return _.pick(data, populateSchema.include);
+			data = _.pick(data, populateSchema.include);
 		}
-		if (populateSchema.exclude) {
-			return _.omit(data, populateSchema.exclude);
+		else if (populateSchema.exclude) {
+			data = _.omit(data, populateSchema.exclude);
 		}
+		// Set default values to fields that do not contain value.
+		for (let key in populateSchema.schema) {
+			if (!data[key]) {
+				data[key] = populateSchema.schema[key].defaultValue;
+			}
+		}
+		return data;
 	}
 }
