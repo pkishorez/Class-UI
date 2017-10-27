@@ -1,35 +1,35 @@
 import * as _ from 'lodash';
 
 export type _ICommonSchema = {
-	defaultValue?: string
-	optional?: boolean
+	$defaultValue?: string
+	$optional?: boolean
 };
 
 export type _ILenghtSchema = {
-	minLength?: number
-	maxLength?: number
-	length?: number
+	$minLength?: number
+	$maxLength?: number
+	$length?: number
 }
 export type IString = _ICommonSchema & _ILenghtSchema & {
-	type: "string"
+	$type: "string"
 };
 
 export type IAny = _ICommonSchema & {
-	type: "any"
+	$type: "any"
 };
 
 export type IEmail = _ICommonSchema & _ILenghtSchema & {
-	type: "email"
+	$type: "email"
 };
 
 export type INumber = _ICommonSchema & _ILenghtSchema & {
-	type: "number"
-	min?: number
-	max?: number
+	$type: "number"
+	$min?: number
+	$max?: number
 }
 
 export type IList = _ICommonSchema & {
-	type: "list"
+	$type: "list"
 	values: string[]
 }
 
@@ -46,11 +46,17 @@ export interface ISchemaPopulate {
 }
 
 export let PropSchema = {
+	isProperty(schema: IPropSchema) {
+		if (typeof schema.$type=="string") {
+			return true;
+		}
+		return false;
+	},
 	validate(schema: IPropSchema | undefined, value: string) {
 		if (!schema){
 			return null;
 		}
-		switch(schema.type)
+		switch(schema.$type)
 		{
 			case "any": {
 				return null;
@@ -58,16 +64,16 @@ export let PropSchema = {
 			case "string":
 			case "email":
 			case "number": {
-				if ((schema.length && value.length!=schema.length)) {
-					return `Length should be ${schema.length}`;
+				if ((schema.$length && value.length!=schema.$length)) {
+					return `Length should be ${schema.$length}`;
 				}
-				if ((schema.maxLength && value.length>schema.maxLength) || (schema.minLength && value.length<schema.minLength)) {
-					return `Len should be b/w : (${schema.minLength?schema.minLength:0} and ${schema.maxLength?schema.maxLength:'any'})`;
+				if ((schema.$maxLength && value.length>schema.$maxLength) || (schema.$minLength && value.length<schema.$minLength)) {
+					return `Len should be b/w : (${schema.$minLength?schema.$minLength:0} and ${schema.$maxLength?schema.$maxLength:'any'})`;
 				}
 				break;
 			}
 		}
-		switch(schema.type)
+		switch(schema.$type)
 		{
 			case "string": {
 				break;
@@ -80,11 +86,12 @@ export let PropSchema = {
 				break;
 			}
 			case "number": {
-				if (isNaN(parseInt(value))) {
+				let num = parseFloat(value);
+				if (isNaN(num)) {
 					return "Invalid number :(";
 				}
-				if ((schema.max && parseInt(value)>schema.max) || (schema.min && parseInt(value)<schema.min)) {
-					return `Number should be b/w : (${schema.min?schema.min:0} and ${schema.max?schema.max:'any'})`;
+				if ((schema.$max && num>schema.$max) || (schema.$min && num<schema.$min)) {
+					return `Number should be b/w : (${schema.$min?schema.$min:0} and ${schema.$max?schema.$max:'any'})`;
 				}
 				break;
 			}
@@ -96,6 +103,27 @@ export let PropSchema = {
 			}
 		}
 		return null;	
+	},
+	populate(schema: IPropSchema, value?: string) {
+		if (!value) {
+			if (schema.$defaultValue) {
+				value = schema.$defaultValue;
+			}
+			else {
+				return undefined;
+			}
+		}
+		switch(schema.$type) {
+			case "number": {
+				let num = parseFloat(value);
+				if (isNaN(num)) {
+					console.error("Number type should be a valid number.", schema, value);
+					return value;
+				}
+				return num;
+			}
+		}
+		return value;
 	}
 }
 
@@ -104,8 +132,14 @@ export let Schema = {
 		let keys = Object.keys(schema);
 		let errors: string[] = [];
 		keys.map((key)=>{
+			// Check if the key is nested schema
+			if (!PropSchema.isProperty(schema[key] as IPropSchema)) {
+				// This is ISchema.
+				let nerrors = Schema.validate(schema[key] as ISchema, data[key]);
+				errors = errors.concat(nerrors?nerrors:[]);
+			}
 			// Skip optional keys.
-			if (schema[key] && (schema[key] as IPropSchema).optional) {
+			if ((schema[key] as IPropSchema).$optional) {
 				if (!data[key]) {
 					return;
 				}
@@ -119,6 +153,8 @@ export let Schema = {
 			return errors;
 		return null;
 	},
+
+	// Cannot populate nested props.
 	populate(populateSchema: ISchemaPopulate, data: any) {
 		let keys = Object.keys(populateSchema.schema);
 		let diff = _.difference(_.union(populateSchema.exclude, populateSchema.include), keys);
@@ -133,10 +169,18 @@ export let Schema = {
 			data = _.omit(data, populateSchema.exclude);
 		}
 		// Set default values to fields that do not contain value.
-		for (let key in populateSchema.schema) {
-			if (!data[key]) {
-				data[key] = (populateSchema.schema[key] as IPropSchema).defaultValue;
+		data = _populate(populateSchema.schema, data);
+		
+		function _populate(schema: ISchema, data: any) {
+			for (let key in schema) {
+				if (PropSchema.isProperty(schema[key] as IPropSchema)) {
+					data[key] = PropSchema.populate((schema[key] as IPropSchema), data[key]);				
+				}
+				else {
+					data = _populate((schema[key] as ISchema), data[key]);
+				}
 			}
+			return data;
 		}
 		return data;
 	}
