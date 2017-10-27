@@ -13,7 +13,6 @@ export class Select extends FormElement<IProps, any> {
 	private select: HTMLSelectElement | null;
 	constructor(props: any, context: any) {
 		super(props, context);
-		this.context.initialize(this.props.name, this);
 	}
 
 	componentWillUnmount()
