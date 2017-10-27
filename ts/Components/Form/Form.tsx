@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
 import {ISchema, IPropSchema, Schema} from './Schema';
 import {FormElement} from './FormElement';
+import * as _ from 'lodash';
 
 export interface IProps {
 	cls?: string
@@ -42,12 +43,14 @@ export class Form extends React.Component<IProps, IState> {
 				this.formElemRefs[key] = {
 					ref
 				};
-				if (this.props.schema && this.props.schema[key]){
-					if (func)
-						func(this.props.schema[key] as IPropSchema);
-					else {
-						console.log(`key ${key} not registered schema.`);
+				if (this.props.schema) {
+					let pschema = _.get(this.props.schema, key);
+					if (!pschema){
+						console.error(`Schema at key ${key}, "not present.`, this.props.schema);
+						return;
 					}
+					if (func)
+						func(_.get(this.props.schema, key));
 				}
 			},
 			delete_value: (key: string) => {
@@ -59,6 +62,7 @@ export class Form extends React.Component<IProps, IState> {
 
 	constructor(props: any, context: any) {
 		super(props, context);
+		console.log(props);
 		this.submit = this.submit.bind(this);
 	}
 
@@ -75,8 +79,9 @@ export class Form extends React.Component<IProps, IState> {
 			if (data.error) {
 				hasError = true;
 			}
-			if (data.value || data.value=="")
-				formData[key]=data.value;
+			if (data.value || data.value=="") {
+				formData = _.set(formData, key, data.value);
+			}
 		}
 		if (!hasError && this.props.schema) {
 			let errors = Schema.validate(this.props.schema, formData);
@@ -84,8 +89,10 @@ export class Form extends React.Component<IProps, IState> {
 				console.error("Serious error in FORM. Please fix it.", errors);
 			}
 		}
-		if (this.props.onSubmit && !hasError)
-			this.props.onSubmit(formData);
+		if (this.props.onSubmit && !hasError) {
+			console.log(formData);
+			this.props.onSubmit(formData);			
+		}
 	}
 
 	render() {
