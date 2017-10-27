@@ -17,6 +17,12 @@ interface IData {
 		ref: FormElement<any, any>
 	}
 };
+
+export interface IFormContextType {
+	initialize: (key: string, ref: any, func: (schema: IPropSchema)=>void)=>void,
+	delete_value: (key: string)=>void
+}
+
 export class Form extends React.Component<IProps, IState> {
 	private formElemRefs: IData = {};
 
@@ -29,7 +35,7 @@ export class Form extends React.Component<IProps, IState> {
 		delete_value: propTypes.func
 	};
 
-	getChildContext()
+	getChildContext(): IFormContextType
 	{
 		return {
 			initialize: (key: string, ref: any, func: (schema: IPropSchema)=>void)=>{
@@ -38,7 +44,7 @@ export class Form extends React.Component<IProps, IState> {
 				};
 				if (this.props.schema && this.props.schema[key]){
 					if (func)
-						func(this.props.schema[key]);
+						func(this.props.schema[key] as IPropSchema);
 					else {
 						console.log(`key ${key} not registered schema.`);
 					}
@@ -48,6 +54,7 @@ export class Form extends React.Component<IProps, IState> {
 				delete this.formElemRefs[key];
 			}
 		};
+		
 	}
 
 	constructor(props: any, context: any) {
