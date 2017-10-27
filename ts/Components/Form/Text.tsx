@@ -67,7 +67,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 			name={this.props.name}
 			placeholder={this.props.children || "Enter a value"}
 			onChange={this.validate}
-			value={this.props.schema?this.props.schema.defaultValue:""}
+			value={this.props.schema?this.props.schema.$defaultValue:""}
 		/>;
 	}
 };
