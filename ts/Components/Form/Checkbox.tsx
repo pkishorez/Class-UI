@@ -13,6 +13,9 @@ export class Checkbox extends FormElement<IProps, any> {
 	private checkbox: HTMLInputElement | null;
 	constructor(props: any, context: any) {
 		super(props, context);
+		this.context.initialize(props.name, this, (schema)=>{
+			// Ignore Schema.
+		})
 	}
 
 	componentWillUnmount()

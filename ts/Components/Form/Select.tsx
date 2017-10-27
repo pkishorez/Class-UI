@@ -11,8 +11,11 @@ export interface IProps {
 
 export class Select extends FormElement<IProps, any> {
 	private select: HTMLSelectElement | null;
-	constructor(props: any, context: any) {
+	constructor(props: IProps, context: any) {
 		super(props, context);
+		this.context.initialize(props.name, this, (schema)=>{
+			// Ignore Schema.
+		})
 	}
 
 	componentWillUnmount()
