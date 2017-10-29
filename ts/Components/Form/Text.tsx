@@ -2,13 +2,13 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as propTypes from 'prop-types';
 import {FormElement} from './FormElement';
-import {IPropSchema, PropSchema} from './Schema';
+import {IJSONSchema, Schema} from './Schema';
 
 export interface ITextProps {
 	name: string,
 	type?: "text" | "password"
 	autoFocus?: boolean
-	schema?: IPropSchema
+	schema?: IJSONSchema
 	onError?: Function
 	children: string
 };
@@ -23,7 +23,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		type: "text"
 	};
 	private input: HTMLInputElement | null;
-	private schema?: IPropSchema;
+	private schema?: IJSONSchema;
 
 	constructor(props: any, context: any) {
 		super(props, context);
@@ -49,12 +49,12 @@ export class Text extends FormElement<ITextProps, ITextState> {
 	public getValue() {
 		return {
 			value: this.value,
-			error: PropSchema.validate(this.schema, this.value?this.value:"")
+			error: this.schema?Schema.validate(this.schema, this.value?this.value:""): null
 		};
 	}
 
 	public validate() {
-		let error = PropSchema.validate(this.schema, this.value?this.value:"");
+		let error = this.schema?Schema.validate(this.schema, this.value?this.value:""):null;
 		(this.props.onError && this.props.onError(error));
 	}
 
@@ -67,7 +67,6 @@ export class Text extends FormElement<ITextProps, ITextState> {
 			name={this.props.name}
 			placeholder={this.props.children || "Enter a value"}
 			onChange={this.validate}
-			defaultValue={this.props.schema?this.props.schema.$defaultValue:""}
 		/>;
 	}
 };

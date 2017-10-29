@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
-import {ISchema, IPropSchema, Schema} from './Schema';
+import {IJSONSchema, Schema} from './Schema';
 import {FormElement} from './FormElement';
 import * as _ from 'lodash';
 
 export interface IProps {
 	cls?: string
 	onSubmit?: Function
-	schema?: ISchema
+	schema?: IJSONSchema
 	autocomplete?: "on" | "off"
 };
 export interface IState {};
@@ -20,7 +20,7 @@ interface IData {
 };
 
 export interface IFormContextType {
-	initialize: (key: string, ref: any, func: (schema: IPropSchema)=>void)=>void,
+	initialize: (key: string, ref: any, func: (schema: IJSONSchema)=>void)=>void,
 	delete_value: (key: string)=>void
 }
 
@@ -39,18 +39,15 @@ export class Form extends React.Component<IProps, IState> {
 	getChildContext(): IFormContextType
 	{
 		return {
-			initialize: (key: string, ref: any, func: (schema: IPropSchema)=>void)=>{
+			initialize: (key: string, ref: any, func: (schema: IJSONSchema)=>void)=>{
 				this.formElemRefs[key] = {
 					ref
 				};
 				if (this.props.schema) {
-					let pschema = _.get(this.props.schema, key);
-					if (!pschema){
-						console.error(`Schema at key ${key}, "not present.`, this.props.schema);
-						return;
-					}
-					if (func)
-						func(_.get(this.props.schema, key));
+					let jschema_key = "properties."+key.replace(/\./g, ".properties.");
+					let pschema = _.get(this.props.schema, jschema_key);
+					if (pschema && func)
+						func(pschema);
 				}
 			},
 			delete_value: (key: string) => {
@@ -68,7 +65,6 @@ export class Form extends React.Component<IProps, IState> {
 
 	submit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		let keys = Object.keys(this.formElemRefs);
 		let formData: any = {};
 		let hasError = false;
 
