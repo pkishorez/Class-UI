@@ -6,7 +6,7 @@ import {IJSONSchema, Schema} from './Schema';
 
 export interface ITextProps {
 	name: string,
-	type?: "text" | "password"
+	type?: "text" | "password" | "area"
 	autoFocus?: boolean
 	schema?: IJSONSchema
 	onError?: Function
@@ -22,7 +22,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		autoFocus: false,
 		type: "text"
 	};
-	private input: HTMLInputElement | null;
+	private input: HTMLInputElement | HTMLTextAreaElement | null;
 	private schema?: IJSONSchema;
 
 	constructor(props: any, context: any) {
@@ -59,7 +59,15 @@ export class Text extends FormElement<ITextProps, ITextState> {
 	}
 
 	render() {
-		return <input type={this.props.type} 
+		return (this.props.type=="area")?<textarea 
+			autoFocus={this.props.autoFocus}
+			autoComplete="off"
+			ref={(ref)=>this.input = ref}
+			spellCheck={false}
+			name={this.props.name}
+			placeholder={this.props.children || "Enter a value"}
+			onChange={this.validate}>
+		</textarea>:<input type={this.props.type} 
 			autoFocus={this.props.autoFocus}
 			autoComplete="off"
 			ref={(ref)=>this.input = ref}
