@@ -3,10 +3,12 @@ import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
 import {IJSONSchema, Schema} from './Schema';
 import {FormElement} from './FormElement';
+import * as classNames from 'classnames';
 import * as _ from 'lodash';
 
 export interface IProps {
 	cls?: string
+	style?: React.CSSProperties
 	onSubmit?: Function
 	schema?: IJSONSchema
 	autocomplete?: "on" | "off"
@@ -59,7 +61,6 @@ export class Form extends React.Component<IProps, IState> {
 
 	constructor(props: any, context: any) {
 		super(props, context);
-		console.log(props);
 		this.submit = this.submit.bind(this);
 	}
 
@@ -86,13 +87,13 @@ export class Form extends React.Component<IProps, IState> {
 			}
 		}
 		if (this.props.onSubmit && !hasError) {
-			console.log(formData);
-			this.props.onSubmit(formData);			
+			this.props.onSubmit(formData);
 		}
 	}
 
 	render() {
-		return <form className={"form "+(this.props.cls?this.props.cls:"")} autoComplete={this.props.autocomplete} onSubmit={this.submit}>
+		let cls = classNames("form", this.props.cls);
+		return <form className={cls} style={{...this.props.style}} autoComplete={this.props.autocomplete} onSubmit={this.submit}>
 			{this.props.children}
 		</form>;
 	}
