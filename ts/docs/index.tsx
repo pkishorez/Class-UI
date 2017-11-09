@@ -1,19 +1,21 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ClassUI} from '../ClassUI';
+import {Content} from '../Content';
 import {NavBar, NavbarRemain} from '../Navbar';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Demo1} from './Demo1';
 import {Demo2} from './Demo2';
 
 ReactDOM.render(<Router >
-		<ClassUI contentWidth={1024} offline>
+		<ClassUI contentWidth={1024}>
 			<NavBar logo="Class-UI">
 				<NavbarRemain />
 				<div className="button">Kittu</div>
 			</NavBar>
+			<Content fullHeight>
 				<Demo1 />
-				<Demo2 />
+			</Content>
 		</ClassUI>
 	</Router>,
 	document.getElementById('app')
