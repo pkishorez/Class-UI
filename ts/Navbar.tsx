@@ -50,7 +50,7 @@ export class NavBar extends React.Component<IProps, IState> {
 	}
 
 	render() {
-		let cls = classNames("card-1", "navbar",  {
+		let cls = classNames("card-2", "navbar",  {
 			fixed: this.props.fixed
 		});
 		return <div className={cls} ref={(ref)=>{NavBar._ref=ref;}}>
