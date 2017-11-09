@@ -1,6 +1,6 @@
 {
   "name": "classui",
-  "version": "0.0.60",
+  "version": "0.0.61",
   "description": "Class-UI - A Web based User interface Framework.",
   "main": "./index.js",
   "types": "./index.d.ts",
