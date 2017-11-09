@@ -13,4 +13,4 @@ Content.js
 Navbar.d.ts
 Navbar.js
 .sass-cache/
-.package-lock.json
+package-lock.json

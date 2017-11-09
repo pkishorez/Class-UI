@@ -24,12 +24,12 @@
   "license": "ISC",
   "dependencies": {
     "@types/classnames": "^2.2.3",
-    "@types/lodash": "^4.14.80",
+    "@types/lodash": "^4.14.82",
     "@types/prop-types": "^15.5.2",
     "@types/react-dom": "^16.0.2",
     "@types/react-motion": "0.0.23",
-    "@types/react-redux": "^5.0.11",
-    "@types/react-router-dom": "^4.0.8",
+    "@types/react-redux": "^5.0.12",
+    "@types/react-router-dom": "^4.2.0",
     "ajv": "^5.3.0",
     "classnames": "^2.2.5",
     "enquire.js": "^2.1.6",
@@ -42,11 +42,11 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.6.0",
     "source-map-loader": "^0.2.3",
-    "ts-loader": "^2.3.7",
-    "typescript": "^2.5.3"
+    "ts-loader": "^3.1.1",
+    "typescript": "^2.6.1"
   },
   "devDependencies": {
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.3"
+    "webpack-dev-server": "^2.9.4"
   }
 }
