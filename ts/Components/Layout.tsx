@@ -48,7 +48,7 @@ export class Layout extends React.Component<IProps, IState> {
 			}
 		);
 		let count = React.Children.count(this.props.children);
-		let children = React.Children.map(this.props.children, (elem: React.ReactElement<any>, i)=>{
+		let children = React.Children.map(this.props.children, (elem: any, i)=>{
 			let style: React.CSSProperties = {};
 			let colProps: ISectionProps = {};
 			if (this.props.direction=="column"){
