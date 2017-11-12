@@ -11,5 +11,23 @@ export let Schema = {
 			return _.map(validate.errors, "message").join(".");
 		}
 		return null;
+	},
+	validatePartial(schema: IJSONSchema, data: any): any {
+		let errors = null;
+		if (schema.type=="object") {
+			for (let key in data) {
+				if (schema.properties && schema.properties[key]) {
+					errors = this.validatePartial(schema.properties[key], data[key]);
+					if (errors) {
+						return errors;
+					}
+				}
+				else {
+					return `Key ${key} not present.`;
+				}
+			}
+			return null
+		}
+		return this.validate(schema, data);
 	}
 }
