@@ -12,6 +12,7 @@ export interface IState {
 };
 
 export class Dropdown extends React.Component<IProps, IState> {
+	clickedWithinDropdown = false;
 	static defaultProps = {
 		push: "right"
 	};
@@ -30,6 +31,10 @@ export class Dropdown extends React.Component<IProps, IState> {
 	}
 
 	dismiss() {
+		if (this.clickedWithinDropdown) {
+			this.clickedWithinDropdown = false;
+			return;
+		}
 		this.setState({
 			active: false
 		});
@@ -38,14 +43,14 @@ export class Dropdown extends React.Component<IProps, IState> {
 		this.setState({
 			active: !this.state.active
 		});
-		e.stopPropagation();
+		this.clickedWithinDropdown = true;
 	}
 	render() {
 		return <div className={"dropdown push-"+this.props.push}>
 			<div className={("button "+(this.state.active?"active":""))} onClick={this.toggle}>{this.props.button}</div>
 
 			<SAnim show={this.state.active}>
-				<ul onClick={(e)=>e.stopPropagation()}>
+				<ul onClick={()=>this.clickedWithinDropdown = true}>
 					{this.props.children}
 				</ul>
 			</SAnim>
