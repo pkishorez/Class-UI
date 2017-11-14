@@ -14,3 +14,5 @@ Navbar.d.ts
 Navbar.js
 .sass-cache/
 package-lock.json
+assets/font-awesome/less
+assets/font-awesome/scss

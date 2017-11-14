@@ -47,7 +47,9 @@ export class Dropdown extends React.Component<IProps, IState> {
 	}
 	render() {
 		return <div className={"dropdown push-"+this.props.push}>
-			<div className={("button "+(this.state.active?"active":""))} onClick={this.toggle}>{this.props.button}</div>
+			<div className={("button "+(this.state.active?"active":""))} onClick={this.toggle}>
+				{this.props.button} <i className="fa fa-angle-down"></i>
+			</div>
 
 			<SAnim show={this.state.active}>
 				<ul onClick={()=>this.clickedWithinDropdown = true}>

@@ -2,8 +2,8 @@ module.exports = {
 	entry: './ts/docs/index.tsx',
 	
 	output: {
-		filename: 'classui.js',
-		path: __dirname+"/bundle"
+		filename: 'bundle/classui.js',
+		path: __dirname+""
 	},
 	
 	module: {
