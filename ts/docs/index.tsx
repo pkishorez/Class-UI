@@ -10,7 +10,7 @@ import {Demo2} from './Demo2';
 
 ReactDOM.render(<Router >
 		<ClassUI contentWidth={1024}>
-			<NavBar logo="Class-UI">
+			<NavBar logo="Class-UI" fixed>
 				<NavbarRemain />
 				<Dropdown button="Playground" push="left">
 				<li>Typescript</li>
