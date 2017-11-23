@@ -66,6 +66,7 @@ export class Layout extends React.Component<IProps, IState> {
 				...this.props.c_props,
 				...elem.props,
 				style: {
+					...(this.props.c_props?this.props.c_props.style:undefined),
 					...style,
 					...elem.props.style
 				}
@@ -84,21 +85,19 @@ export class Layout extends React.Component<IProps, IState> {
 
 export interface ISectionProps {
 	style?: React.CSSProperties,
+	clsName?: string
 	width?: number|string,
 	minWidth?: number|string,
 	children?: any,
-	card?: boolean,
 	remain?: boolean
 };
 
 export let Section = (props: ISectionProps)=>{
 	let cls = classNames({
-		"card-0": props.card,
 		"remain": props.remain
 	});
+	cls = props.clsName?cls+" "+props.clsName:cls;
 	let style: React.CSSProperties = {
-		backgroundColor: props.card?'white':null,
-		padding: props.card?10:0,
 		width: props.width,
 		flexBasis: props.minWidth,
 		...props.style

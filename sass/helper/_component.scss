@@ -3,12 +3,8 @@
 .hoverable_grey_component
 {
 	cursor: pointer;
-	color: black;
-	&:hover{
-		background-color: rgb(245, 245, 245);
-	}
-	&.active{
-		background-color: #DDDDDD;
+	&:hover, &.active, &:focus{
+		background-color: #CCCCCC;
 	}
 	&.disable {
 		&, &:hover, &:active, &.active {
@@ -20,13 +16,15 @@
 }
 .actionable_grey_component
 {
+	@include user-select(none);	
 	@extend .hoverable_grey_component;
+	&:active {
+		background-color: #AAAAAA;
+	}
 }
 
 .hoverable_component {
-	&{
-		cursor: pointer;
-	}
+	cursor: pointer;
 
 	&:hover, &.active {
 		background-color: $theme-color;

@@ -2,9 +2,9 @@
 @import '../helper/utilities';
 
 .button, input[type='button'], input[type='submit'] {
-	@extend .actionable_component;
-	background-color: #DDDDDD; 
+	@extend .actionable_grey_component;
 	padding: 10px;
+	background-color: #DDDDDD;
 	@include user-select(none);
 
 	// Accessibility
@@ -20,11 +20,12 @@
 		}
 	}
 
+	&.primary {
+		@extend .actionable_component;
+	}
+
 	&, &:hover, &:active {
 		border-width: 0px;
 		outline-width: 0px;
-	}
-	&:active, &:focus{
-		background-color: #BCBCBC;
 	}
 }

@@ -18,7 +18,7 @@
 		margin: 10px 5px;
 	}
 	& > .item {
-		@extend .actionable_grey_component;
+		@extend .hoverable_grey_component;
 		padding: 7px 10px;
 
 		& > .badge {
