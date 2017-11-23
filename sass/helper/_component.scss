@@ -2,9 +2,13 @@
 
 .hoverable_grey_component
 {
+	@include user-select(none);	
 	cursor: pointer;
-	&:hover, &.active, &:focus{
+	&:hover, &:focus{
 		background-color: #CCCCCC;
+	}
+	&.active {
+		background-color: #AAAAAA;
 	}
 	&.disable {
 		&, &:hover, &:active, &.active {
@@ -16,14 +20,14 @@
 }
 .actionable_grey_component
 {
-	@include user-select(none);	
 	@extend .hoverable_grey_component;
-	&:active {
+	&:active, &.active {
 		background-color: #AAAAAA;
 	}
 }
 
 .hoverable_component {
+	@include user-select(none);
 	cursor: pointer;
 
 	&:hover, &.active {
@@ -46,7 +50,6 @@
 }
 
 .actionable_component {
-	@include user-select(none);
 	@extend .hoverable_component;
 	&:active {
 		background-color: $theme-color-darker;
