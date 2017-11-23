@@ -4,11 +4,11 @@
 {
 	@include user-select(none);	
 	cursor: pointer;
-	&:hover, &:focus{
-		background-color: #CCCCCC;
+	&:hover{
+		background-color: #DDDDDD;
 	}
 	&.active {
-		background-color: #AAAAAA;
+		background-color: #CCCCCC;
 	}
 	&.disable {
 		&, &:hover, &:active, &.active {
@@ -21,8 +21,11 @@
 .actionable_grey_component
 {
 	@extend .hoverable_grey_component;
+	&:hover {
+		background-color: #CCCCCC;
+	}
 	&:active, &.active {
-		background-color: #AAAAAA;
+		background-color: #BBBBBB;
 	}
 }
 
