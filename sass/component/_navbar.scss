@@ -16,6 +16,7 @@
 	}
 
 	& > .content {
+		max-width: 100%;
 		@include display-flex;
 		@include flex-flow(row nowrap);
 		@include align-items(center);

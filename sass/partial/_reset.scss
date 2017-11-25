@@ -17,7 +17,7 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 	@include box-sizing(border-box);
-	max-width: 100%;
+	//max-width: 100%;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
