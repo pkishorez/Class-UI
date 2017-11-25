@@ -60,10 +60,10 @@ export class OrderedMapList extends React.Component<IProps, IState> {
 				<i className="fa fa-long-arrow-down"></i>
 			</span>;
 
-			return <div onClick={(e)=>{
+			return <div className="item" onClick={(e)=>{
 				this.props.onClick?this.props.onClick(item.key):null;
 			}}>
-				<Layout cls="item" key={item.key} align="center" style={{height: 50}}>
+				<Layout key={item.key} align="center" style={{height: 30}}>
 					<Section>
 						{item.title}
 					</Section>
