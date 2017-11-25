@@ -33,8 +33,8 @@ export class Flash extends React.Component<IProps, IState> {
 		});
 		window.addEventListener("keydown", _instance.escapeDismiss)
 	}
-	constructor() {
-		super();
+	constructor(props: IProps, context: any) {
+		super(props, context);
 		if (_instance){
 			console.error("Only one instance of Flash component should be created...");
 			return;

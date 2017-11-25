@@ -18,8 +18,8 @@ export class NavBar extends React.Component<IProps, IState> {
 		logo: undefined
 	};
 
-	constructor() {
-		super();
+	constructor(props: IProps, context: any) {
+		super(props, context);
 		this.Scroll = _.throttle(this.Scroll.bind(this), 100);
 	}
 

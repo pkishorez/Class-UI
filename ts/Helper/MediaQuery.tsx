@@ -18,8 +18,8 @@ export interface IState {
 export class MediaQuery extends React.Component<IProps, IState> {
 
 	private handler: any = null;
-	constructor() {
-		super();
+	constructor(props: IProps, context: any) {
+		super(props, context);
 		this.state = {
 			matched: false
 		};

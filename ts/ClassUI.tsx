@@ -42,8 +42,8 @@ export class ClassUI extends React.Component<IProps, any> {
 		});
 		ClassUI.funcs = [];
 	}
-	constructor() {
-		super();
+	constructor(props: any, context: any) {
+		super(props, context);
 		if (_instance) {
 			console.error("Only one instance of ClassUI is permitted.");
 			return _instance;

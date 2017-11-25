@@ -16,8 +16,8 @@ export class Dropdown extends React.Component<IProps, IState> {
 	static defaultProps = {
 		push: "right"
 	};
-	constructor() {
-		super();
+	constructor(props: IProps, context: any) {
+		super(props, context);
 		this.state = {
 			active: false
 		};

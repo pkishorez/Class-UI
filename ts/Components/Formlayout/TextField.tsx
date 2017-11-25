@@ -11,8 +11,8 @@ export interface IProps extends ITextProps {
 };
 
 export class TextField extends React.Component<IProps, {error: null|string|undefined}> {
-	constructor() {
-		super();
+	constructor(props: IProps, context: any) {
+		super(props, context);
 		this.state = {
 			error: undefined
 		};

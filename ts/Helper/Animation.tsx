@@ -10,9 +10,9 @@ export interface IProps {
 
 export class SAnim extends React.Component<IProps, any> {
 	private rested: boolean = true;
-	constructor()
+	constructor(props: IProps, context: any)
 	{
-		super();
+		super(props, context);
 		this.onRest = this.onRest.bind(this);
 	}
 	onRest()
