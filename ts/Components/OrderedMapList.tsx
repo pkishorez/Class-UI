@@ -9,6 +9,7 @@ export interface IProps {
 		title: string
 	}[]
 
+	onClick?: (id: string)=>void
 	canDelete?: boolean
 	onDelete?: (id: string)=>void
 };
@@ -51,29 +52,34 @@ export class OrderedMapList extends React.Component<IProps, IState> {
 			let index = i;
 			let up = <span className="button" style={{
 				visibility: (index!=0)?"visible":"hidden"
-			}} onClick={()=>this.moveUp(index)}><i className="fa fa-long-arrow-up"></i></span>;
+			}} onClick={(e)=>{this.moveUp(index); e.stopPropagation()}}><i className="fa fa-long-arrow-up"></i></span>;
 
 			let down = <span className="button" style={{
 				visibility: (index!=this.state.order.length-1)?"visible":"hidden"
-			}} onClick={()=>this.moveDown(index)}>
+			}} onClick={(e)=>{this.moveDown(index); e.stopPropagation()}}>
 				<i className="fa fa-long-arrow-down"></i>
 			</span>;
 
-			return <Layout cls="item" key={item.key} align="center" style={{height: 50}}>
-				<Section>
-					{item.title}
-				</Section>
-				<Section remain />
-				<Section>
-					{up}
-					{down}
-					{this.props.canDelete?<span style={{marginLeft: 10}} className="button primary" onClick={()=>{
-						this.props.onDelete?this.props.onDelete(item.key):null
-					}}>
-						<i className="fa fa-trash"></i>
-					</span>:null}
-				</Section>
-			</Layout>
+			return <div onClick={(e)=>{
+				this.props.onClick?this.props.onClick(item.key):null;
+			}}>
+				<Layout cls="item" key={item.key} align="center" style={{height: 50}}>
+					<Section>
+						{item.title}
+					</Section>
+					<Section remain />
+					<Section>
+						{up}
+						{down}
+						{this.props.canDelete?<span style={{marginLeft: 10}} className="button primary" onClick={(e)=>{
+							this.props.onDelete?this.props.onDelete(item.key):null
+							e.stopPropagation();
+						}}>
+							<i className="fa fa-trash"></i>
+						</span>:null}
+					</Section>
+				</Layout>
+			</div>
 		})
 		return <div className="sidemenu">
 			{order}
