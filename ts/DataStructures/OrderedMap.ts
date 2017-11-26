@@ -1,5 +1,6 @@
 import {v4} from 'uuid';
 import * as _ from 'lodash';
+import {Schema, IJSONSchema} from '../Components/Form/Schema';
 
 export interface IOrderedMap<T>{
 	map: {
@@ -29,11 +30,13 @@ export type IOrderedMapAction<T> = {
 
 export class OrderedMap<T> {
 	private orderedMap: IOrderedMap<T>;
-	constructor(orderedMap: IOrderedMap<T>) {
+	private Tschema: IJSONSchema;
+	constructor(orderedMap: IOrderedMap<T>, schema: IJSONSchema = {}) {
 		if (!orderedMap) {
 			orderedMap = {map: {}, order: []};
 		}
 		this.orderedMap = this.init(orderedMap);
+		this.Tschema = schema;
 	}
 
 	performAction(action: IOrderedMapAction<T>): IOrderedMapAction<T> {
@@ -97,6 +100,13 @@ export class OrderedMap<T> {
 	}
 
 	add(value: T, _id = v4()): IOrderedMap<T> {
+		// START VALIDATION
+		let error = Schema.validate(this.Tschema, value);
+		if (error) {
+			console.error(error);
+			return this.orderedMap;
+		}
+		// END OF VALIDATION
 
 		if (this.orderedMap.map[_id]) {
 			return this.orderedMap;
@@ -129,15 +139,23 @@ export class OrderedMap<T> {
 	}
 
 	modify(map_id: string, value: Partial<T>): IOrderedMap<T> {
+		value = {
+			...this.orderedMap.map[map_id] as any,
+			...value as any
+		};
+		// START VALIDATE SCHEMA
+		let error = Schema.validate(this.Tschema, value);
+		if (error) {
+			console.error(error);
+			return this.orderedMap;
+		}
+		// END OF VALIDATE SCHEMA
 		if (this.orderedMap.map[map_id]) {
 			this.orderedMap = {
 				...this.orderedMap,
 				map: {
 					...this.orderedMap.map,
-					[map_id]: {
-						...this.orderedMap.map[map_id] as any,
-						...value as any
-					}
+					[map_id]: value as any
 				}
 			}
 		}
