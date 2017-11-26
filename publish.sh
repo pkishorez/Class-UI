@@ -1,6 +1,7 @@
 # !/bin/sh
 
 rm -r ./Components
+rm -r ./DataStructures
 rm -r ./Helper
 rm -r ./docs
 rm ./ClassUI.d.ts
@@ -17,6 +18,7 @@ npm version patch -m "patch"
 npm publish
 
 rm -r ./Components
+rm -r ./DataStructures
 rm -r ./Helper
 rm -r ./docs
 rm ./ClassUI.d.ts
