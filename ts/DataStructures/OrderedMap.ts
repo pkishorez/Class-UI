@@ -145,11 +145,14 @@ export class OrderedMap<T> {
 	}
 
 	reorder(order: string[]): IOrderedMap<T> {
-		if (_.isEqual(order.sort(), this.orderedMap.order.sort())) {
+		if (_.isEqual(_.sortBy(order), _.sortBy(this.orderedMap.order))) {
 			this.orderedMap = {
 				...this.orderedMap,
 				order
 			};
+		}
+		else {
+			console.error("NOT EQUAL ORDER", order.sort(), this.orderedMap.order.sort());
 		}
 		return this.orderedMap;
 	}
