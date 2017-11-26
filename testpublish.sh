@@ -18,7 +18,7 @@ npm pack
 
 mv classui-* classui.tgz
 cd ~/Dream/IIITN/
-npm install
+npm install ~/Dream/Class-UI/classui.tgz
 cd ~/Dream/Class-UI/
 
 rm -r ./Components
