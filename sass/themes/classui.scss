@@ -1,0 +1,15 @@
+// Color palette for our theme.
+$theme-color: #198719;
+$theme-color-contrast: white;
+$theme-color-dark: #167916;
+$theme-color-darker: #146c14;
+$theme-color-darkest: #004400;
+$theme-color-light: #2f932f;
+$theme-error-color: #EC5050;
+
+$theme-offline-color: rgb(66, 66, 66);
+$theme-offline-color-contrast: white;
+$theme-offline-color-dark: rgb(30, 30, 30);
+$theme-offline-color-darker: rgb(0, 0, 0);
+
+@import '../main';

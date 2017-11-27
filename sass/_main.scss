@@ -1,8 +1,9 @@
+// Import variables here in themes.
+
 @import 'compass/css3';
 
-@import 'partial/variables';
-
 // Reset
+@import 'partial/reset';
 @import	'partial/normalize';
 
 // Helpers

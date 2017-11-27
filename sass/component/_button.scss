@@ -1,6 +1,3 @@
-@import '../partial/variables';
-@import '../helper/utilities';
-
 .button, input[type='button'], input[type='submit'] {
 	@extend .actionable_grey_component;
 	padding: 10px;
