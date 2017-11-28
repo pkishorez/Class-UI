@@ -51,10 +51,9 @@ export class OrderedMap<T> {
 				break;
 			}
 			case "ADD": {
-				let addedMap = this.add(action.value, action._id);
-				if (addedMap!=this.orderedMap) {
-					this.orderedMap = addedMap;
-					action._id = this.orderedMap.order[this.orderedMap.order.length-1];
+				let new_id = this.add(action.value, action._id);
+				if (new_id) {
+					action._id = new_id;
 				}
 				break;
 			}
@@ -99,17 +98,17 @@ export class OrderedMap<T> {
 		return this.orderedMap;
 	}
 
-	add(value: T, _id = v4()): IOrderedMap<T> {
+	add(value: T, _id = v4()): string|null {
 		// START VALIDATION
 		let error = Schema.validate(this.Tschema, value);
 		if (error) {
 			console.error(error);
-			return this.orderedMap;
+			return null;
 		}
 		// END OF VALIDATION
 
 		if (this.orderedMap.map[_id]) {
-			return this.orderedMap;
+			return null;
 		}
 		this.orderedMap = {
 			...this.orderedMap,
@@ -122,7 +121,7 @@ export class OrderedMap<T> {
 				_id
 			]
 		};
-		return this.orderedMap;
+		return _id;
 	}
 
 	del(map_id: string): IOrderedMap<T> {
