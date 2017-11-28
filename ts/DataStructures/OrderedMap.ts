@@ -83,8 +83,8 @@ export class OrderedMap<T> {
 
 	init(orderedMap: IOrderedMap<T>): IOrderedMap<T> {
 		// Integrity check to make sure all keys in map are present in order.
-		let mapKeys = Object.keys(orderedMap.map).sort();
-		let order = orderedMap.order.sort();
+		let mapKeys = _.sortBy(Object.keys(orderedMap.map));
+		let order = _.sortBy(orderedMap.order);
 
 		if (_.isEqual(mapKeys, order)) {
 			// INTEGRITY IS Good :)
