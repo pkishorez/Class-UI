@@ -6,10 +6,36 @@ import {Motion, spring, TransitionMotion, OpaqueConfig, TransitionProps, presets
 export interface IProps {
 	show: boolean,
 	children: React.ReactElement<any>
+	animType?: "appear" | "slideLeft" | "slideRight"
 };
+
+let Animate = (value: number, type: IProps["animType"])=>{
+	switch(type) {
+		case "appear":
+			return {
+				transform: `scale(${value}, ${value})`,
+				transformOrigin: 'middle',
+				opacity: value
+			}
+		case "slideLeft":
+			return {
+				transform: `scaleX(${value})`,
+				transformOrigin: 'right',
+				opacity: value
+			}
+		case "slideRight":
+			return {
+				transform: `scaleX(${value})`,
+				transformOrigin: 'left'
+			}
+	}
+}
 
 export class SAnim extends React.Component<IProps, any> {
 	private rested: boolean = true;
+	static defaultProps: Partial<IProps> = {
+		animType: "appear"
+	};
 	constructor(props: IProps, context: any)
 	{
 		super(props, context);
@@ -28,11 +54,7 @@ export class SAnim extends React.Component<IProps, any> {
 		return <Motion defaultStyle={{opac: 0}} style={{opac: spring(this.props.show?1:0, presets.gentle)}} onRest={this.onRest}>{
 			(obj)=>{
 				let props = {
-					style: {
-						opacity: obj.opac,
-						transform: `scale(${obj.opac}, ${obj.opac})`,
-						transformOrigin: 'middle'
-					}
+					style: Animate(obj.opac, this.props.animType)
 				};
 				return React.cloneElement(this.props.children, {
 					...props

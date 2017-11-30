@@ -10,19 +10,19 @@ export interface IState {
 	show: boolean
 };
 
-let _instance: Flash | null = null;
-export class Flash extends React.Component<IProps, IState> {
+let _instance: Drawer | null = null;
+export class Drawer extends React.Component<IProps, IState> {
 
 	private noDismiss = false;
 	private noAnimation = false;
-	private noCloseButton = false;
+	private noCloseButton = true;
 	private contentClass = "";
 	private content_click: boolean = false;
 	private content: any;
 
-	static flash(func: (dismiss: any)=>any, noDismiss: boolean = false, noAnimation: boolean = false, noCloseButton = false, contentClass = "") {
+	static open(func: (dismiss: any)=>any, noDismiss: boolean = false, noAnimation: boolean = false, noCloseButton = true, contentClass = "") {
 		if (!_instance){
-			console.error("Flash component should be rendered to use it.");
+			console.error("Drawer component should be mounted in the app to use it.");
 			return;
 		}
 		_instance.noAnimation = noAnimation;
@@ -38,7 +38,7 @@ export class Flash extends React.Component<IProps, IState> {
 	constructor(props: IProps, context: any) {
 		super(props, context);
 		if (_instance){
-			console.error("Only one instance of Flash component should be created...");
+			console.error("Only one instance of Drawer component should be created...");
 			return;
 		}
 		_instance = this;
@@ -58,6 +58,7 @@ export class Flash extends React.Component<IProps, IState> {
 			this.dismiss();
 			window.removeEventListener("keydown", this.escapeDismiss);
 		}
+		e.stopPropagation();
 	}
 	clickDismiss() {
 		if (this.noDismiss){
@@ -73,25 +74,18 @@ export class Flash extends React.Component<IProps, IState> {
 		this.setState({show: false});
 	}
 	render() {
-		let cls = classNames("flash", {
+		let cls = classNames("drawer", {
 			"noDismiss": this.noDismiss
 		});
 		let contentCls = classNames("content", this.contentClass);
-		let content = <div className={cls} onClick={this.clickDismiss}>
-			<div onClick={(e)=>{this.content_click=true}} className={contentCls}>
-				{this.content}
-				{(this.noDismiss || this.noCloseButton)?null:<div className="close button" onClick={this.dismiss}>x</div>}
-			</div>
+		let content = <div onClick={(e)=>{this.content_click=true}} className={contentCls}>
+			{this.content}
+			{(this.noDismiss || this.noCloseButton)?null:<div className="close button" onClick={this.dismiss}>x</div>}
+		</div>;
+		let drawer = <div className={cls} onClick={this.clickDismiss}>
+			{this.noAnimation?content:<SAnim animType="slideLeft" show={this.state.show}>{content}</SAnim>}
 		</div>;
 
-		return this.noAnimation?(this.state.show?content:null):<SAnim show={this.state.show}>
-			{content}
-		</SAnim>;
+		return this.state.show?drawer:null;
 	}
-}
-
-export let FlashLayout = (props: any)=>{
-	return <div style={{padding: 10, backgroundColor: 'white'}}>
-		{props.children}
-	</div>;
 }

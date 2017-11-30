@@ -1,15 +1,26 @@
-.flash {
-	@include ui_flex-box();
+.drawer {
+	@include ui_flex-box(flex-end, center);
 	position: fixed;
 	top: 0px;
 	left: 0px;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0, 0.2);
+	background-color: rgba(0,0,0, 0.3);
+	> .content > .close {
+		left: 0px;
+	}
 
 	&.noDismiss {
 		background-color: rgba(0, 0, 0, 0.8);
 	}
+
+	&.left {
+		@include ui_flex-box(left, center);
+		> .content > .close {
+			right: 0px;
+		}
+	}
+
 	> .content {
 		position: relative;
 		> .close {
@@ -17,10 +28,8 @@
 			@include ui_flex-box();
 			position: absolute;
 			top: 0px;
-			right: 0px;
 			padding: 10px;
 			min-width: 40px;
-			min-height: 40px;
 		}
 		//padding: 10px;
 		max-width: 100%;

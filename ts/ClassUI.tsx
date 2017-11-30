@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Flash} from './Components/Flash';
 import * as classNames from 'classnames';
+import { Drawer } from './Components/Drawer';
 
 let _instance: ClassUI;
 
@@ -57,6 +58,7 @@ export class ClassUI extends React.Component<IProps, any> {
 		return <div className={cls}>
 			{this.props.children}
 			<Flash />
+			<Drawer />
 		</div>;
 	}
 }
