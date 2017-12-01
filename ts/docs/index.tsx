@@ -17,12 +17,17 @@ ReactDOM.render(<Router >
 				<li>Canvas2D</li>
 				<li>Demo</li>
 			</Dropdown>
+			<Dropdown button="This is a very big task button" buttonMaxWidth={100} push="left">
+			<li>My Tasks</li>
+			<li>Manage Tasks</li>
+			<li>Dashboard (TODO)</li>
+			</Dropdown>
 			<Dropdown button="tasks" push="left">
 				<li>My Tasks</li>
 				<li>Manage Tasks</li>
 				<li>Dashboard (TODO)</li>
 			</Dropdown>
-				<div className="button">Kittu</div>
+			<div className="button">Kittu</div>
 			</NavBar>
 			<Content fullHeight>
 				<Demo1 />

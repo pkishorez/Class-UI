@@ -2,6 +2,12 @@
 	@include inline-block();
 }
 
+.noTextWrap {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
 @mixin ui_flex-box($halign: center, $valign: center) {
 	@include display-flex;
 	@include justify-content($halign);
