@@ -35,15 +35,24 @@ export class OrderedMap<T> {
 		if (!orderedMap) {
 			orderedMap = {map: {}, order: []};
 		}
-		this.orderedMap = this.init(orderedMap);
+		let inited = this.init(orderedMap);
+		if (typeof inited=="string") {
+			console.error("VERY SERIOUS ERROR !!!", inited);
+			return this;
+		}
+		this.orderedMap = inited;
 		this.Tschema = schema;
 	}
 
-	performAction(action: IOrderedMapAction<T>): IOrderedMapAction<T> {
+	performAction(action: IOrderedMapAction<T>): IOrderedMapAction<T> | string {
 		switch(action.type) {
 			case "INIT": {
 				if (action.state) {
-					this.orderedMap = this.init(action.state);					
+					let init = this.init(action.state);
+					if (typeof init == "string") {
+						return init;
+					}
+					this.orderedMap = init;
 				}
 				else {
 					action.state = this.orderedMap;
@@ -52,21 +61,36 @@ export class OrderedMap<T> {
 			}
 			case "ADD": {
 				let new_id = this.add(action.value, action._id);
-				if (new_id) {
+				if (typeof new_id=="string") {
 					action._id = new_id;
+				}
+				else {
+					return new_id.error;
 				}
 				break;
 			}
 			case "DELETE": {
-				this.orderedMap = this.del(action._id);
+				let del = this.del(action._id);
+				if (typeof del=="string") {
+					return del;
+				}
+				this.orderedMap = del;
 				break;
 			}
 			case "MODIFY": {
-				this.orderedMap = this.modify(action._id, action.value);
+				let modified = this.modify(action._id, action.value);
+				if (typeof modified=="string") {
+					return modified;
+				}
+				this.orderedMap = modified;
 				break;
 			}
 			case "REORDER": {
-				this.orderedMap = this.reorder(action.order);
+				let reordered = this.reorder(action.order);
+				if (typeof reordered=="string") {
+					return reordered;
+				}
+				this.orderedMap = reordered;
 				break;
 			}
 		}
@@ -81,7 +105,7 @@ export class OrderedMap<T> {
 		return JSON.stringify(this.orderedMap);
 	}
 
-	init(orderedMap: IOrderedMap<T>): IOrderedMap<T> {
+	init(orderedMap: IOrderedMap<T>): IOrderedMap<T> | string {
 		// Integrity check to make sure all keys in map are present in order.
 		let mapKeys = _.sortBy(Object.keys(orderedMap.map));
 		let order = _.sortBy(orderedMap.order);
@@ -95,20 +119,19 @@ export class OrderedMap<T> {
 			return orderedMap;
 		}
 		// Operation rejected. Integrity failure.
-		return this.orderedMap;
+		return "Integrity failure. DATASTRUCTURE ERROR!!!";
 	}
 
-	add(value: T, _id = v4()): string|null {
+	add(value: T, _id = v4()): string|{error: string} {
 		// START VALIDATION
 		let error = Schema.validate(this.Tschema, value);
 		if (error) {
-			console.error(error);
-			return null;
+			return {error};
 		}
 		// END OF VALIDATION
 
 		if (this.orderedMap.map[_id]) {
-			return null;
+			return {error: "Record with id: "+_id+" already present"};
 		}
 		this.orderedMap = {
 			...this.orderedMap,
@@ -124,10 +147,10 @@ export class OrderedMap<T> {
 		return _id;
 	}
 
-	del(map_id: string): IOrderedMap<T> {
+	del(map_id: string): IOrderedMap<T> | string {
 		let filtered = this.orderedMap.order.filter(id=>map_id!=id);
 		if (_.isEqual(filtered, this.orderedMap.order)) {
-			return this.orderedMap;
+			return "Couldn't find record with id : "+map_id;
 		}
 		this.orderedMap = {
 			...this.orderedMap,
@@ -137,7 +160,7 @@ export class OrderedMap<T> {
 		return this.orderedMap;
 	}
 
-	modify(map_id: string, value: Partial<T>): IOrderedMap<T> {
+	modify(map_id: string, value: Partial<T>): IOrderedMap<T> | string {
 		value = {
 			...this.orderedMap.map[map_id] as any,
 			...value as any
@@ -145,8 +168,7 @@ export class OrderedMap<T> {
 		// START VALIDATE SCHEMA
 		let error = Schema.validate(this.Tschema, value);
 		if (error) {
-			console.error(error);
-			return this.orderedMap;
+			return error;
 		}
 		// END OF VALIDATE SCHEMA
 		if (this.orderedMap.map[map_id]) {
@@ -157,11 +179,14 @@ export class OrderedMap<T> {
 					[map_id]: value as any
 				}
 			}
+			return this.orderedMap;
 		}
-		return this.orderedMap;
+		else {
+			return "No record found to modify the value.";
+		}
 	}
 
-	reorder(order: string[]): IOrderedMap<T> {
+	reorder(order: string[]): IOrderedMap<T> | string {
 		if (_.isEqual(_.sortBy(order), _.sortBy(this.orderedMap.order))) {
 			this.orderedMap = {
 				...this.orderedMap,
@@ -169,7 +194,7 @@ export class OrderedMap<T> {
 			};
 		}
 		else {
-			console.error("NOT EQUAL ORDER", order.sort(), this.orderedMap.order.sort());
+			return "ORDER MISMATCH!!!";
 		}
 		return this.orderedMap;
 	}
