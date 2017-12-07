@@ -48,10 +48,10 @@ export class Dropdown extends React.Component<IProps, IState> {
 	}
 	render() {
 		return <div className={"dropdown push-"+this.props.push}>
-			<div className={("button "+(this.state.active?"active":""))} onClick={this.toggle} style={{
-				maxWidth: this.props.buttonMaxWidth
-			}}>
-				{this.props.button} <i className="fa fa-angle-down"></i>
+			<div className={("button "+(this.state.active?"active":""))} onClick={this.toggle}>
+				<span className="inline-block noTextWrap" style={{
+					maxWidth: this.props.buttonMaxWidth
+				}}>{this.props.button}</span> <i className="fa fa-angle-down"></i>
 			</div>
 
 			<SAnim show={this.state.active}>

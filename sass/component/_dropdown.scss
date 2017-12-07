@@ -2,11 +2,6 @@
 	position: relative;
 	@include inline-block();
 
-	>.button {
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		overflow: hidden;
-	}
 	&.push-left {
 		ul {
 			right: 0px;
