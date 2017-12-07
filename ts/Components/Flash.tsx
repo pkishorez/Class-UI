@@ -80,7 +80,7 @@ export class Flash extends React.Component<IProps, IState> {
 		let content = <div className={cls} onClick={this.clickDismiss}>
 			<div onClick={(e)=>{this.content_click=true}} className={contentCls}>
 				{this.content}
-				{(this.noDismiss || this.noCloseButton)?null:<div className="close button" onClick={this.dismiss}>x</div>}
+				{this.noCloseButton?null:<div className="close button" onClick={this.dismiss}>x</div>}
 			</div>
 		</div>;
 
