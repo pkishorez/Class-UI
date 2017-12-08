@@ -7,6 +7,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import {Dropdown} from '../Components/Dropdown';
 import {Demo1} from './Demo1';
 import {Demo2} from './Demo2';
+import { Feedback } from '../Components/Feedback';
 
 ReactDOM.render(<Router >
 		<ClassUI contentWidth={1024}>
@@ -18,8 +19,8 @@ ReactDOM.render(<Router >
 				<li>Demo</li>
 			</Dropdown>
 			<Dropdown button="This is a very big task button" buttonMaxWidth={100} push="left">
-			<li>My Tasks</li>
-			<li>Manage Tasks</li>
+			<li onClick={()=>Feedback.show("Hello World. :)", "success")} className="noTextWrap">My Tasks this is a very big text</li>
+			<li onClick={()=>Feedback.show("Hello World.", "error")}>Manage Tasks</li>
 			<li>Dashboard (TODO)</li>
 			</Dropdown>
 			<Dropdown button="tasks" push="left">

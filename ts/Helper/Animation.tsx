@@ -6,7 +6,7 @@ import {Motion, spring, TransitionMotion, OpaqueConfig, TransitionProps, presets
 export interface IProps {
 	show: boolean,
 	children: React.ReactElement<any>
-	animType?: "appear" | "slideLeft" | "slideRight"
+	animType?: "appear" | "slideLeft" | "slideRight" | "slideBottom" | "slideTop"
 };
 
 let Animate = (value: number, type: IProps["animType"])=>{
@@ -15,6 +15,18 @@ let Animate = (value: number, type: IProps["animType"])=>{
 			return {
 				transform: `scale(${value}, ${value})`,
 				transformOrigin: 'middle',
+				opacity: value
+			}
+		case "slideBottom":
+			return {
+				transform: `scaleY(${value})`,
+				transformOrigin: 'top',
+				opacity: value
+			}
+		case "slideTop":
+			return {
+				transform: `scaleY(${value})`,
+				transformOrigin: 'bottom',
 				opacity: value
 			}
 		case "slideLeft":
