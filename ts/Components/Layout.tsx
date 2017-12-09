@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 
 export interface IProps {
-	width?: number|string
+	basis?: number|string
 	inline?: boolean
 	direction?: "row" | "column"
 	wrap?: boolean
@@ -11,7 +11,7 @@ export interface IProps {
 	align?: "center" | "start" | "end" | "stretch"
 	gutter?: number
 	margin?: number
-	equalWidth?: boolean
+	equallySpaced?: boolean
 	mediaNoMatch?: IProps
 	style?: React.CSSProperties
 	cls?: string
@@ -24,7 +24,7 @@ export interface IState {};
 export class Layout extends React.Component<IProps, IState> {
 
 	public static defaultProps:IProps = {
-		width: 'auto',
+		basis: 'auto',
 		inline: false,
 		direction: "row",
 		wrap: false,
@@ -32,7 +32,7 @@ export class Layout extends React.Component<IProps, IState> {
 		align: "center",
 		gutter: 0,
 		margin: 0,
-		equalWidth: false,
+		equallySpaced: false,
 
 		c_props: undefined
 	};
@@ -42,7 +42,7 @@ export class Layout extends React.Component<IProps, IState> {
 			"justify-"+this.props.justify,
 			"align-"+this.props.align,
 			{
-				"eq-width": this.props.equalWidth,
+				"eq-width": this.props.equallySpaced,
 				"column": this.props.direction=="column",
 				"wrap": this.props.wrap
 			}
@@ -50,7 +50,8 @@ export class Layout extends React.Component<IProps, IState> {
 		let count = React.Children.count(this.props.children);
 		let children = React.Children.map(this.props.children, (elem: any, i)=>{
 			let style: React.CSSProperties = {};
-			if (this.props.direction=="column"){
+			if (this.props.direction=="column") {
+				style.width = "100%";
 				style.marginTop = (i==0)?this.props.margin:this.props.gutter;
 			}
 			else{
@@ -73,7 +74,7 @@ export class Layout extends React.Component<IProps, IState> {
 			});
 		});
 		return <div style={{
-			maxWidth: this.props.width,
+			[this.props.direction=="column"?"height":"width"]: this.props.basis,
 			...this.props.style
 		}} className={cls} >
 			{
@@ -86,8 +87,7 @@ export class Layout extends React.Component<IProps, IState> {
 export interface ISectionProps {
 	style?: React.CSSProperties,
 	clsName?: string
-	width?: number|string,
-	minWidth?: number|string,
+	basis?: number|string,
 	children?: any,
 	remain?: boolean
 };
@@ -98,8 +98,7 @@ export let Section = (props: ISectionProps)=>{
 	});
 	cls = props.clsName?cls+" "+props.clsName:cls;
 	let style: React.CSSProperties = {
-		width: props.width,
-		flexBasis: props.minWidth,
+		flexBasis: props.basis,
 		...props.style
 	};
 
