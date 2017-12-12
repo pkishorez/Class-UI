@@ -8,6 +8,13 @@
 	overflow: hidden;
 }
 
+.successColor {
+	color: $theme-success-color;
+}
+.errorColor {
+	color: $theme-error-color;
+}
+
 @mixin ui_flex-box($halign: center, $valign: center) {
 	@include display-flex;
 	@include justify-content($halign);

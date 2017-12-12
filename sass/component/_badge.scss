@@ -1,0 +1,21 @@
+.badge {
+	padding: 7px 10px;
+	cursor: default;
+	color: white;
+	background-color: black;
+	&.success {
+		background-color: #27AE60;
+	}
+	&.error {
+		background-color: #E74C3C;
+	}
+	&.sunflower {
+		background-color: #F1C404;
+	}
+	&.carrot {
+		background-color: #E67E22;
+	}
+	&.grey {
+		background-color: #95A5A6;
+	}
+}

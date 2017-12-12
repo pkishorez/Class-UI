@@ -12,16 +12,20 @@
 			> th {
 				cursor: pointer;
 				opacity: 0.7;
+				text-transform: capitalize;
 				&:hover {
+					background-color: rgba(0,0,0,0.01);
 					opacity: 1;
 				}
 			}
 		}
 	}
 
-	> tbody {
-		> tr:hover{
-			background-color: rgb(245, 245, 245);
+	&.hoverable {
+		> tbody {
+			> tr:hover{
+				background-color: rgb(245, 245, 245);
+			}
 		}
 	}
 	> thead, > tbody {
@@ -30,7 +34,7 @@
 			text-align: left;
 
 			> td, >th {
-				padding: 13px 17px;
+				padding: 7px 17px;
 			}
 		}
 	}
