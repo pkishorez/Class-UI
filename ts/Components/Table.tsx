@@ -1,33 +1,36 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as classNames from 'classnames';
 
 export interface IProps {
-	children: {
-		id: string|number,
-		[key: string]: any
-	}[]
+	hoverable?: boolean
 };
 export interface IState {};
 
 export class Table extends React.Component<IProps, IState> {
+	static defaultProps: Partial<IProps> = {
+		hoverable: true
+	};
 	render() {
-		return <table className="table card-1">
-			<thead>
-				<tr>{
-					Object.keys(this.props.children[0]).map((key, i)=>{
-						return <th key={i}>{key}</th>;
-					})
-				}</tr>
-			</thead>
-			<tbody>{
-				this.props.children.map((row)=>{
-					return <tr key={row.id}>{
-						Object.keys(row).map((key)=>{
-							return <td key={key}>{row[key]}</td>
-						})
-					}</tr>;
-				})
-			}</tbody>
+		let cls = classNames("table", {
+			hoverable: this.props.hoverable
+		});
+		return <table className={cls}>
+			{this.props.children}
 		</table>;
 	}
 }
+
+export let THead = (props: any)=>{
+	return <thead>
+		<tr>
+			{props.children}
+		</tr>
+	</thead>;
+}
+
+export let TBody = (props: any)=>{
+	return <tbody>
+		{props.children}
+	</tbody>
+};
