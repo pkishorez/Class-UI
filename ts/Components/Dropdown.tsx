@@ -54,7 +54,7 @@ export class Dropdown extends React.Component<IProps, IState> {
 				}}>{this.props.button}</span> <i className="fa fa-angle-down"></i>
 			</div>
 
-			<SAnim show={this.state.active}>
+			<SAnim show={this.state.active} animType="slideBottom">
 				<ul onClick={()=>this.clickedWithinDropdown = true}>
 					{this.props.children}
 				</ul>

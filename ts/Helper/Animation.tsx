@@ -63,7 +63,7 @@ export class SAnim extends React.Component<IProps, any> {
 			return null;
 		}
 		this.rested = false;
-		return <Motion defaultStyle={{opac: 0}} style={{opac: spring(this.props.show?1:0, presets.gentle)}} onRest={this.onRest}>{
+		return <Motion defaultStyle={{opac: 0}} style={{opac: spring(this.props.show?1:0, presets.stiff)}} onRest={this.onRest}>{
 			(obj)=>{
 				let props = {
 					style: Animate(obj.opac, this.props.animType)
