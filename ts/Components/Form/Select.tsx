@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
 import {FormElement} from './FormElement';
+import { IFormContextType } from './Form';
 
 export interface IProps {
 	name: string
@@ -11,10 +12,13 @@ export interface IProps {
 
 export class Select extends FormElement<IProps, any> {
 	private select: HTMLSelectElement | null;
-	constructor(props: IProps, context: any) {
+	private defaultValue: string;
+
+	constructor(props: IProps, context: IFormContextType) {
 		super(props, context);
-		this.context.initialize(props.name, this, (schema)=>{
-			// Ignore Schema.
+		context.initialize(props.name, this, (schema, defaultValue)=>{
+			// Ignore Schema for now.
+			this.defaultValue = defaultValue;
 		})
 	}
 
@@ -34,7 +38,7 @@ export class Select extends FormElement<IProps, any> {
 	}
 
 	render() {
-		return <select name={this.props.name} ref={(ref)=>{this.select = ref;}}>
+		return <select defaultValue={this.defaultValue} name={this.props.name} ref={(ref)=>{this.select = ref;}}>
 			{this.props.options.map((option)=>{
 				return <option key={option} value={option}>{option}</option>
 			})}

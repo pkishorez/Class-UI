@@ -2,20 +2,38 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {FormElement} from './FormElement';
 import * as propTypes from 'prop-types';
+import { IFormContextType } from './Form';
+import { IJSONSchema, Schema } from './Schema/index';
+import * as _ from 'lodash';
 
 export interface IProps {
 	name: string,
 	children: any,
 	inline?: boolean
+	schema?: IJSONSchema
+	onError?: any
 };
 
-export class Checkbox extends FormElement<IProps, any> {
-	private checkbox: HTMLInputElement | null;
-	constructor(props: any, context: any) {
+export interface IState {
+	value: boolean
+}
+
+export class Checkbox extends FormElement<IProps, IState> {
+	private defaultValue: boolean;
+	private schema?: IJSONSchema;
+
+	constructor(props: IProps, context: IFormContextType) {
 		super(props, context);
-		this.context.initialize(props.name, this, (schema)=>{
-			// Ignore Schema.
+		this.schema = props.schema;
+		context.initialize(props.name, this, (schema, defaultValue)=>{
+			this.schema = _.merge(this.schema, schema);
+			this.defaultValue = defaultValue;
 		})
+		this.getValue = this.getValue.bind(this);
+		this.validate = this.validate.bind(this);
+		this.state = {
+			value: this.defaultValue
+		};
 	}
 
 	componentWillUnmount()
@@ -25,17 +43,22 @@ export class Checkbox extends FormElement<IProps, any> {
 
 	getValue() {
 		return {
-			value: this.checkbox?this.checkbox.value:null,
+			value: this.state.value,
 			error: null
 		};
 	}
 	validate() {
-		// Validation not present for now.
+		let error = this.schema?Schema.validate(this.schema, this.state.value):null;
+		(this.props.onError && this.props.onError(error));
 	}
 
 	render() {
 		return <label className={"checkbox"+(this.props.inline?" inline":"")}>
-			<input type="checkbox" ref={(ref)=>{this.checkbox=ref;}} value="true" name={this.props.name}/>
+			<input type="checkbox" checked={this.state.value} onChange={(e)=>{
+				this.setState({
+					value: !this.state.value
+				});
+			}} name={this.props.name}/>
 			<div className="fake">✔</div>
 			{this.props.children}
 		</label>;

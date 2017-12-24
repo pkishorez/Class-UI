@@ -4,7 +4,7 @@ import * as propTypes from 'prop-types';
 import {IFormContextType} from './Form';
 
 export interface IValue {
-	value: string | null
+	value: any | null
 	error: string | null
 };
 
@@ -15,10 +15,10 @@ export abstract class FormElement<IProps, IState> extends React.Component<IProps
 	}
 	context: IFormContextType;
 
-	constructor(props: any, context: any) {
+	constructor(props: any, context: IFormContextType) {
 		super(props, context);
 	}
 
 	abstract getValue(): IValue;
-	abstract validate(): void;
+	abstract validate(focus?:boolean): void;
 }

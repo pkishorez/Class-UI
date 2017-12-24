@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import * as propTypes from 'prop-types';
 import {FormElement} from './FormElement';
 import {IJSONSchema, Schema} from './Schema';
+import { IFormContextType } from './Form';
 
 export interface ITextProps {
 	name: string,
@@ -23,16 +24,18 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		type: "text"
 	};
 	private input: HTMLInputElement | HTMLTextAreaElement | null;
+	private defaultValue: string;
 	private schema?: IJSONSchema;
 
-	constructor(props: any, context: any) {
+	constructor(props: any, context: IFormContextType) {
 		super(props, context);
 		this.state = {
 			cls: ""
 		};
-		this.schema = this.props.schema;
-		this.context.initialize(this.props.name, this, (schema: any)=>{
-			this.schema=_.merge(this.props.schema, schema);
+		this.schema = props.schema;
+		context.initialize(props.name, this, (schema, defaultValue)=>{
+			this.schema=_.merge(props.schema, schema);
+			this.defaultValue = defaultValue;
 		});
 		this.getValue = this.getValue.bind(this);
 		this.validate = this.validate.bind(this);
@@ -53,28 +56,35 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		};
 	}
 
-	public validate() {
+	public validate(focus?: boolean) {
 		let error = this.schema?Schema.validate(this.schema, this.value?this.value:""):null;
-		(this.props.onError && this.props.onError(error));
+		if (error){
+			this.props.onError && this.props.onError(error);
+			if (focus) {
+				this.input?this.input.focus():null;
+			}
+		}
+	}
+
+	public onChange() {
+		this.validate();
 	}
 
 	render() {
-		return (this.props.type=="area")?<textarea 
-			autoFocus={this.props.autoFocus}
-			autoComplete="off"
-			ref={(ref)=>this.input = ref}
-			spellCheck={false}
-			name={this.props.name}
-			placeholder={this.props.children || "Enter a value"}
-			onChange={this.validate}>
+		let props = {
+			autoFocus: this.props.autoFocus,
+			autoComplete: "off",
+			ref: (ref: any)=>this.input = ref,
+			spellCheck: false,
+			name: this.props.name,
+			placeholder: this.props.children?this.props.children:"Enter a value",
+			onChange: this.onChange,
+			defaultValue: this.defaultValue
+		}
+		return (this.props.type=="area")?<textarea
+			{...props}>
 		</textarea>:<input type={this.props.type} 
-			autoFocus={this.props.autoFocus}
-			autoComplete="off"
-			ref={(ref)=>this.input = ref}
-			spellCheck={false}
-			name={this.props.name}
-			placeholder={this.props.children || "Enter a value"}
-			onChange={this.validate}
+			{...props}
 		/>;
 	}
 };

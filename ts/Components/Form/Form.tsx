@@ -10,6 +10,9 @@ export interface IProps {
 	cls?: string
 	style?: React.CSSProperties
 	onSubmit?: Function
+	default?: {
+		[id: string]: any
+	}
 	schema?: IJSONSchema
 	autocomplete?: "on" | "off"
 };
@@ -22,7 +25,7 @@ interface IData {
 };
 
 export interface IFormContextType {
-	initialize: (key: string, ref: any, func: (schema: IJSONSchema)=>void)=>void,
+	initialize: (key: string, ref: any, func: (schema: IJSONSchema, defaultValue: any)=>void)=>void,
 	delete_value: (key: string)=>void
 }
 
@@ -41,16 +44,16 @@ export class Form extends React.Component<IProps, IState> {
 	getChildContext(): IFormContextType
 	{
 		return {
-			initialize: (key: string, ref: any, func: (schema: IJSONSchema)=>void)=>{
+			initialize: (key, ref, func)=>{
 				this.formElemRefs[key] = {
 					ref
 				};
-				if (this.props.schema) {
-					let jschema_key = "properties."+key.replace(/\./g, ".properties.");
-					let pschema = _.get(this.props.schema, jschema_key);
-					if (pschema && func)
-						func(pschema);
-				}
+				let jschema_key = "properties."+key.replace(/\./g, ".properties.");
+				let pschema = _.get(this.props.schema, jschema_key);
+				let defaultValue = _.get(this.props.default, key);
+				console.log("Defaultvalue", key, defaultValue);
+				if (func)
+					func(pschema, defaultValue);
 			},
 			delete_value: (key: string) => {
 				delete this.formElemRefs[key];
@@ -71,12 +74,12 @@ export class Form extends React.Component<IProps, IState> {
 
 		for (let key in this.formElemRefs){
 			let ref = this.formElemRefs[key].ref;
-			ref.validate();
+			ref.validate(true);
 			let data = ref.getValue();
 			if (data.error) {
 				hasError = true;
 			}
-			if (data.value || data.value=="") {
+			if (data.value) {
 				formData = _.set(formData, key, data.value);
 			}
 		}
