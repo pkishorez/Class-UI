@@ -10,6 +10,7 @@ export interface IProps {
 
 	headerItems: string[],
 	sortableItems?: string[]
+	defaultGroup?: string
 	groupableItems?: string[]
 
 	data: any[],
@@ -42,7 +43,7 @@ export class Table extends React.Component<IProps, IState> {
 		this.state = {
 			sort: {by: "", order: "asc"},
 			group: {
-				by: undefined,
+				by: props.defaultGroup,
 				value: undefined
 			}
 		};
@@ -64,7 +65,7 @@ export class Table extends React.Component<IProps, IState> {
 		}
 		return data;
 	}
-	groupBy(item: string, value?: string) {
+	groupBy(item?: string, value?: string) {
 		this.setState({
 			group: {
 				by: item,
@@ -131,13 +132,13 @@ export class Table extends React.Component<IProps, IState> {
 
 		
 		let groupItems = this.state.group.by?<Menu header={_.capitalize(this.state.group.by)}>
-			{Object.keys(_.groupBy(this.props.data, this.state.group.by)).map((item)=>{
+			{[undefined, ...Object.keys(_.groupBy(this.props.data, this.state.group.by))].map((item)=>{
 				let cls = classNames("item", {
 					active: this.state.group.value==item
 				});
 				return <div className={cls} style={{minWidth: 150}} onClick={()=>{
 					this.state.group.by?this.groupBy(this.state.group.by, item):null;
-				}}>{item}</div>;
+				}}>{item?item:"All"}</div>;
 			})}
 		</Menu>:null;
 
