@@ -26,8 +26,10 @@
 
 		&.inline {
 			@include display-flex(inline-flex);
+			padding-right: 10px;
+			margin-right: 5px;
 		}
-	
+
 		&:hover{
 			background-color: #F4F4F4;
 		}
@@ -112,7 +114,7 @@
 		display: block;
 		margin-bottom: 5px;
 	}
-	label.checkbox {
+	label.checkbox, label.radio {
 		margin-left: -5px;
 		margin-bottom: 10px;
 	}
