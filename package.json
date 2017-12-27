@@ -25,31 +25,31 @@
   "license": "ISC",
   "dependencies": {
     "@types/classnames": "^2.2.3",
-    "@types/lodash": "^4.14.85",
+    "@types/lodash": "^4.14.91",
     "@types/prop-types": "^15.5.2",
     "@types/react-dom": "^16.0.3",
     "@types/react-motion": "0.0.23",
-    "@types/react-redux": "^5.0.13",
-    "@types/react-router-dom": "^4.2.2",
+    "@types/react-redux": "^5.0.14",
+    "@types/react-router-dom": "^4.2.3",
     "@types/uuid": "^3.4.3",
-    "ajv": "^5.5.0",
+    "ajv": "^5.5.2",
     "classnames": "^2.2.5",
     "enquire.js": "^2.1.6",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-motion": "^0.5.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.6.0",
     "source-map-loader": "^0.2.3",
-    "ts-loader": "^3.1.1",
-    "typescript": "^2.6.1",
+    "ts-loader": "^3.2.0",
+    "typescript": "^2.6.2",
     "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7"
   }
 }
