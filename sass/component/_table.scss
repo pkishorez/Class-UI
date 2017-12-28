@@ -28,6 +28,18 @@
 			}
 		}
 	}
+
+	> tbody {
+		tr{
+			@include transition(all 0.3s);
+		}
+		> tr.active {
+			&:hover, & {
+				background-color: $theme-color;
+				color: white;	
+			}
+		}
+	}
 	> thead, > tbody {
 		> tr {
 			border-bottom: 1px solid #CACACA;

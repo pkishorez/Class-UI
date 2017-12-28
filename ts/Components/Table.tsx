@@ -8,6 +8,9 @@ import { Menu } from './Menu';
 export interface IProps {
 	hoverable?: boolean
 
+	rowSelectable?: boolean
+	onSelect?: (elems: any[])=>void
+
 	headerItems: string[],
 	sortableItems?: string[]
 	defaultGroup?: string
@@ -28,13 +31,15 @@ export interface IState {
 		by?: string
 		value?: any
 	}
+	selected: any[]
 };
 
 export class Table extends React.Component<IProps, IState> {
 	static defaultProps: Partial<IProps> = {
 		hoverable: false,
 		sortableItems: [],
-		groupableItems: []
+		groupableItems: [],
+		rowSelectable: false
 	};
 
 	constructor(props: IProps, context: any) {
@@ -45,14 +50,15 @@ export class Table extends React.Component<IProps, IState> {
 			group: {
 				by: props.defaultGroup,
 				value: undefined
-			}
+			},
+			selected: []
 		};
 		this.groupBy = this.groupBy.bind(this);
-		this.getItemsByCriteria = this.getItemsByCriteria.bind(this);
+		this.getItems = this.getItems.bind(this);
 		this.sortBy = this.sortBy.bind(this);
 	}
 
-	getItemsByCriteria(): any[] {
+	getItems(): any[] {
 		let data = this.props.data;
 		if (this.state.sort.by!=""){
 			let sortBy = (row: any)=>_.isString(row[this.state.sort.by])?row[this.state.sort.by].toLowerCase():row[this.state.sort.by];
@@ -87,20 +93,22 @@ export class Table extends React.Component<IProps, IState> {
 			});
 		}
 	}
-	render() {
-
-		let data = this.getItemsByCriteria();
-
-		let bodyItems = data.map((row: any, i)=>{
-			return <tr onClick={()=>this.props.rowOnClick?this.props.rowOnClick(row):null} key={i}>{
-				this.props.headerItems.map((item, i)=>{
-					if (this.props.columnUI && this.props.columnUI[item]) {
-						return <td key={item}>{this.props.columnUI[item](row)}</td>;
-					}
-					return <td key={item}>{row[item]}</td>
-				})
-			}</tr>;
+	selectRow(row: any) {
+		let toggle = (arr: any[], elem: any)=>{
+			let index = _.findIndex(arr, (e: any)=>_.isEqual(e, elem));
+			console.log("TOGGLING : ", arr, elem, index);
+			if (index!=-1) {
+				return arr.filter(e=>!_.isEqual(e, elem));
+			}
+			return [...arr,elem];
+		}
+		let selectedElems = toggle(this.state.selected, row);
+		this.setState({
+			selected: selectedElems
 		});
+		this.props.onSelect && this.props.onSelect(selectedElems);
+	}
+	render() {
 
 		let headerItems = this.props.headerItems.map((item, i)=>{
 			const sort = this.state.sort;
@@ -125,23 +133,39 @@ export class Table extends React.Component<IProps, IState> {
 				</Layout>
 			</th>;
 		});
-
-		let cls = classNames("table", {
-			hoverable: this.props.hoverable
+		let bodyItems = this.getItems().map((row: any, i)=>{
+			return <tr className={(_.findIndex(this.state.selected, e=>_.isEqual(e, row))!=-1)?"active":""}
+			onClick={()=>{
+				this.props.rowOnClick?this.props.rowOnClick(row):null;
+				if (this.props.rowSelectable) {
+					this.selectRow(row);
+				}
+			}} key={i}>{
+				this.props.headerItems.map((item, i)=>{
+					if (this.props.columnUI && this.props.columnUI[item]) {
+						return <td key={item}>{this.props.columnUI[item](row)}</td>;
+					}
+					return <td key={item}>{row[item]}</td>
+				})
+			}</tr>;
 		});
 
 		
-		let groupItems = this.state.group.by?<Menu header={_.capitalize(this.state.group.by)}>
+		let groupMenu = this.state.group.by?<Menu header={_.capitalize(this.state.group.by)}>
 			{[undefined, ...Object.keys(_.groupBy(this.props.data, this.state.group.by))].map((item)=>{
 				let cls = classNames("item", {
 					active: this.state.group.value==item
 				});
-				return <div className={cls} style={{minWidth: 150}} onClick={()=>{
+				return <div key={item?item:Math.random()+""} className={cls} style={{minWidth: 150}} onClick={()=>{
 					this.state.group.by?this.groupBy(this.state.group.by, item):null;
 				}}>{item?item:"All"}</div>;
 			})}
 		</Menu>:null;
 
+
+		let cls = classNames("table", {
+			hoverable: this.props.hoverable
+		});
 		let dataTable = <table className={cls}>
 			<THead>
 				{headerItems}
@@ -151,7 +175,7 @@ export class Table extends React.Component<IProps, IState> {
 			</TBody>
 		</table>;
 		return this.state.group.by?<Layout gutter={20} align="start">
-			<Section>{groupItems}</Section>
+			<Section>{groupMenu}</Section>
 			<Section remain>{dataTable}</Section>
 		</Layout>:dataTable;
 	}
