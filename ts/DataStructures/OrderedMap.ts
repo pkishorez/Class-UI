@@ -7,6 +7,7 @@ export interface IOrderedMap<T>{
 		[id: string]: T
 	},
 	order: string[]
+	hidden?: string[]
 }
 
 export type IOrderedMapAction<T> = {
@@ -26,6 +27,9 @@ export type IOrderedMapAction<T> = {
 } | {
 	type: "REORDER"
 	order: string[]
+} | {
+	type: "HIDDEN"
+	hidden: string[]
 };
 
 export class OrderedMap<T> {
@@ -35,62 +39,41 @@ export class OrderedMap<T> {
 		if (!orderedMap) {
 			orderedMap = {map: {}, order: []};
 		}
-		let inited = this.init(orderedMap);
-		if (typeof inited=="string") {
-			console.error("VERY SERIOUS ERROR !!!", inited);
-			return this;
-		}
-		this.orderedMap = inited;
+		this.init(orderedMap);
 		this.Tschema = schema;
 	}
 
 	performAction(action: IOrderedMapAction<T>): IOrderedMapAction<T> | string {
 		switch(action.type) {
 			case "INIT": {
-				if (action.state) {
-					let init = this.init(action.state);
-					if (typeof init == "string") {
-						return init;
-					}
-					this.orderedMap = init;
-				}
-				else {
-					action.state = this.orderedMap;
-				}
+				this.orderedMap = this.init(action.state);
 				break;
 			}
 			case "ADD": {
-				let new_id = this.add(action.value, action._id);
-				if (typeof new_id=="string") {
-					action._id = new_id;
+				if (!action._id){
+					console.error("Action ID should be provided to add.");
+					break;
 				}
-				else {
-					return new_id.error;
-				}
+				this.add(action.value, action._id);
 				break;
 			}
 			case "DELETE": {
-				let del = this.del(action._id);
-				if (typeof del=="string") {
-					return del;
-				}
-				this.orderedMap = del;
+				this.del(action._id);
 				break;
 			}
 			case "MODIFY": {
-				let modified = this.modify(action._id, action.value);
-				if (typeof modified=="string") {
-					return modified;
-				}
-				this.orderedMap = modified;
+				this.modify(action._id, action.value);
 				break;
 			}
 			case "REORDER": {
-				let reordered = this.reorder(action.order);
-				if (typeof reordered=="string") {
-					return reordered;
-				}
-				this.orderedMap = reordered;
+				this.reorder(action.order);
+				break;
+			}
+			case "HIDDEN": {
+				this.orderedMap = {
+					...this.orderedMap,
+					hidden: action.hidden
+				};
 				break;
 			}
 		}
@@ -105,33 +88,35 @@ export class OrderedMap<T> {
 		return JSON.stringify(this.orderedMap);
 	}
 
-	init(orderedMap: IOrderedMap<T>): IOrderedMap<T> | string {
+	init(orderedMap: IOrderedMap<T>): IOrderedMap<T> {
 		// Integrity check to make sure all keys in map are present in order.
-		let mapKeys = _.sortBy(Object.keys(orderedMap.map));
-		let order = _.sortBy(orderedMap.order);
+		let mapKeys = Object.keys(orderedMap.map);
+		let order = orderedMap.order;
 
-		if (_.isEqual(mapKeys, order)) {
-			// INTEGRITY IS Good :)
-			if (_.isEqual(orderedMap, this.orderedMap)) {
-				// NO CHANGE.
-				return this.orderedMap;
-			}
-			return orderedMap;
+		// Combine mapkeys not present in order to order.
+		order = _.union(order, mapKeys);
+
+		// Remove order keys that are not present in map.
+		order = _.difference(order, _.xor(order, mapKeys));
+
+		orderedMap = {
+			...orderedMap,
+			order,
+			hidden: orderedMap.hidden?_.intersection(orderedMap.hidden, mapKeys):[]
 		}
-		// Operation rejected. Integrity failure.
-		return "Integrity failure. DATASTRUCTURE ERROR!!!";
+		return orderedMap;
 	}
 
-	add(value: T, _id = v4()): string|{error: string} {
+	add(value: T, _id: string) {
 		// START VALIDATION
 		let error = Schema.validate(this.Tschema, value);
 		if (error) {
-			return {error};
+			console.error(error);
+			return;
 		}
-		// END OF VALIDATION
-
 		if (this.orderedMap.map[_id]) {
-			return {error: "Record with id: "+_id+" already present"};
+			console.error("Record with id: "+_id+" already present");
+			return;
 		}
 		this.orderedMap = {
 			...this.orderedMap,
@@ -144,23 +129,21 @@ export class OrderedMap<T> {
 				_id
 			]
 		};
-		return _id;
 	}
 
-	del(map_id: string): IOrderedMap<T> | string {
-		let filtered = this.orderedMap.order.filter(id=>map_id!=id);
-		if (_.isEqual(filtered, this.orderedMap.order)) {
-			return "Couldn't find record with id : "+map_id;
+	del(map_id: string) {
+		if (!this.orderedMap.map[map_id]) {
+			console.error("Couldn't find record with id : "+map_id);
+			return;
 		}
 		this.orderedMap = {
 			...this.orderedMap,
-			map: _.pick(this.orderedMap.map as any, filtered),
-			order: filtered
-		}
-		return this.orderedMap;
+			map: _.omit(this.orderedMap.map, map_id),
+			order: _.difference(this.orderedMap.order, map_id)
+		};
 	}
 
-	modify(map_id: string, value: Partial<T>): IOrderedMap<T> | string {
+	modify(map_id: string, value: Partial<T>) {
 		value = {
 			...this.orderedMap.map[map_id] as any,
 			...value as any
@@ -168,7 +151,8 @@ export class OrderedMap<T> {
 		// START VALIDATE SCHEMA
 		let error = Schema.validate(this.Tschema, value);
 		if (error) {
-			return error;
+			console.error(error);
+			return;
 		}
 		// END OF VALIDATE SCHEMA
 		if (this.orderedMap.map[map_id]) {
@@ -179,14 +163,12 @@ export class OrderedMap<T> {
 					[map_id]: value as any
 				}
 			}
-			return this.orderedMap;
 		}
-		else {
-			return "No record found to modify the value.";
-		}
+		else
+			console.error("No record found to modify the value.");
 	}
 
-	reorder(order: string[]): IOrderedMap<T> | string {
+	reorder(order: string[]) {
 		if (_.isEqual(_.sortBy(order), _.sortBy(this.orderedMap.order))) {
 			this.orderedMap = {
 				...this.orderedMap,
@@ -194,8 +176,7 @@ export class OrderedMap<T> {
 			};
 		}
 		else {
-			return "ORDER MISMATCH!!!";
+			console.error("ORDER MISMATCH!!!");
 		}
-		return this.orderedMap;
 	}
 }
