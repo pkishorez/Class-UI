@@ -66,7 +66,69 @@
 			@include transition(all 0.3s);
 		}
 	}
-	select {
+	.select {
+		position: relative;
+		display: block;
+
+		>.input{
+			cursor: pointer;
+			color : transparent;
+			text-shadow: 0px 0px 0px #000;
+		}
+		>.suggestions {
+			position: absolute;
+			top: 0px;
+			bottom: auto;
+			padding: 10px 0px;
+			background-color: white;
+			width: 100%;
+			max-height: 300px;
+			overflow: auto;
+			box-shadow: 0px 0px 3px grey;
+			>span {
+				display: block;
+				cursor: pointer;
+				padding: 7px 10px;
+				&:hover{
+					background-color: $theme-color;
+					color: white;
+				}
+				&.active {
+					color: $theme-color;
+					cursor: default;
+					&:hover {
+						background-color: inherit;
+						color: $theme-color;
+					}
+				}
+			}
+		}
+		&.top >.suggestions {
+			top: auto;
+			bottom: 0px;
+		}
+
+		&.editable {
+			>.input {
+				color: black;
+				padding: 7px 0px;
+				cursor: default;
+				&:focus {
+					cursor: auto;
+					padding-left: 10px;
+				}			
+			}
+			>.suggestions {
+				top: 100%;
+				bottom: auto;
+			}
+			&.top {
+				>.suggestions {
+					top: auto;
+					bottom: 100%;
+				}
+			}
+		}
 		margin-bottom: 20px;
 	}
 }
@@ -76,7 +138,6 @@
 	padding: 20px;
 	background-color: white;
 	> .textfield {
-
 		> .label{
 			font-size: 13px;
 		}
@@ -110,7 +171,6 @@
 				color: $theme-color-darker;
 			}
 		}
-
 		display: block;
 		margin-bottom: 5px;
 	}
