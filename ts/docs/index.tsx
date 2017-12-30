@@ -15,7 +15,6 @@ import { Formlayout } from '../Components/Formlayout/index';
 import { TextField } from '../Components/Formlayout/TextField';
 import { Select, Checkbox, Radio } from '../Components/Form/index';
 import { Drawer } from '../Components/Drawer';
-import { StructuredOrderedMapUI } from '../Components/StructuredOrderedMapUI';
 import { Page1 } from './Page1';
 
 ReactDOM.render(<Router >
@@ -41,23 +40,6 @@ ReactDOM.render(<Router >
 			</NavBar>
 			<Content fullHeight>
 			<Page1/>
-<StructuredOrderedMapUI strucutredOrderedMap={{
-	map: {},
-	blocks: {},
-	structure: {
-		a: {
-			b: {
-				d: {
-					e: []
-				}
-			},
-			c: {
-				f: []
-			}
-		}
-	},
-	uncategorized: []
-}}/>
 					<div style={{backgroundColor: 'white', padding: 10}}>
 					<h1>H1 Content</h1>
 					<h2>H2 Content</h2>
