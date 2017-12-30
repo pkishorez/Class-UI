@@ -46,7 +46,7 @@ export class OrderedMap<T> {
 	performAction(action: IOrderedMapAction<T>): IOrderedMapAction<T> | string {
 		switch(action.type) {
 			case "INIT": {
-				this.orderedMap = this.init(action.state);
+				this.init(action.state);
 				break;
 			}
 			case "ADD": {
@@ -88,7 +88,7 @@ export class OrderedMap<T> {
 		return JSON.stringify(this.orderedMap);
 	}
 
-	init(orderedMap: IOrderedMap<T>): IOrderedMap<T> {
+	init(orderedMap: IOrderedMap<T>) {
 		// Integrity check to make sure all keys in map are present in order.
 		let mapKeys = Object.keys(orderedMap.map);
 		let order = orderedMap.order;
@@ -99,12 +99,11 @@ export class OrderedMap<T> {
 		// Remove order keys that are not present in map.
 		order = _.difference(order, _.xor(order, mapKeys));
 
-		orderedMap = {
+		this.orderedMap = {
 			...orderedMap,
 			order,
 			hidden: orderedMap.hidden?_.intersection(orderedMap.hidden, mapKeys):[]
 		}
-		return orderedMap;
 	}
 
 	add(value: T, _id: string) {
@@ -139,7 +138,8 @@ export class OrderedMap<T> {
 		this.orderedMap = {
 			...this.orderedMap,
 			map: _.omit(this.orderedMap.map, map_id),
-			order: _.difference(this.orderedMap.order, map_id)
+			order: _.difference(this.orderedMap.order, [map_id]),
+			hidden: _.difference(this.orderedMap.hidden, [map_id])
 		};
 	}
 
