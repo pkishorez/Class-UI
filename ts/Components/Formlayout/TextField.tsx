@@ -25,7 +25,7 @@ export class TextField extends React.Component<IProps, {error: null|string|undef
 	render() {
 		let cls = classNames("textfield", {
 			"error": this.state.error?true:false,
-			"success": (!this.state.error&&(this.state.error!==undefined))?true:false
+			"success": (this.state.error===null)?true:false
 		});
 		return <label className={cls}>
 			{this.props.label?<div className="label">{this.props.label}</div>:null}

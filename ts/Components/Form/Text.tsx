@@ -39,6 +39,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		});
 		this.getValue = this.getValue.bind(this);
 		this.validate = this.validate.bind(this);
+		this.onChange = this.onChange.bind(this);
 	}
 
 	componentWillUnmount() {
@@ -58,15 +59,13 @@ export class Text extends FormElement<ITextProps, ITextState> {
 
 	public validate(focus?: boolean) {
 		let error = this.schema?Schema.validate(this.schema, this.value?this.value:""):null;
-		if (error){
-			this.props.onError && this.props.onError(error);
-			if (focus) {
-				this.input?this.input.focus():null;
-			}
+		if (error && focus){
+			this.input?this.input.focus():null;
 		}
+		this.props.onError && this.props.onError(error);
 	}
 
-	public onChange() {
+	private onChange() {
 		this.validate();
 	}
 
