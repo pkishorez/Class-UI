@@ -19,7 +19,7 @@ export interface IState {
 }
 
 export class Checkbox extends FormElement<IProps, IState> {
-	private defaultValue: boolean;
+	private defaultValue: boolean = true;
 	private schema?: IJSONSchema;
 
 	constructor(props: IProps, context: IFormContextType) {

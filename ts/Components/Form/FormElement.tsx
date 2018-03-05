@@ -13,7 +13,10 @@ export abstract class FormElement<IProps, IState> extends React.Component<IProps
 		initialize: propTypes.func,
 		delete_value: propTypes.func
 	}
-	context: IFormContextType;
+	context: IFormContextType = {
+		delete_value: ()=>{},
+		initialize: ()=>{}
+	};
 
 	constructor(props: any, context: IFormContextType) {
 		super(props, context);

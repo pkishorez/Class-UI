@@ -50,19 +50,25 @@ export class NavBar extends React.Component<IProps, IState> {
 	}
 
 	render() {
+		let dummycls = classNames("card-2", "navbar", "dummy");
+
 		let cls = classNames("card-2", "navbar",  {
 			fixed: this.props.fixed
 		});
-		return <div className={cls} ref={(ref)=>{NavBar._ref=ref;}}>
-			<div className="content" style={{
-				width: ClassUI.contentWidth
-			}}>
-				{
-					this.props.logo?<div className="logo">{this.props.logo}</div>:null
-				}
-				{this.props.children}
-			</div>
+		let content = <div className="content" style={{
+			width: ClassUI.contentWidth
+		}}>
+			{
+				this.props.logo?<div className="logo">{this.props.logo}</div>:null
+			}
+			{this.props.children}
 		</div>;
+		return <>
+			{this.props.fixed?<div className={dummycls}>{content}</div>:null}
+			<div className={cls} ref={(ref)=>{NavBar._ref=ref;}}>
+				{content}
+			</div>
+		</>;
 	}
 }
 

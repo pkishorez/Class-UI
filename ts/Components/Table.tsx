@@ -69,6 +69,8 @@ export class Table extends React.Component<IProps, IState> {
 		if (this.state.group.by && this.state.group.value) {
 			data = _.groupBy(data, this.state.group.by)[this.state.group.value];
 		}
+		if (!_.isArray(data))
+			data = [];
 		return data;
 	}
 	groupBy(item?: string, value?: string) {
@@ -96,7 +98,6 @@ export class Table extends React.Component<IProps, IState> {
 	selectRow(row: any) {
 		let toggle = (arr: any[], elem: any)=>{
 			let index = _.findIndex(arr, (e: any)=>_.isEqual(e, elem));
-			console.log("TOGGLING : ", arr, elem, index);
 			if (index!=-1) {
 				return arr.filter(e=>!_.isEqual(e, elem));
 			}

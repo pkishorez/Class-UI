@@ -28,11 +28,11 @@
     "@types/lodash": "^4.14.91",
     "@types/prop-types": "^15.5.2",
     "@types/react-dom": "^16.0.3",
-    "@types/react-motion": "0.0.23",
+    "@types/react-motion": "0.0.25",
     "@types/react-redux": "^5.0.14",
     "@types/react-router-dom": "^4.2.3",
     "@types/uuid": "^3.4.3",
-    "ajv": "^5.5.2",
+    "ajv": "^6.2.1",
     "classnames": "^2.2.5",
     "enquire.js": "^2.1.6",
     "lodash": "^4.17.4",
@@ -44,12 +44,11 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.6.0",
     "source-map-loader": "^0.2.3",
-    "ts-loader": "^3.2.0",
+    "ts-loader": "^4.0.1",
     "typescript": "^2.6.2",
-    "uuid": "^3.1.0"
-  },
-  "devDependencies": {
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7"
+    "uuid": "^3.1.0",
+    "webpack": "^4.1.0",
+    "webpack-cli": "^2.0.10",
+    "webpack-dev-server": "^3.1.0"
   }
 }

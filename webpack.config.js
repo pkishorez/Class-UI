@@ -7,7 +7,7 @@ module.exports = {
 	},
 	
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.tsx?$/,
 				loader: 'source-map-loader'

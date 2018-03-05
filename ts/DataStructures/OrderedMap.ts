@@ -33,12 +33,9 @@ export type IOrderedMapAction<T> = {
 };
 
 export class OrderedMap<T> {
-	private orderedMap: IOrderedMap<T>;
+	private orderedMap: IOrderedMap<T> = {map: {}, order: []};
 	private Tschema: IJSONSchema;
 	constructor(orderedMap: IOrderedMap<T>, schema: IJSONSchema = {}) {
-		if (!orderedMap) {
-			orderedMap = {map: {}, order: []};
-		}
 		this.init(orderedMap);
 		this.Tschema = schema;
 	}

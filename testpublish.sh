@@ -31,4 +31,3 @@ rm ./Navbar.d.ts
 rm ./Navbar.js
 rm ./Content.d.ts
 rm ./Content.js
-rm ./classui.tgz

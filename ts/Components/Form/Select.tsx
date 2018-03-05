@@ -19,19 +19,18 @@ export interface IState {
 	showSuggestions: boolean
 }
 export class Select extends FormElement<IProps, IState> {
-	private select: HTMLSelectElement | null;
-	private defaultValue: string;
+	private defaultValue: string = "";
 
 	constructor(props: IProps, context: IFormContextType) {
 		super(props, context);
 		context.initialize(props.name, this, (schema, defaultValue)=>{
 			// Ignore Schema for now.
-			this.defaultValue = defaultValue;
+			this.defaultValue = defaultValue?defaultValue: "";
+			this.state = {
+				value: this.defaultValue,
+				showSuggestions: false
+			};	
 		});
-		this.state = {
-			value: this.defaultValue,
-			showSuggestions: false
-		};
 		this.onChange = this.onChange.bind(this);
 		this.suggestions = this.suggestions.bind(this);
 		this.getSuggestions = this.getSuggestions.bind(this);
@@ -44,7 +43,7 @@ export class Select extends FormElement<IProps, IState> {
 
 	public getValue() {
 		return {
-			value: this.select?this.select.value:null,
+			value: this.state.value,
 			error: null
 		};
 	}

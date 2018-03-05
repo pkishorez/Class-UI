@@ -23,8 +23,8 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		autoFocus: false,
 		type: "text"
 	};
-	private input: HTMLInputElement | HTMLTextAreaElement | null;
-	private defaultValue: string;
+	private input: HTMLInputElement | HTMLTextAreaElement | null = null;
+	private defaultValue: string = "";
 	private schema?: IJSONSchema;
 
 	constructor(props: any, context: IFormContextType) {
@@ -32,6 +32,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		this.state = {
 			cls: ""
 		};
+
 		this.schema = props.schema;
 		context.initialize(props.name, this, (schema, defaultValue)=>{
 			this.schema=_.merge(props.schema, schema);

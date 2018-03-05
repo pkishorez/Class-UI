@@ -32,9 +32,17 @@ body {
 	background-color: #ECECEC;
 }
 .classui {
+	&.fullheight {
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
 	> .mainContent {
+		flex-grow: 1;
 		max-width: 100%;
 		margin: auto;
+		align-self: center;
+		display: flex;
 	}
 }
 

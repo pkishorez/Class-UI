@@ -51,7 +51,6 @@ export class Form extends React.Component<IProps, IState> {
 				let jschema_key = "properties."+key.replace(/\./g, ".properties.");
 				let pschema = _.get(this.props.schema, jschema_key);
 				let defaultValue = _.get(this.props.default, key);
-				console.log("Defaultvalue", key, defaultValue);
 				if (func)
 					func(pschema, defaultValue);
 			},

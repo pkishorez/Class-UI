@@ -5,7 +5,6 @@ import {NavBar} from './Navbar';
 
 export interface IProps {
 	style?: React.CSSProperties
-	fullHeight?: boolean
 };
 
 export interface IState {};
@@ -16,15 +15,7 @@ export class Content extends React.Component<IProps, IState> {
 		return Content._ref;
 	}
 	render() {
-		return <div className="mainContent" ref={(ref)=>{
-			Content._ref = ref;
-			if (ref){
-				let navbarHeight = NavBar.ref?NavBar.ref.getBoundingClientRect().height:0;
-				ref.style.marginTop = navbarHeight+'px';
-				if (this.props.fullHeight)
-					ref.style.minHeight = `calc(100vh - ${navbarHeight}px)`;
-			}
-		}} style={{
+		return <div className="mainContent" style={{
 			width: ClassUI.contentWidth,
 			...this.props.style
 		}}>

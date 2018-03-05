@@ -10,6 +10,7 @@ let _instance: ClassUI;
 export interface IProps {
 	contentWidth?: number // ContentWidth is the maxWidth of the UI.
 	offline?: boolean
+	fullHeight?: boolean
 };
 
 /**
@@ -21,7 +22,8 @@ export class ClassUI extends React.Component<IProps, any> {
 
 	public static defaultProps: IProps = {
 		contentWidth: 1024,
-		offline: false
+		offline: false,
+		fullHeight: false
 	};
 
 	public static get contentWidth() {
@@ -54,7 +56,8 @@ export class ClassUI extends React.Component<IProps, any> {
 	}
 	render() {
 		let cls = classNames("classui", {
-			offline: this.props.offline
+			offline: this.props.offline,
+			fullheight: this.props.fullHeight
 		});
 		return <div className={cls}>
 			{this.props.children}
