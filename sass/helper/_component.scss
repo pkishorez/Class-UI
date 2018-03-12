@@ -32,8 +32,8 @@
 	cursor: pointer;
 
 	&:hover, &.active {
-		background-color: $theme-color;
-		color: $theme-color-contrast;
+		background-color: map-get($theme, color);
+		color: map-get($theme, color-contrast);
 	}
 	&.disable {
 		&, &:hover, &:active, &.active {
@@ -42,24 +42,12 @@
 			color: grey;
 		}
 	}
-	.classui.offline & {
-		&:hover, &.active {
-			background-color: $theme-offline-color;
-			color: $theme-offline-color-contrast;
-		}
-	}
 }
 
 .actionable_component {
 	@extend .hoverable_component;
 	&:active {
-		background-color: $theme-color-darker;
-		color: $theme-color-contrast;
-	}
-	.classui.offline & {
-		&:active {
-			background-color: $theme-offline-color-darker;
-			color: $theme-offline-color-contrast;	
-		}
+		background-color: map-get($theme, color-darker);
+		color: map-get($theme, color-contrast);
 	}
 }

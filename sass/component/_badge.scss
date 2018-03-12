@@ -4,6 +4,7 @@
 	color: white;
 	background-color: black;
 	@include transition(all 0.4s);
+
 	&.success {
 		background-color: #27AE60;
 	}

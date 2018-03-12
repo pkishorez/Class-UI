@@ -9,10 +9,10 @@
 }
 
 .successColor {
-	color: $theme-success-color;
+	color: map-get($theme, success-color);
 }
 .errorColor {
-	color: $theme-error-color;
+	color: map-get($theme, error-color);
 }
 
 @mixin ui_flex-box($halign: center, $valign: center) {

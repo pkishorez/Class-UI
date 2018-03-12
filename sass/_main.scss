@@ -1,50 +1,56 @@
-// Import variables here in themes.
-
-@import 'compass/css3';
+@import 'vendor/compass/css3';
 
 // Reset
 @import 'partial/reset';
 @import	'partial/normalize';
 
 // Helpers
-@import 'helper/component';
 @import 'helper/flex';
-@import 'helper/utilities';
-
-// Components
-@import 'component/button';
-@import 'component/dropdown';
-
-@import 'component/badge';
-@import 'component/navbar';
-@import 'component/form';
-@import 'component/flash';
-@import 'component/drawer';
-@import 'component/feedback';
-@import 'component/sidemenu';
-@import 'component/table';
-
-@import 'component/card';
-
-@import 'component/zindex';
+@import './themes';
 
 body {
 	background-color: #ECECEC;
 }
-.classui {
-	&.fullheight {
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-	}
-	> .mainContent {
-		flex-grow: 1;
-		max-width: 100%;
-		margin: auto;
-		align-self: center;
-		display: flex;
+
+@mixin classui_theme($theme-name) {
+	$theme: map-get($themes, $theme-name) !global;
+
+	.classui.#{$theme-name} {
+		&.fullheight {
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+		> .mainContent {
+			flex-grow: 1;
+			max-width: 100%;
+			margin: auto;
+			align-self: center;
+			display: flex;
+		}
+	
+		// Components
+		@import 'helper/component';
+		@import 'helper/utilities';
+
+		@import 'component/button';
+		@import 'component/dropdown';
+	
+		@import 'component/badge';
+		@import 'component/navbar';
+		@import 'component/form';
+		@import 'component/flash';
+		@import 'component/drawer';
+		@import 'component/feedback';
+		@import 'component/sidemenu';
+		@import 'component/table';
+	
+		@import 'component/card';
+	
+		@import 'component/zindex';
+		// Should be placed above all.
+		@import 'helper/component';
 	}
 }
-
-// Should be placed above all.
-@import 'helper/component';

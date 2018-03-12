@@ -41,8 +41,8 @@
 			left: 0px;
 			&:checked {
 				& ~ .fake {
-					border: 1px solid $theme-color-darker;
-					background-color: $theme-color
+					border: 1px solid map-get($theme, color-darker);
+					background-color: map-get($theme, color);
 				}
 			}
 			&:focus {
@@ -90,15 +90,15 @@
 				cursor: pointer;
 				padding: 7px 10px;
 				&:hover{
-					background-color: $theme-color;
+					background-color: map-get($theme, color);
 					color: white;
 				}
 				&.active {
-					color: $theme-color;
+					color: map-get($theme, color);
 					cursor: default;
 					&:hover {
 						background-color: inherit;
-						color: $theme-color;
+						color: map-get($theme, color);
 					}
 				}
 			}
@@ -112,11 +112,14 @@
 			>.input {
 				color: black;
 				padding: 7px 0px;
-				cursor: default;
+				cursor: text;
 				&:focus {
 					cursor: auto;
 					padding-left: 10px;
-				}			
+				}
+				&:hover {
+					border-bottom: 2px solid black;
+				}
 			}
 			>.suggestions {
 				top: 100%;
@@ -152,7 +155,7 @@
 		}
 		&.error {
 			> input[type="text"], input[type='number'], input[type='password'], textarea {
-				border-bottom: 2px solid $theme-error-color;
+				border-bottom: 2px solid map-get($theme, error-color);
 			}
 			> .label {
 				color: #ff1744;
@@ -165,10 +168,10 @@
 		}
 		&.success {
 			> input[type="text"], input[type='number'], input[type='password'], textarea {
-				border-bottom: 2px solid $theme-color-darker;
+				border-bottom: 2px solid map-get($theme, color-darker);
 			}
 			> .label {
-				color: $theme-color-darker;
+				color: map-get($theme, color-darker);
 			}
 		}
 		display: block;

@@ -4,7 +4,7 @@
 	left: 0px;
 	width: 100%;
 	padding: 3px;
-	background-color: $theme-color;
+	background-color: map-get($theme, color);
 	@include transition(all 1s);
 
 	&.fixed {
@@ -42,19 +42,8 @@
 		.button {
 			background-color: inherit;
 			&:hover, &:active, &.active{
-				background-color: $theme-color-darker;
+				background-color: map-get($theme, color-darker);
 			}
 		}
 	}
-
-	.classui.offline & {
-		background-color: $theme-offline-color;
-		.button {
-			background-color: inherit;
-			&:hover, &:active, &.active{
-				background-color: $theme-offline-color-darker;
-			}
-		}
-	}
-
 }

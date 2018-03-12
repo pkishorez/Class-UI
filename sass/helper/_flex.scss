@@ -4,10 +4,14 @@
 	@include flex-wrap(nowrap);
 	@include align-content(flex-start);
 	@include justify-content(center);
-	@include align-items(center);
+	@include align-items(stretch);
 
-	&.eq-width > * {
-		@include flex(1 1 0);
+	& > * {
+		@include flex(0 0 auto);
+	}
+
+	&.spread > * {
+		@include flex(1 1 auto);
 	}
 
 	> .remain{
@@ -32,6 +36,9 @@
 	&.justify-end {
 		@include justify-content(flex-end);
 	}
+	&.justify-center {
+		@include justify-content(center);
+	}
 	&.justify-space-between {
 		@include justify-content(space-between);
 	}
@@ -44,6 +51,9 @@
 	}
 	&.align-end {
 		@include align-items(flex-end);
+	}
+	&.align-center {
+		@include align-items(center);
 	}
 	&.align-stretch {
 		@include align-items(stretch);
