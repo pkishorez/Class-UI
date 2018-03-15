@@ -1,11 +1,10 @@
-.badge {
+.__badge {
 	padding: 7px 10px;
 	cursor: default;
 	color: white;
-	background-color: black;
 	@include transition(all 0.4s);
 
-	&.success {
+	&, &.success {
 		background-color: #27AE60;
 	}
 	&.error {

@@ -1,4 +1,4 @@
-.button, input[type='button'], input[type='submit'], button {
+.__button, input[type='button'], input[type='submit'], button {
 	@extend .actionable_grey_component;
 	padding: 10px;
 	background-color: #DDDDDD;
