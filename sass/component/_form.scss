@@ -1,193 +1,177 @@
-.form {
-	input[type='text'], input[type='number'], input[type='password'], textarea {
-		width: 100%;
-		background-color: inherit;
-		font-size: 15px;
-		border-width: 0px;
+.__input, input[type='text'], input[type='number'], input[type='password'], textarea {
+	// Reset styles
+	background-color: inherit;
+	font-size: 15px;
+	border-width: 0px;
+	outline-width: 0px;
+
+	width: 100%;
+	border-bottom: 2px solid #DFDFDF;
+	color: black;
+	padding: 5px 0px;
+	padding-bottom: 4px;
+	margin: 0px;
+	@include transition(all 0.3s);
+
+	&:focus {
+		border-bottom: 2px solid black;
 		outline-width: 0px;
-		border-bottom: 2px solid #DFDFDF;
-		color: black;
-		padding: 5px 0px;
-		padding-bottom: 4px;
-		margin: 0px;
-		@include transition(all 0.3s);
-
-		&:focus {
-			border-bottom: 2px solid black;
-			outline-width: 0px;
-		}
-	}
-
-	label.checkbox, label.radio {
-		position: relative;
-		@include ui_flex-box(flex-start);
-		@include user-select(none);
-		padding: 5px;
-
-		&.inline {
-			@include display-flex(inline-flex);
-			padding-right: 10px;
-			margin-right: 5px;
-		}
-
-		&:hover{
-			background-color: #F4F4F4;
-		}
-
-		input[type='checkbox'], input[type='radio'] {
-			opacity: 0;
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			&:checked {
-				& ~ .fake {
-					border: 1px solid map-get($theme, color-darker);
-					background-color: map-get($theme, color);
-				}
-			}
-			&:focus {
-				& ~ .fake {
-					@include box-shadow(0 0px 10px grey);
-				}
-			}
-		}
-		input[type='radio'] ~ .fake {
-			border-radius: 10px;
-		}
-		>.fake {
-			@include ui_flex-box(center);
-			width: 17px;
-			height: 17px;
-			margin-right: 10px;
-			//border-radius: 3px;
-			border: 1px solid black;
-			font-size: 15px;
-			color: white;
-			@include transition(all 0.3s);
-		}
-	}
-	.select {
-		position: relative;
-		display: block;
-
-		>.input{
-			cursor: pointer;
-			color : transparent;
-			text-shadow: 0px 0px 0px #000;
-		}
-		>.suggestions {
-			position: absolute;
-			top: 0px;
-			bottom: auto;
-			padding: 10px 0px;
-			background-color: white;
-			width: 100%;
-			max-height: 300px;
-			overflow: auto;
-			box-shadow: 0px 0px 3px grey;
-			>span {
-				display: block;
-				cursor: pointer;
-				padding: 7px 10px;
-				&:hover{
-					background-color: map-get($theme, color);
-					color: white;
-				}
-				&.active {
-					color: map-get($theme, color);
-					cursor: default;
-					&:hover {
-						background-color: inherit;
-						color: map-get($theme, color);
-					}
-				}
-			}
-		}
-		&.top >.suggestions {
-			top: auto;
-			bottom: 0px;
-		}
-
-		&.editable {
-			>.input {
-				color: black;
-				padding: 7px 0px;
-				cursor: text;
-				&:focus {
-					cursor: auto;
-					padding-left: 10px;
-				}
-				&:hover {
-					border-bottom: 2px solid black;
-				}
-			}
-			>.suggestions {
-				top: 100%;
-				bottom: auto;
-			}
-			&.top {
-				>.suggestions {
-					top: auto;
-					bottom: 100%;
-				}
-			}
-		}
-		margin-bottom: 20px;
 	}
 }
 
-.form-layout {
+label.__input_checkbox, label.__input_radio {
 	position: relative;
-	padding: 20px;
-	background-color: white;
-	> .textfield {
-		> .label{
-			font-size: 13px;
-		}
-		> .error {
-			max-height: 0px;
-			overflow: hidden;
-			opacity: 0;
-			padding: 5px 0px;
-			font-size: 13px;
-			color: #ff1744;
-			@include transition(max-height 0.5s);
-		}
-		&.error {
-			> input[type="text"], input[type='number'], input[type='password'], textarea {
-				border-bottom: 2px solid map-get($theme, error-color);
-			}
-			> .label {
-				color: #ff1744;
-			}
-			> .error {
-				max-height: 50px;
-				overflow-wrap: break-word;
-				opacity: 1;
-			}
-		}
-		&.success {
-			> input[type="text"], input[type='number'], input[type='password'], textarea {
-				border-bottom: 2px solid map-get($theme, color-darker);
-			}
-			> .label {
-				color: map-get($theme, color-darker);
-			}
-		}
-		display: block;
-		margin-bottom: 5px;
+	@include ui_flex-box(flex-start);
+	@include user-select(none);
+	padding: 5px;
+
+	&.inline {
+		@include display-flex(inline-flex);
+		padding-right: 10px;
+		margin-right: 5px;
 	}
-	label.checkbox, label.radio {
-		margin-left: -5px;
-		margin-bottom: 10px;
+
+	&:hover{
+		background-color: #F4F4F4;
 	}
-	>.loading {
+
+	> input[type='checkbox'], > input[type='radio'] {
+		opacity: 0;
 		position: absolute;
 		top: 0px;
 		left: 0px;
-		width: 100%;
-		height: 100%;
-		opacity: 0.7;
+		&:checked {
+			& ~ .fake {
+				border: 1px solid map-get($theme, color-darker);
+				background-color: map-get($theme, color);
+			}
+		}
+		&:focus {
+			& ~ .fake {
+				@include box-shadow(0 0px 10px grey);
+			}
+		}
+	}
+	> input[type='radio'] ~ .fake {
+		border-radius: 10px;
+	}
+	> .fake {
+		@include ui_flex-box(center);
+		width: 17px;
+		height: 17px;
+		margin-right: 10px;
+		//border-radius: 3px;
+		border: 1px solid black;
+		font-size: 15px;
+		color: white;
+		@include transition(all 0.3s);
+	}
+}
+
+
+.__input_select {
+	position: relative;
+	display: block;
+
+	>.input{
+		cursor: pointer;
+		color : transparent;
+		text-shadow: 0px 0px 0px #000;
 		background-color: white;
 	}
+	>.suggestions {
+		position: absolute;
+		top: 0px;
+		bottom: auto;
+		padding: 10px 0px;
+		background-color: white;
+		width: 100%;
+		max-height: 300px;
+		overflow: auto;
+		box-shadow: 0px 0px 3px grey;
+		>span {
+			display: block;
+			cursor: pointer;
+			padding: 7px 10px;
+			&:hover{
+				background-color: map-get($theme, color);
+				color: white;
+			}
+			&.active {
+				&, &:hover {
+					background-color: inherit;
+					color: map-get($theme, color);
+					cursor: default;	
+				}
+			}
+		}
+	}
+	&.top >.suggestions {
+		top: auto;
+		bottom: 0px;
+	}
+
+	&.editable {
+		>.input {
+			color: black;
+			padding: 7px 0px;
+			cursor: text;
+			&:focus {
+				cursor: auto;
+				padding-left: 10px;
+			}
+			&:hover {
+				border-bottom: 2px solid black;
+			}
+		}
+		>.suggestions {
+			top: 100%;
+			bottom: auto;
+		}
+		&.top {
+			>.suggestions {
+				top: auto;
+				bottom: 100%;
+			}
+		}
+	}
+}
+
+.__input_layout {
+	> .label{
+		font-size: 13px;
+	}
+	> .error {
+		max-height: 0px;
+		overflow: hidden;
+		opacity: 0;
+		padding: 5px 0px;
+		font-size: 13px;
+		color: #ff1744;
+		@include transition(max-height 0.5s);
+	}
+	&.error {
+		> input[type="text"], input[type='number'], input[type='password'], textarea {
+			border-bottom: 2px solid map-get($theme, error-color);
+		}
+		> .label {
+			color: #ff1744;
+		}
+		> .error {
+			text-transform: capitalize;
+			max-height: 50px;
+			overflow-wrap: break-word;
+			opacity: 1;
+		}
+	}
+	&.success {
+		> input[type="text"], input[type='number'], input[type='password'], textarea {
+			border-bottom: 2px solid map-get($theme, color-darker);
+		}
+		> .label {
+			color: map-get($theme, color-darker);
+		}
+	}
+	display: block;
+	margin-bottom: 5px;
 }

@@ -1,11 +1,8 @@
-var extractTextPlugin = require("extract-text-webpack-plugin");
-
 module.exports = {
 	entry: {
-		classui: './ts/docs/index.tsx',
-		css: './css.js'
+		bundle: './ts/docs/index.tsx'
 	},
-	
+
 	output: {
 		filename: 'bundle/[name].js',
 		path: __dirname+""
@@ -25,19 +22,9 @@ module.exports = {
 				test: /\.tsx?$/,
 				exclude: /node_modules/,
 				loader: 'ts-loader'
-			},
-			{
-				test: /\.s?css$/,
-				use: extractTextPlugin.extract({
-					fallback: 'style-loader',
-					use: ['css-loader', 'sass-loader']
-				})
 			}
 		]
 	},
-	plugins: [
-		new extractTextPlugin({filename: "bundle/classui.css"})
-	],
 	resolve: {
 		extensions: [".tsx", ".ts", ".js"]
 	},

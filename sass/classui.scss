@@ -1,4 +1,31 @@
 @import './main';
 
-@include classui_theme("flat");
-@include classui_theme("fb");
+
+@mixin customStyling() {
+	.navbar {
+		position: fixed;
+	}
+	.onlineList {
+		height: 100vh;
+		width: 200px;
+		background-color: white;
+	}
+	span.button {
+		font-weight: 900;
+		cursor: pointer;
+		color: map-get($map: $theme, $key: color);
+	}
+}
+
+
+@include classui_theme("flat") {
+	@include customStyling();
+};
+
+@include classui_theme("fb") {
+	@include customStyling();
+};
+
+
+// Normal styling independent of theme can go here :)
+

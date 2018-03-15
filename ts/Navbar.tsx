@@ -2,70 +2,42 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 import * as _ from 'lodash';
-import {ClassUI} from './ClassUI';
+import { IBaseComponentProps, BaseComponentProps } from './Components/BaseComponent';
 
-export interface IProps {
-	fixed?: boolean,	// Fixed Navbar
+export interface IProps extends IBaseComponentProps {
+	dummy?: boolean
 	logo?: string		// Logo text if any
+	width?: string|number
 };
 export interface IState {};
 
 export class NavBar extends React.Component<IProps, IState> {
 
-	private static _ref: HTMLDivElement | null;
 	public static defaultProps: IProps = {
-		fixed: false,
-		logo: undefined
+		dummy: false,
+		logo: undefined,
+		width: "auto"
 	};
 
 	constructor(props: IProps, context: any) {
 		super(props, context);
-		this.Scroll = _.throttle(this.Scroll.bind(this), 100);
-	}
-
-	componentDidMount() {
-		if (this.props.fixed){
-			window.addEventListener("scroll", this.Scroll);
-		}
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener("scroll", this.Scroll);
-	}
-
-	Scroll(e: UIEvent) {
-		if (window.scrollY>0) {
-			NavBar._ref ? NavBar._ref.classList.add("light") : null;
-		}
-		else {
-			NavBar._ref ? NavBar._ref.classList.remove("light"): null;
-		}
-	}
-
-	/**
-	 * Returns navbar reference to be accessed by other Components.
-	 */
-	public static get ref() {
-		return NavBar._ref;
 	}
 
 	render() {
-		let dummycls = classNames("card-2", "navbar", "dummy");
-
-		let cls = classNames("card-2", "navbar",  {
-			fixed: this.props.fixed
-		});
 		let content = <div className="content" style={{
-			width: ClassUI.contentWidth
+			width: this.props.width
 		}}>
-			{
-				this.props.logo?<div className="logo">{this.props.logo}</div>:null
-			}
+			{this.props.logo?<div className="logo">{this.props.logo}</div>:null}
 			{this.props.children}
 		</div>;
+
+		let dummyNavBar = <div className={classNames("__navbar", "dummy")}>
+			{content}
+		</div>;
+
 		return <>
-			{this.props.fixed?<div className={dummycls}>{content}</div>:null}
-			<div className={cls} ref={(ref)=>{NavBar._ref=ref;}}>
+			{(this.props.dummy)?dummyNavBar:null}
+			<div {...BaseComponentProps(this.props)} className={classNames("card-2", "__navbar", this.props.className)}>
 				{content}
 			</div>
 		</>;
@@ -73,5 +45,5 @@ export class NavBar extends React.Component<IProps, IState> {
 }
 
 export let NavbarRemain = ()=>{
-	return <div className="dummy"></div>;
+	return <div className="remain"></div>;
 };

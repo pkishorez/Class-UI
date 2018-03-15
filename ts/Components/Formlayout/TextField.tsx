@@ -23,7 +23,7 @@ export class TextField extends React.Component<IProps, {error: null|string|undef
 		this.setState({error});
 	}
 	render() {
-		let cls = classNames("textfield", {
+		let cls = classNames("__input_layout", {
 			"error": this.state.error?true:false,
 			"success": (this.state.error===null)?true:false
 		});

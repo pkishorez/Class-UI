@@ -1,11 +1,11 @@
-.flash {
+.__flash {
 	@include ui_flex-box();
 	position: fixed;
 	top: 0px;
 	left: 0px;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0, 0.2);
+	background-color: rgba(0,0,0, 0.5);
 
 	&.noDismiss {
 		background-color: rgba(0, 0, 0, 0.8);

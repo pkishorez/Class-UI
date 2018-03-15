@@ -20,5 +20,28 @@ $themes: (
 	
 		error-color: #c0392b,
 		success-color: #27a15a
+	),
+	green: (
+		color: #198719,
+		color-contrast: white,
+		color-dark: #167916,
+		color-darker: #146c14,
+		color-darkest: #004400,
+		color-light: #2f932f,
+		
+		error-color: #EC5050,
+		success-color: #27a15a
+	),
+	offline: (
+		color: rgb(66, 66, 66),
+		color-contrast: white,
+		color-dark: rgb(30, 30, 30),
+		color-darker: rgb(0, 0, 0),
+		color-darkest: rgb(0, 0, 0),
+		color-light: rgb(78, 78, 78),
+
+		error-color: #EC5050,
+		success-color: #27a15a
 	)
+
 )

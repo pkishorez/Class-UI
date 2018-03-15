@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { Layout, Section } from './Layout';
 import {IOrderedMap} from '../DataStructures/OrderedMap';
 import * as classNames from 'classnames';
+import { Menu } from './Menu';
+import { Button } from './Button';
 
 export interface IProps {
 	orderedMap: IOrderedMap<any>
@@ -45,19 +47,19 @@ export class OrderedMapList extends React.Component<IProps> {
 			let index = i;
 			let mappedItem = this.props.orderedMap.map[item_id];
 			let isHidden = _.includes(this.props.orderedMap.hidden, item_id);
-			let up = <span className="button primary" style={{
+			let up = <Button className="primary" style={{
 				visibility: (index!=0)?"visible":"hidden",
 				padding: "10px 15px",
 				marginRight: 10
-			}} onClick={(e)=>{this.moveUp(index); e.stopPropagation()}}><i className="fa fa-long-arrow-up"></i></span>;
+			}} onClick={(e)=>{this.moveUp(index); e.stopPropagation()}}><i className="fa fa-long-arrow-up"></i></Button>;
 
-			let down = <span className="button primary" style={{
+			let down = <Button className="primary" style={{
 				visibility: (index!=this.props.orderedMap.order.length-1)?"visible":"hidden",
 				padding: "10px 15px",
 				marginRight: 10
 			}} onClick={(e)=>{this.moveDown(index); e.stopPropagation()}}>
 				<i className="fa fa-long-arrow-down"></i>
-			</span>;
+			</Button>;
 
 			return <div className={classNames("item", {
 				disable: isHidden
@@ -71,14 +73,18 @@ export class OrderedMapList extends React.Component<IProps> {
 					<Section remain />
 					<Section>
 						{up}
+					</Section>
+					<Section>
 						{down}
+					</Section>
+					<Section>
 						{this.props.onDelete?<span style={{marginRight: 10}} className="button primary" onClick={(e)=>{
 							this.props.onDelete?this.props.onDelete(item_id):null
 							e.stopPropagation();
 						}}>
 							<i className="fa fa-trash"></i>
 						</span>:null}
-						{this.props.onHide?<span className="button primary" onClick={(e)=>{
+						{this.props.onHide?<Button className="primary" onClick={(e)=>{
 							this.props.onHide?this.props.onHide(
 								isHidden?
 								_.difference(this.props.orderedMap.hidden, [item_id])
@@ -90,13 +96,13 @@ export class OrderedMapList extends React.Component<IProps> {
 								"fa-eye-slash": !isHidden,
 								"fa-eye": isHidden
 							})}></i>
-						</span>:null}
+						</Button>:null}
 					</Section>
 				</Layout>
 			</div>
 		})
-		return <div className="sidemenu">
+		return <Menu>
 			{order}
-		</div>;
+		</Menu>;
 	}
 }

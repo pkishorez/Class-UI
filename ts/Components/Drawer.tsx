@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {SAnim} from '../Helper/Animation';
 import * as classNames from 'classnames';
+import { Button } from './Button';
 
 export interface IProps {
 };
@@ -74,18 +75,17 @@ export class Drawer extends React.Component<IProps, IState> {
 		this.setState({show: false});
 	}
 	render() {
-		let cls = classNames("drawer", {
+		let cls = classNames("__drawer", {
 			"noDismiss": this.noDismiss
 		});
 		let contentCls = classNames("content", this.contentClass);
 		let content = <div onClick={(e)=>{this.content_click=true}} className={contentCls}>
 			{this.content}
-			{(this.noDismiss || this.noCloseButton)?null:<div className="close button" onClick={this.dismiss}>x</div>}
+			{(this.noDismiss || this.noCloseButton)?null:<Button className="close" onClick={this.dismiss}>x</Button>}
 		</div>;
 		let drawer = <div className={cls} onClick={this.clickDismiss}>
 			{this.noAnimation?content:<SAnim animType="slideLeft" show={this.state.show}>{content}</SAnim>}
 		</div>;
-
 		return this.state.show?drawer:null;
 	}
 }

@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 import {TransitionMotion} from 'react-motion';
-import {MAnim} from '../Helper/Animation';
 import {RLink} from '../Helper/RLink';
 
 export interface IProps {
@@ -13,12 +12,10 @@ export interface IState {};
 
 export class Menu extends React.Component<IProps, IState> {
 	render() {
-		return <TransitionMotion {...MAnim.opacity(this.props.children)}>{
-			(styles)=>{
-				return <div className="sidemenu">{
-					this.props.header?<h3 className="header">{this.props.header}</h3>:null
-				}{this.props.children}</div>;
-		}}</TransitionMotion>;
+		return <div className="__sidemenu">
+			{this.props.header?<h3 className="header">{this.props.header}</h3>:null}
+			{this.props.children}
+		</div>;
 	}
 }
 
@@ -33,11 +30,11 @@ export type IItemProps = {
 	to?: string
 };
 
-export let Divider = ()=> {
+export let MDivider = ()=> {
 	return <div className="divider"></div>;
 }
 
-export let Item = (props: IItemProps)=>{
+export let MItem = (props: IItemProps)=>{
 	let cls = classNames("item", {
 		disable: props.disable,
 		active: props.active

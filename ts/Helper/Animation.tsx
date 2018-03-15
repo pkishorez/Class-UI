@@ -3,13 +3,13 @@ import * as ReactDOM from 'react-dom';
 import * as _ from 'lodash';
 import {Motion, spring, TransitionMotion, OpaqueConfig, TransitionProps, presets} from 'react-motion';
 
-export interface IProps {
+export interface ISAnimProps {
 	show: boolean,
 	children: React.ReactElement<any>
 	animType?: "appear" | "slideLeft" | "slideRight" | "slideBottom" | "slideTop"
 };
 
-let Animate = (value: number, type: IProps["animType"])=>{
+let Animate = (value: number, type: ISAnimProps["animType"])=>{
 	switch(type) {
 		case "appear":
 			return {
@@ -43,12 +43,12 @@ let Animate = (value: number, type: IProps["animType"])=>{
 	}
 }
 
-export class SAnim extends React.Component<IProps, any> {
+export class SAnim extends React.Component<ISAnimProps, any> {
 	private rested: boolean = true;
-	static defaultProps: Partial<IProps> = {
+	static defaultProps: Partial<ISAnimProps> = {
 		animType: "appear"
 	};
-	constructor(props: IProps, context: any)
+	constructor(props: ISAnimProps, context: any)
 	{
 		super(props, context);
 		this.onRest = this.onRest.bind(this);
@@ -73,46 +73,5 @@ export class SAnim extends React.Component<IProps, any> {
 				});
 			}
 		}</Motion>
-	}
-}
-
-export interface IManimProps {
-	defaultStyle?: any
-	style?: {
-		[id: string]: number
-	},
-	willLeave?: {
-		[id: string]: number
-	},
-	willEnter?: {
-		[id: string]: number
-	}
-}
-
-export let MAnim = {
-	opacity: (items: {[id: string]: any}): TransitionProps =>{
-		return {
-			willLeave: ()=>{
-				return {
-					opacity: spring(0)
-				}
-			},
-			willEnter: ()=>{
-				return {
-					opacity: 0
-				}
-			},
-			styles: ()=>{
-				return Object.keys(items).map((item)=>{
-					return {
-						key: item,
-						style: {
-							opacity: spring(1)
-						},
-						data: items[item]
-					}
-				});
-			}
-		}
 	}
 }

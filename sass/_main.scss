@@ -8,7 +8,7 @@
 @import 'helper/flex';
 @import './themes';
 
-body {
+.classui {
 	background-color: #ECECEC;
 }
 
@@ -16,19 +16,10 @@ body {
 	$theme: map-get($themes, $theme-name) !global;
 
 	.classui.#{$theme-name} {
+		position: relative;
+
 		&.fullheight {
-			height: 100vh;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-		}
-		> .mainContent {
-			flex-grow: 1;
-			max-width: 100%;
-			margin: auto;
-			align-self: center;
-			display: flex;
+			min-height: 100vh;
 		}
 	
 		// Components
@@ -52,5 +43,7 @@ body {
 		@import 'component/zindex';
 		// Should be placed above all.
 		@import 'helper/component';
+
+		@content;
 	}
 }

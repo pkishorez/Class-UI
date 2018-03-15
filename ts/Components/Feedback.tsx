@@ -43,8 +43,8 @@ export class Feedback extends React.Component<IProps, IState> {
 		});
 	}
 	render() {
-		return <SAnim animType="slideBottom" show={this.state.show}><div className="feedback">
-			<div className={"card-4 content "+this.state.type}>{this.state.content}</div>
+		return <SAnim animType="slideBottom" show={this.state.show}><div className="__feedback">
+			<div className={classNames("__card", "_3", "content ", this.state.type)}>{this.state.content}</div>
 		</div></SAnim>;
 	}
 }

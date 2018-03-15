@@ -1,17 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ClassUI} from '../ClassUI';
-import {Content} from '../Content';
 import {NavBar, NavbarRemain} from '../Navbar';
 import {BrowserRouter as Router} from 'react-router-dom';
-import {Dropdown} from '../Components/Dropdown';
+import {Dropdown, DItem} from '../Components/Dropdown';
+import {Button} from '../Components/Button';
 import {Demo1} from './Demo1';
 import {Demo2} from './Demo2';
 import { Feedback } from '../Components/Feedback';
 import { Table } from '../Components/Table';
-import { Layout, Section } from '../Components/Layout';
+import { Layout, Section, LSection } from '../Components/Layout';
 import { Flash } from '../Components/Flash';
-import { Formlayout } from '../Components/Formlayout/index';
 import { TextField } from '../Components/Formlayout/TextField';
 import { Select, Checkbox, Radio } from '../Components/Form/index';
 import { Drawer } from '../Components/Drawer';
@@ -54,32 +53,58 @@ let S_User: IJSONSchema = {
 };
 
 ReactDOM.render(<Router >
-		<ClassUI contentWidth={1024} fullHeight>
-			<NavBar logo="Class-UI" fixed>
-				<NavbarRemain />
-				<Dropdown button="Playground" push="left">
-					<li>Typescript</li>
-					<li>Canvas2D</li>
-					<li>Demo</li>
-				</Dropdown>
-				<Dropdown button="This is a very big task button" buttonMaxWidth={100} push="left">
-				<li onClick={()=>Feedback.show("Hello World. :)", "success")} className="noTextWrap">My Tasks this is a very big text</li>
-				<li onClick={()=>Feedback.show("Hello World.", "error")}>Manage Tasks</li>
-				<li>Dashboard (TODO)</li>
-				</Dropdown>
-				<Dropdown button="tasks" push="left">
-					<li>My Tasks</li>
-					<li>Manage Tasks</li>
-					<li>Dashboard (TODO)</li>
-				</Dropdown>
-				<div className="button">Kittu</div>
-			</NavBar>
-			<Content>
-				<div style={{alignSelf: "center", margin: "auto"}}>
-					<Page1/>
+	<ClassUI theme="fb" fullHeight>
+		<Layout>
+			<Section remain>
+				<Layout column align="center" justify="center">
+					<Section>
+						<NavBar logo="Class-UI" dummy className="navbar" width={1024}>
+							<NavbarRemain />
+							<Dropdown button="tasks" push="left">
+								<DItem disable>My Tasks</DItem>
+								<DItem active>Manage Tasks</DItem>
+								<DItem>Dashboard (TODO)</DItem>
+							</Dropdown>
+							<Button active={true} onClick={()=>{
+								Feedback.show("Hello Dude", "error");
+							}}>Kittu</Button>
+							<Button>Kittu</Button>
+						</NavBar>
+					</Section>
+					<Section style={{width: 1024}}>
+						<div>
+							<Page1/>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						<h1>Hello World.</h1>
+						</div>
+					</Section>
+				</Layout>
+			</Section>
+			<Section>
+				<div className="onlineList">
+					Kishore is a good boy.
 				</div>
-			</Content>
-		</ClassUI>
-	</Router>,
+			</Section>
+		</Layout>
+	</ClassUI>
+</Router>,
 	document.getElementById('app')
 );

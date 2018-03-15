@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {SAnim} from '../Helper/Animation';
 import * as classNames from 'classnames';
+import { Button } from './Button';
 
 export interface IProps {
 };
@@ -20,7 +21,7 @@ export class Flash extends React.Component<IProps, IState> {
 	private content_click: boolean = false;
 	private content: any;
 
-	static flash(func: (dismiss: any)=>any, noDismiss: boolean = false, noAnimation: boolean = false, noCloseButton = false, contentClass = "") {
+	static flash(func: (dismiss: any)=>any, noDismiss: boolean = false, noAnimation: boolean = false, noCloseButton = true, contentClass = "") {
 		if (!_instance){
 			console.error("Flash component should be rendered to use it.");
 			return;
@@ -73,18 +74,18 @@ export class Flash extends React.Component<IProps, IState> {
 		this.setState({show: false});
 	}
 	render() {
-		let cls = classNames("flash", {
+		let cls = classNames("__flash", {
 			"noDismiss": this.noDismiss
 		});
 		let contentCls = classNames("content", this.contentClass);
 		let content = <div className={cls} onClick={this.clickDismiss}>
 			<div onClick={(e)=>{this.content_click=true}} className={contentCls}>
 				{this.content}
-				{this.noCloseButton?null:<div className="close button" onClick={this.dismiss}>x</div>}
+				{this.noCloseButton?null:<Button className="close" onClick={this.dismiss}>x</Button>}
 			</div>
 		</div>;
 
-		return this.noAnimation?(this.state.show?content:null):<SAnim show={this.state.show}>
+		return this.noAnimation?(this.state.show?content:null):<SAnim show={this.state.show} animType="slideTop">
 			{content}
 		</SAnim>;
 	}

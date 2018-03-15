@@ -65,7 +65,7 @@ export class Radio extends FormElement<IProps, IState> {
 	render() {
 		return <div>
 			{this.props.values.map((value)=>{
-				return <label key={value.value} className={"radio"+(this.props.inline?" inline":"")}>
+				return <label key={value.value} className={"__input_radio"+(this.props.inline?" inline":"")}>
 					<input type="radio" onChange={()=>{
 						this.setState({
 							value: value.value

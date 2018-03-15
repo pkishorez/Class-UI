@@ -53,7 +53,7 @@ export class Checkbox extends FormElement<IProps, IState> {
 	}
 
 	render() {
-		return <label className={"checkbox"+(this.props.inline?" inline":"")}>
+		return <label className={"__input_checkbox"+(this.props.inline?" inline":"")}>
 			<input type="checkbox" checked={this.state.value} onChange={(e)=>{
 				this.setState({
 					value: !this.state.value

@@ -7,7 +7,7 @@ import * as classNames from 'classnames';
 import * as _ from 'lodash';
 
 export interface IProps {
-	cls?: string
+	className?: string
 	style?: React.CSSProperties
 	onSubmit?: Function
 	default?: {
@@ -94,7 +94,7 @@ export class Form extends React.Component<IProps, IState> {
 	}
 
 	render() {
-		let cls = classNames("form", this.props.cls);
+		let cls = classNames(this.props.className);
 		return <form className={cls} style={{...this.props.style}} autoComplete={this.props.autocomplete} onSubmit={this.submit}>
 			{this.props.children}
 		</form>;

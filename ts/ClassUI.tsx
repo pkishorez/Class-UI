@@ -8,55 +8,41 @@ import { Feedback } from './Components/Feedback';
 let _instance: ClassUI;
 
 export interface IProps {
-	contentWidth?: number // ContentWidth is the maxWidth of the UI.
-	offline?: boolean
 	fullHeight?: boolean
+	theme?: "fb" | "green" | "flat" | "offline"
 };
 
+export interface IState {
+	theme: IProps["theme"]
+}
 /**
  * Wrapper Component for the whole of Class-UI.
  */
-export class ClassUI extends React.Component<IProps, any> {
-	private static mounted:Boolean = false;
-	private static funcs: Function[] = [];
+export class ClassUI extends React.Component<IProps, IState> {
 
 	public static defaultProps: IProps = {
-		contentWidth: 1024,
-		offline: false,
-		fullHeight: false
+		fullHeight: false,
+		theme: "flat"
 	};
 
-	public static get contentWidth() {
-		if (!_instance)// THIS NEVER HAPPENS.
-			console.error("Class-UI instance not found!!!");
-		return _instance?_instance.props.contentWidth: 0;
-	}
-
-	public static onMounted(func: Function) {
-		if (ClassUI.mounted){
-			func();
-			return;
-		}
-		ClassUI.funcs.push(func);
-	}
-	componentDidMount() {
-		ClassUI.mounted = true;
-		ClassUI.funcs.map((func)=>{
-			func();
-		});
-		ClassUI.funcs = [];
-	}
 	constructor(props: any, context: any) {
 		super(props, context);
 		if (_instance) {
 			console.error("Only one instance of ClassUI is permitted.");
 			return _instance;
 		}
+		this.state = {
+			theme: this.props.theme
+		};
 		_instance = this;
 	}
+	public static setTheme(theme: IProps["theme"]) {
+		_instance && _instance.setState({
+			theme
+		});
+	}
 	render() {
-		let cls = classNames("classui", {
-			offline: this.props.offline,
+		let cls = classNames("classui", this.state.theme, {
 			fullheight: this.props.fullHeight
 		});
 		return <div className={cls}>

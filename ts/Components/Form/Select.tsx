@@ -80,7 +80,7 @@ export class Select extends FormElement<IProps, IState> {
 		});
 	}
 	render() {
-		let cls = classNames("select", {
+		let cls = classNames("__input_select", {
 			top: this.props.top,
 			editable: !this.props.nonEditable
 		})
@@ -102,7 +102,7 @@ export class Select extends FormElement<IProps, IState> {
 					showSuggestions: false
 				}), 100);
 			}}/>
-			<SAnim show={this.state.showSuggestions} animType={this.props.top?"slideTop":"slideBottom"}>
+			<SAnim show={this.state.showSuggestions && (this.getSuggestions().length>0)} animType={this.props.top?"slideTop":"slideBottom"}>
 				<div className="suggestions">
 					{this.getSuggestions().map((option)=>{
 						return <span key={option} className={(option==this.state.value)?"active":""} onClick={()=>{
