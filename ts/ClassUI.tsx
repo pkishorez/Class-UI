@@ -4,15 +4,15 @@ import {Flash} from './Components/Flash';
 import * as classNames from 'classnames';
 import { Drawer } from './Components/Drawer';
 import { Feedback } from './Components/Feedback';
-import { IBaseComponentProps, BaseComponentProps } from './Components/BaseComponent';
+import { BaseBlockComponent, IBaseBlockComponentProps } from './Components/BaseComponent/index';
 import { BrowserRouter, withRouter, RouteComponentProps } from 'react-router-dom';
 
 let _instance: ClassUI|undefined = undefined;
 
-export interface IProps extends IBaseComponentProps {
+export interface IProps extends IBaseBlockComponentProps {
 	fullHeight?: boolean
 	EnableRouting?: boolean
-	theme?: "fb" | "green" | "flat" | "offline"
+	theme?: "fb" | "gcolor" | "flat" | "offline"
 };
 
 export interface IState {
@@ -23,12 +23,25 @@ export interface IState {
  */
 export class ClassUI extends React.Component<IProps, IState> {
 
-	public static History: RouteComponentProps<any> | null = null;
+	private static History: RouteComponentProps<any> | null = null;
 	public static defaultProps: IProps = {
 		fullHeight: false,
 		EnableRouting: false,
 		theme: "flat"
 	};
+
+	static get history() {
+		return {
+			push: (url: string)=>{
+				if (this.History) {
+					this.History.history.push(url);
+				}
+				else {
+					console.error("Routing wasn't set up for Class-UI. Please look into it.");
+				}
+			}
+		}
+	}
 
 	constructor(props: any, context: any) {
 		super(props, context);
@@ -62,7 +75,7 @@ export class ClassUI extends React.Component<IProps, IState> {
 			}
 			DummyRouter = withRouter(_DummyRouter);
 		}
-		let classui = <div {...BaseComponentProps(this.props)} className={cls}>
+		let classui = <div {...BaseBlockComponent(this.props)} className={cls}>
 			{this.props.children}
 			<Flash />
 			<Drawer />

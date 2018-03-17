@@ -26,6 +26,9 @@ module.exports = {
 		]
 	},
 	resolve: {
+		alias: {
+			"classui": path.resolve(__dirname, "ts/")
+		},
 		extensions: [".tsx", ".ts", ".js"]
 	},
 

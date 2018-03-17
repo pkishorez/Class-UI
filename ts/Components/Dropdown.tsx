@@ -4,13 +4,14 @@ import {spring, Motion} from 'react-motion';
 import {SAnim, ISAnimProps} from '../Helper/Animation';
 import classNames = require('classnames');
 import { Button } from './Button';
-import { BaseComponentProps, IBaseComponentProps } from './BaseComponent';
+import { BaseBlockComponent, IBaseBlockComponentProps } from './BaseComponent/index';
 
 export interface IProps {
 	buttonMaxWidth?: number
 	button: string,
 	push?: "left"|"right"
 	animType?: ISAnimProps["animType"]
+	children: any
 };
 export interface IState {
 	active: boolean
@@ -63,14 +64,18 @@ export class Dropdown extends React.Component<IProps, IState> {
 
 			<SAnim show={this.state.active} animType={this.props.animType}>
 				<ul onClick={()=>this.clickedWithinDropdown = true} className="__card _3">
-					{this.props.children}
+					{typeof this.props.children==="function"?this.props.children(()=>{
+						this.setState({
+							active: !this.state.active
+						});
+					}):this.props.children}
 				</ul>
 			</SAnim>
 		</div>;
 	}
 }
 
-export interface IDropdownItemProps extends IBaseComponentProps {
+export interface IDropdownItemProps extends IBaseBlockComponentProps {
 	active?: boolean
 	disable?: boolean
 	children?: any
@@ -80,7 +85,7 @@ export let DItem = (props: IDropdownItemProps)=>{
 		disable: props.disable,
 		active: props.active
 	});
-	return <li {...BaseComponentProps(props)} className={cls}>
+	return <li {...BaseBlockComponent(props)} className={cls}>
 		{props.children}
 	</li>;
 }

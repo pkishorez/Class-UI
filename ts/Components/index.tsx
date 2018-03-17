@@ -4,6 +4,7 @@ export {Drawer} from './Drawer';
 export {Flash} from './Flash';
 export {Feedback} from './Feedback';
 export {TextField} from './Formlayout/TextField';
+export {Div} from './Div';
 
 import * as _layout from './Layout';
 export let Layout = _layout;

@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 import * as _ from 'lodash';
-import { IBaseComponentProps, BaseComponentProps } from './Components/BaseComponent';
+import { IBaseBlockComponentProps, BaseBlockComponent } from './Components/BaseComponent/index';
 
-export interface IProps extends IBaseComponentProps {
+export interface IProps extends IBaseBlockComponentProps {
 	dummy?: boolean
 	logo?: string		// Logo text if any
 	width?: string|number
@@ -37,7 +37,7 @@ export class NavBar extends React.Component<IProps, IState> {
 
 		return <>
 			{(this.props.dummy)?dummyNavBar:null}
-			<div {...BaseComponentProps(this.props)} className={classNames("card-2", "__navbar", this.props.className)}>
+			<div {...BaseBlockComponent(this.props)} className={classNames("card-2", "__navbar", this.props.className)}>
 				{content}
 			</div>
 		</>;
