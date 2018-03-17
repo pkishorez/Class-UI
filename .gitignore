@@ -21,3 +21,5 @@ classui.tgz
 PubSub.d.ts
 index.d.ts
 index.js
+yarn.lock
+yarn-error.log

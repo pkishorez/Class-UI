@@ -9,7 +9,6 @@ export interface IButtonProps extends IBaseComponentProps {
 }
 
 export let Button = (props: IButtonProps)=>{
-	console.log(props);
 	return <div {...BaseComponentProps(props)} className={classNames("__button", props.className, {
 		active: props.active,
 		disable: props.disable

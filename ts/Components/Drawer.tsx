@@ -50,6 +50,9 @@ export class Drawer extends React.Component<IProps, IState> {
 		this.clickDismiss = this.clickDismiss.bind(this);
 		this.dismiss = this.dismiss.bind(this);
 	}
+	componentWillUnmount() {
+		_instance = null;
+	}
 
 	escapeDismiss(e: KeyboardEvent) {
 		if (this.noDismiss){

@@ -52,8 +52,8 @@ let S_User: IJSONSchema = {
 	required: ["_id", "email", "password", "gender", "batch", "branch"]
 };
 
-ReactDOM.render(<Router >
-	<ClassUI theme="fb" fullHeight>
+ReactDOM.render(
+	<ClassUI theme="fb" fullHeight EnableRouting>
 		<Layout>
 			<Section remain>
 				<Layout column align="center" justify="center">
@@ -65,7 +65,7 @@ ReactDOM.render(<Router >
 								<DItem active>Manage Tasks</DItem>
 								<DItem>Dashboard (TODO)</DItem>
 							</Dropdown>
-							<Button active={true} onClick={()=>{
+							<Button active={true} to="/page" onClick={()=>{
 								Feedback.show("Hello Dude", "error");
 							}}>Kittu</Button>
 							<Button>Kittu</Button>
@@ -104,7 +104,6 @@ ReactDOM.render(<Router >
 				</div>
 			</Section>
 		</Layout>
-	</ClassUI>
-</Router>,
+	</ClassUI>,
 	document.getElementById('app')
 );

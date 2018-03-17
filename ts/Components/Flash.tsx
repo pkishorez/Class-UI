@@ -36,6 +36,9 @@ export class Flash extends React.Component<IProps, IState> {
 		});
 		window.addEventListener("keydown", _instance.escapeDismiss)
 	}
+	componentWillUnmount() {
+		_instance = null;
+	}
 	constructor(props: IProps, context: any) {
 		super(props, context);
 		if (_instance){

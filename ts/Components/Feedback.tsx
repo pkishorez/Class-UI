@@ -13,7 +13,7 @@ export interface IState {
 	show: boolean
 };
 
-let _instance: Feedback;
+let _instance: Feedback | null = null;
 export class Feedback extends React.Component<IProps, IState> {
 	static timeout: any = null;
 	constructor(props: IProps, context: any) {
@@ -25,7 +25,14 @@ export class Feedback extends React.Component<IProps, IState> {
 		_instance = this;
 		this.hide = this.hide.bind(this);
 	}
+	componentWillUnmount() {
+		_instance = null;
+	}
 	static show(content: string, type: IState["type"] = "success", timeout: number=2) {
+		if (!_instance) {
+			console.error("Feedback component not found.");
+			return;
+		}
 		_instance.setState({
 			content,
 			type,
