@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {SAnim} from '../Helper/Animation';
+import {SAnim, ISAnimProps} from '../Helper/Animation';
 import * as classNames from 'classnames';
 import { Button } from './Button';
 
@@ -15,18 +15,18 @@ let _instance: Flash | null = null;
 export class Flash extends React.Component<IProps, IState> {
 
 	private noDismiss = false;
-	private noAnimation = false;
+	private animation: ISAnimProps["animType"]|undefined = undefined;
 	private noCloseButton = false;
 	private contentClass = "";
 	private content_click: boolean = false;
 	private content: any;
 
-	static flash(func: (dismiss: any)=>any, noDismiss: boolean = false, noAnimation: boolean = false, noCloseButton = true, contentClass = "") {
+	static flash(func: (dismiss: any)=>any, noDismiss: boolean = false, animation: ISAnimProps["animType"] = "slideTop", noCloseButton = true, contentClass = "") {
 		if (!_instance){
 			console.error("Flash component should be rendered to use it.");
 			return;
 		}
-		_instance.noAnimation = noAnimation;
+		_instance.animation = animation;
 		_instance.noDismiss = noDismiss;
 		_instance.noCloseButton = noCloseButton;
 		_instance.contentClass = contentClass;
@@ -88,7 +88,7 @@ export class Flash extends React.Component<IProps, IState> {
 			</div>
 		</div>;
 
-		return this.noAnimation?(this.state.show?content:null):<SAnim show={this.state.show} animType="slideTop">
+		return (!this.animation)?(this.state.show?content:null):<SAnim show={this.state.show} animType={this.animation}>
 			{content}
 		</SAnim>;
 	}
