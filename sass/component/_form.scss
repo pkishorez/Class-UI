@@ -20,7 +20,6 @@
 }
 
 label.__input_checkbox, label.__input_radio {
-	position: relative;
 	@include ui_flex-box(flex-start);
 	@include user-select(none);
 	padding: 5px;
@@ -36,10 +35,7 @@ label.__input_checkbox, label.__input_radio {
 	}
 
 	> input[type='checkbox'], > input[type='radio'] {
-		opacity: 0;
-		position: absolute;
-		top: 0px;
-		left: 0px;
+		display: none;
 		&:checked {
 			& ~ .fake {
 				border: 1px solid map-get($theme, color-darker);

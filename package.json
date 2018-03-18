@@ -20,8 +20,14 @@
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server",
     "scss": "./node_modules/.bin/node-sass sass/classui.scss bundle/classui.css -w",
-    "storybook": "start-storybook -p 6006 -s ./",
-    "build-storybook": "build-storybook"
+    "storybook": "start-storybook -p 6006 -s ./assets,./bundle",
+    "build-storybook": "build-storybook -o docs/ -s ./assets,./bundle",
+    "deploy-storybook": "./node_modules/@storybook/storybook-deployer/bin/storybook_to_ghpages -- --existing-output-dir=docs"
+  },
+  "storybook-deployer": {
+    "gitUsername": "kishoreiiitn",
+    "gitEmail": "kishore.iiitn@gmail.com",
+    "commitMessage": "Deploy Class-UI Storybook."
   },
   "author": "Kishore",
   "license": "ISC",
@@ -50,12 +56,17 @@
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.15",
     "@storybook/addon-links": "^3.3.15",
+    "@storybook/addon-options": "^3.3.15",
     "@storybook/addons": "^3.3.15",
     "@storybook/react": "^3.3.15",
+    "@storybook/storybook-deployer": "^2.3.0",
+    "@types/highlight.js": "^9.12.2",
+    "@types/marked": "^0.3.0",
     "@types/storybook__react": "^3.0.7",
     "awesome-typescript-loader": "^4.0.1",
     "babel-core": "^6.26.0",
-  
+    "highlight.js": "^9.12.0",
+    "marked": "^0.3.17",
     "node-sass": "^4.7.2",
     "source-map-loader": "^0.2.3",
     "ts-loader": "^4.0.1",

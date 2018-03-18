@@ -11,7 +11,7 @@ rm ./Navbar.js
 rm ./index.js
 rm ./index.d.ts
 
-tsc
+tsc -p ./tsconfig.publish.json
 
 npm version patch -m "patch"
 
