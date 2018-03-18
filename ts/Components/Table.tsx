@@ -164,7 +164,7 @@ export class Table extends React.Component<IProps, IState> {
 		</Menu>:null;
 
 
-		let cls = classNames("table", {
+		let cls = classNames("__table", {
 			hoverable: this.props.hoverable
 		});
 		let dataTable = <table className={cls}>
