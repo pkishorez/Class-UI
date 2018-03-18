@@ -50,8 +50,6 @@ export class Layout extends React.Component<IProps, IState> {
 		);
 		let count = React.Children.count(this.props.children);
 		let children = React.Children.map(this.props.children, (elem: any, i)=>{
-
-			console.log(typeof(elem), elem);
 			if (!elem || ((elem.type!==Section) && (elem.type!==LSection))) {
 				console.error("Unknown type child passed.");
 				return;
