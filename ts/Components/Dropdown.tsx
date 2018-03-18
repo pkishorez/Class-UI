@@ -9,7 +9,7 @@ import { BaseBlockComponent, IBaseBlockComponentProps } from './BaseComponent/in
 export interface IProps {
 	buttonMaxWidth?: number
 	button: string,
-	push?: "left"|"right"
+	push?: "left"|"right"|"up"
 	animType?: ISAnimProps["animType"]
 	children: any
 };
@@ -20,8 +20,7 @@ export interface IState {
 export class Dropdown extends React.Component<IProps, IState> {
 	clickedWithinDropdown = false;
 	static defaultProps: Partial<IProps> = {
-		push: "right",
-		animType: "slideBottom"
+		push: "right"
 	};
 
 	constructor(props: IProps, context: any) {
@@ -62,7 +61,7 @@ export class Dropdown extends React.Component<IProps, IState> {
 				}}>{this.props.button}</span> <i className="fa fa-angle-down"></i>
 			</Button>
 
-			<SAnim show={this.state.active} animType={this.props.animType}>
+			<SAnim show={this.state.active} animType={this.props.animType?this.props.animType:(this.props.push=="up")?"slideTop":"slideBottom"}>
 				<ul onClick={()=>this.clickedWithinDropdown = true} className="__card _3">
 					{typeof this.props.children==="function"?this.props.children(()=>{
 						this.setState({

@@ -12,6 +12,12 @@
 			left: 0px;
 		}
 	}
+	&.push-up {
+		ul {
+			top: auto;
+			bottom: 100%;
+		}
+	}
 	> ul {
 		position: absolute;
 		background-color: white;
