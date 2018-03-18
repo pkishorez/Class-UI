@@ -12,6 +12,7 @@ export interface ITextProps {
 	schema?: IJSONSchema
 	onError?: Function
 	children: string
+	defaultValue?: string
 };
 
 export interface ITextState {
@@ -79,7 +80,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 			name: this.props.name,
 			placeholder: this.props.children?this.props.children:"Enter a value",
 			onChange: this.onChange,
-			defaultValue: this.defaultValue
+			defaultValue: (this.defaultValue && this.defaultValue!="")?this.defaultValue:this.props.defaultValue
 		}
 		return (this.props.type=="area")?<textarea
 			{...props}>

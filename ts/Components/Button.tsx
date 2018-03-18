@@ -6,12 +6,14 @@ export interface IButtonProps extends IBaseInlineComponentProps {
 	children?: any
 	active?: boolean
 	disable?: boolean
+	primary?: boolean
 }
 
 export let Button = (props: IButtonProps)=>{
 	return <div {...BaseInlineComponent(props)} className={classNames("__button", props.className, {
 		active: props.active,
-		disable: props.disable
+		disable: props.disable,
+		primary: props.primary
 	})}>
 		{props.children}
 	</div>;

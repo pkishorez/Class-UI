@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server",
-    "scss": "./node_modules/.bin/node-sass sass/classui.scss bundle/classui.css -w",
+    "scss": "./node_modules/.bin/node-sass sass/storybook.scss bundle/storybook.css -w",
     "storybook": "start-storybook -p 6006 -s ./assets,./bundle",
     "build-storybook": "build-storybook -o docs/ -s ./assets,./bundle",
     "deploy-storybook": "./node_modules/@storybook/storybook-deployer/bin/storybook_to_ghpages -- --existing-output-dir=docs"
