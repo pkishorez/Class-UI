@@ -5,7 +5,6 @@ import {SAnim} from '../../Helper/Animation';
 import * as classNames from 'classnames';
 
 export interface IProps extends ITextProps {
-	children: string,
 	label?: string
 	name: string
 };
