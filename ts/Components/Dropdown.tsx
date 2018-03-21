@@ -3,12 +3,13 @@ import * as ReactDOM from 'react-dom';
 import {spring, Motion} from 'react-motion';
 import {SAnim, ISAnimProps} from '../Helper/Animation';
 import classNames = require('classnames');
-import { Button } from './Button';
+import { Button, IButtonProps } from './Button';
 import { BaseBlockComponent, IBaseBlockComponentProps } from './BaseComponent/index';
 
 export interface IProps {
 	buttonMaxWidth?: number
-	button: string,
+	button: string | React.ReactElement<any>
+	btnProps?: IButtonProps
 	push?: "left"|"right"|"up"
 	animType?: ISAnimProps["animType"]
 	children: any
@@ -55,10 +56,12 @@ export class Dropdown extends React.Component<IProps, IState> {
 	render() {
 		console.log(this.state.active);
 		return <div className={"__dropdown push-"+this.props.push}>
-			<Button active={this.state.active} onClick={this.toggle}>
-				<span className="inline-block noTextWrap" style={{
-					maxWidth: this.props.buttonMaxWidth
-				}}>{this.props.button}</span> <i className="fa fa-angle-down"></i>
+			<Button {...this.props.btnProps} active={this.state.active} onClick={this.toggle}>
+				{(typeof(this.props.button)=="string")?<>
+					<span className="inline-block noTextWrap" style={{
+						maxWidth: this.props.buttonMaxWidth
+					}}>{this.props.button}</span> <i className="fa fa-angle-down"></i>
+				</>:this.props.button}
 			</Button>
 
 			<SAnim show={this.state.active} animType={this.props.animType?this.props.animType:(this.props.push=="up")?"slideTop":"slideBottom"}>
