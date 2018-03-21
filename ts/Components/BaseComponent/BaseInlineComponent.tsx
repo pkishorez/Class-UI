@@ -9,7 +9,7 @@ export let BaseInlineComponent = (props: Partial<IBaseInlineComponentProps>): IB
 	return {
 		...BaseComponentProps(props),
 		style: {
-			display: props.block?"block":"inline-block",
+			display: props.block?"block":undefined,
 			...props.style
 		}
 	}

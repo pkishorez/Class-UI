@@ -9,7 +9,7 @@ export let BaseBlockComponent = (props: Partial<IBaseBlockComponentProps>): IBas
 	return {
 		...BaseComponentProps(props),
 		style: {
-			display: props.inlineBlock?"inline-block":"block",
+			display: props.inlineBlock?"inline-block":undefined,
 			...props.style
 		}
 	}
