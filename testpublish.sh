@@ -11,9 +11,11 @@ rm ./Navbar.js
 rm ./index.js
 rm ./index.d.ts
 
+echo "Compiling Typescript..."
 tsc -p ./tsconfig.publish.json
 
-yarn pack classui.tgz
+echo "Packing Class-UI project."
+yarn pack --filename classui.tgz
 
 rm -r ./Components
 rm -r ./DataStructures
