@@ -11,7 +11,7 @@ export interface ITextProps {
 	autoFocus?: boolean
 	schema?: IJSONSchema
 	onError?: Function
-	children: string
+	children?: string
 	defaultValue?: string
 };
 
@@ -78,7 +78,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 			ref: (ref: any)=>this.input = ref,
 			spellCheck: false,
 			name: this.props.name,
-			placeholder: this.props.children?this.props.children:"Enter a value",
+			placeholder: this.props.children,
 			onChange: this.onChange,
 			defaultValue: (this.defaultValue && this.defaultValue!="")?this.defaultValue:this.props.defaultValue
 		}
