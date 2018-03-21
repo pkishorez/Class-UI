@@ -134,8 +134,10 @@ label.__input_checkbox, label.__input_radio {
 }
 
 .__input_layout {
+	text-align: left;
 	> .label{
 		font-size: 13px;
+		font-weight: 900;
 	}
 	> .error {
 		max-height: 0px;
