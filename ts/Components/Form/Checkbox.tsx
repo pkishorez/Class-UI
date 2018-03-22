@@ -2,58 +2,46 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {FormElement} from './FormElement';
 import * as propTypes from 'prop-types';
-import { IFormContextType } from './Form';
 import { IJSONSchema, Schema } from './Schema/index';
 import * as _ from 'lodash';
+import * as classNames from 'classnames';
 
 export interface IProps {
 	name: string,
 	children: any,
 	inline?: boolean
-	schema?: IJSONSchema
-	onError?: any
+	onChange?: (value: boolean)=>void
+	shouldBeChecked?: boolean
 };
 
 export interface IState {
-	value: boolean
 }
 
 export class Checkbox extends FormElement<IProps, IState> {
-	private defaultValue: boolean = true;
-	private schema?: IJSONSchema;
+	constructor(props: IProps) {
+		super(props);
 
-	constructor(props: IProps, context: IFormContextType) {
-		super(props, context);
-		this.schema = props.schema;
-		context.initialize(props.name, this, (schema, defaultValue)=>{
-			this.schema = _.merge(this.schema, schema);
-			this.defaultValue = defaultValue;
-		})
 		this.getValue = this.getValue.bind(this);
 		this.validate = this.validate.bind(this);
 		this.state = {
-			value: this.defaultValue
+			value: false
 		};
 	}
 
-	componentWillUnmount()
-	{
-		this.context.delete_value(this.props.name);
+	validate(focusOnError?: boolean) {
+		// No Validation For Now.
+		if (this.props.shouldBeChecked) {
+			// The value should be checked. Otherwise error should be shown.
+		}
 	}
 
-	getValue() {
-		return {
-			value: this.state.value,
-			error: null
-		};
-	}
-	validate() {
-		let error = this.schema?Schema.validate(this.schema, this.state.value):null;
-		(this.props.onError && this.props.onError(error));
-	}
-
-	render() {
-		return <label className={"__input_checkbox"+(this.props.inline?" inline":"")}>
+	_render() {
+		return <label className={classNames(
+				"__input_checkbox",
+				{
+					inline: this.props.inline
+				}
+			)}>
 			<input type="checkbox" checked={this.state.value} onChange={(e)=>{
 				this.setState({
 					value: !this.state.value

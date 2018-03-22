@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {Text, ITextProps} from '../Form/Text';
 import {SAnim} from '../../Helper/Animation';
 import * as classNames from 'classnames';
+import { IValue } from 'classui/Components/Form/FormElement';
 
 export interface IProps extends ITextProps {
 	label?: string
@@ -10,16 +11,18 @@ export interface IProps extends ITextProps {
 };
 
 export class TextField extends React.Component<IProps, {error: null|string|undefined}> {
-	constructor(props: IProps, context: any) {
-		super(props, context);
+	constructor(props: IProps) {
+		super(props);
 		this.state = {
 			error: undefined
 		};
-		this.setError=this.setError.bind(this);
+		this.onChange=this.onChange.bind(this);
 	}
-	setError(error: string | null)
+	onChange(value: IValue)
 	{
-		this.setState({error});
+		this.setState({
+			error: value.error
+		})
 	}
 	render() {
 		let cls = classNames("__input_layout", {
@@ -28,7 +31,7 @@ export class TextField extends React.Component<IProps, {error: null|string|undef
 		});
 		return <label className={cls}>
 			{this.props.label?<div className="label">{this.props.label}</div>:null}
-			<Text {...this.props} onError={this.setError}>{this.props.children}</Text>
+			<Text {...this.props} onChange={this.onChange}>{this.props.children}</Text>
 			<div className="error">{this.state.error}</div>
 		</label>;
 	}

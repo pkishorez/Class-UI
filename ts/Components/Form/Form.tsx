@@ -6,97 +6,95 @@ import {FormElement} from './FormElement';
 import * as classNames from 'classnames';
 import * as _ from 'lodash';
 
+export interface IFormContext {
+	register: (key: string, ref: FormElement<any, any>, func: (schema: IJSONSchema, defaultValue: any)=>void)=>void,
+	unregister: (key: string)=>void
+}
+export let FormContext = React.createContext<IFormContext>({} as any);
+
 export interface IProps {
 	className?: string
 	style?: React.CSSProperties
 	onSubmit?: Function
-	default?: {
-		[id: string]: any
-	}
+	default?: any
 	schema?: IJSONSchema
 	autocomplete?: "on" | "off"
 };
 export interface IState {};
 
-interface IData {
-	[id: string]: {
-		ref: FormElement<any, any>
-	}
-};
-
-export interface IFormContextType {
-	initialize: (key: string, ref: any, func: (schema: IJSONSchema, defaultValue: any)=>void)=>void,
-	delete_value: (key: string)=>void
-}
-
 export class Form extends React.Component<IProps, IState> {
-	private formElemRefs: IData = {};
+	private schema?: Schema;
+	private formElemRefs: {
+		key: string,
+		ref: FormElement<any, any>
+	}[] = [];
 
 	static defaultProps = {
 		autocomplete: "off"
 	}
 
-	static childContextTypes = {
-		initialize: propTypes.func,
-		delete_value: propTypes.func
-	};
-
-	getChildContext(): IFormContextType
-	{
-		return {
-			initialize: (key, ref, func)=>{
-				this.formElemRefs[key] = {
-					ref
-				};
-				let jschema_key = "properties."+key.replace(/\./g, ".properties.");
-				let pschema = _.get(this.props.schema, jschema_key);
-				let defaultValue = _.get(this.props.default, key);
-				if (func)
-					func(pschema, defaultValue);
-			},
-			delete_value: (key: string) => {
-				delete this.formElemRefs[key];
-			}
-		};
-		
-	}
-
-	constructor(props: any, context: any) {
-		super(props, context);
+	constructor(props: any) {
+		super(props);
+		if (this.props.schema)
+			this.schema = new Schema(this.props.schema);
 		this.submit = this.submit.bind(this);
 	}
 
 	submit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		let formData: any = {};
-		let hasError = false;
 
-		for (let key in this.formElemRefs){
-			let ref = this.formElemRefs[key].ref;
-			ref.validate(true);
+		let fErrorRef: FormElement<any, any>|undefined = undefined;
+
+		for (let formElem of this.formElemRefs){
+			let key = formElem.key;
+			let ref = formElem.ref;
+
 			let data = ref.getValue();
+			ref.validate();
 			if (data.error) {
-				hasError = true;
+				if (!fErrorRef) {
+					fErrorRef = ref;
+					ref.validate(true);
+				}
 			}
-			if (data.value) {
+			else {
 				formData = _.set(formData, key, data.value);
 			}
 		}
-		if (!hasError && this.props.schema) {
-			let errors = Schema.validate(this.props.schema, formData);
-			if (errors) {
-				console.error("Serious error in FORM. Please fix it.", errors);
-			}
-		}
-		if (this.props.onSubmit && !hasError) {
+		if (this.props.onSubmit && !fErrorRef) {
+			if (this.props.schema)
+				Schema.validate(this.props.schema, formData);
 			this.props.onSubmit(formData);
 		}
+	}
+	register(key: string, ref: FormElement<any, any>, func: any) {
+		console.log("Registering : ", key);
+		this.formElemRefs = [
+			...this.formElemRefs, {
+				key: key,
+				ref: ref
+			}
+		];
+		let jschema_key = "properties."+key.replace(/\./g, ".properties.");
+		let pschema = _.get(this.props.schema, jschema_key);
+		let defaultValue = _.get(this.props.default, key);
+		if (func)
+			func(pschema, defaultValue);
+	}
+	unregister(key: string) {
+		this.formElemRefs = this.formElemRefs.filter(fe=>fe.key!=key);
 	}
 
 	render() {
 		let cls = classNames(this.props.className);
-		return <form className={cls} style={{...this.props.style}} autoComplete={this.props.autocomplete} onSubmit={this.submit}>
-			{this.props.children}
-		</form>;
+		return <FormContext.Provider value={{
+			register: this.register.bind(this),
+			unregister: this.unregister.bind(this)
+		}}>
+			<form className={cls} style={{...this.props.style}} autoComplete={this.props.autocomplete} onSubmit={this.submit}>
+				{this.props.children}
+			</form>
+		</FormContext.Provider>;
 	}
 }

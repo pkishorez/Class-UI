@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
 import {FormElement} from './FormElement';
-import { IFormContextType } from './Form';
 import * as classNames from 'classnames';
 import { SAnim } from '../../Helper/Animation';
+import * as _ from 'lodash';
 
 export interface IProps {
 	name: string
@@ -12,44 +12,29 @@ export interface IProps {
 	children?: any
 	top?: boolean
 	nonEditable?: boolean
+	defaultValue?: string
 };
 
 export interface IState {
-	value: string
 	showSuggestions: boolean
 }
 export class Select extends FormElement<IProps, IState> {
-	private defaultValue: string = "";
 
-	constructor(props: IProps, context: IFormContextType) {
-		super(props, context);
-		context.initialize(props.name, this, (schema, defaultValue)=>{
-			// Ignore Schema for now.
-			this.defaultValue = defaultValue?defaultValue: "";
-			this.state = {
-				value: this.defaultValue,
-				showSuggestions: false
-			};	
-		});
+	constructor(props: IProps) {
+		super(props);
+		this.state = {
+			value: this.props.defaultValue,
+			showSuggestions: false
+		};
 		this.onChange = this.onChange.bind(this);
 		this.suggestions = this.suggestions.bind(this);
 		this.getSuggestions = this.getSuggestions.bind(this);
 	}
 
-	componentWillUnmount()
-	{
-		this.context.delete_value(this.props.name);
-	}
-
-	public getValue() {
-		return {
-			value: this.state.value,
-			error: null
-		};
-	}
-	public validate() {
+	public validate(focusOnError?: boolean) {
 		// No Validation as of now.
 	}
+
 	private onChange(e: React.ChangeEvent<HTMLInputElement>) {
 		if (this.props.nonEditable) {
 			this.setState({
@@ -71,15 +56,17 @@ export class Select extends FormElement<IProps, IState> {
 		}
 	}
 	private getSuggestions() {
+		let options = _.uniq(this.props.options);
 		if (this.props.nonEditable) {
-			return this.props.options;
+			return options;
 		}
-		return this.props.options.filter((option)=>{
-			if (option.toLowerCase().indexOf(this.state.value.toLowerCase())!=-1)
+		return options.filter((option)=>{
+			let value = this.state.value?this.state.value:"";
+			if (option.toLowerCase().indexOf(value.toLowerCase())!=-1)
 				return option;
 		});
 	}
-	render() {
+	_render() {
 		let cls = classNames("__input_select", {
 			top: this.props.top,
 			editable: !this.props.nonEditable
