@@ -37,6 +37,7 @@
     "@types/classnames": "^2.2.3",
     "@types/lodash": "^4.14.91",
     "@types/prop-types": "^15.5.2",
+    "@types/react": "^16.0.40",
     "@types/react-dom": "^16.0.3",
     "@types/react-motion": "0.0.25",
     "@types/react-redux": "^5.0.14",
@@ -47,8 +48,8 @@
     "enquire.js": "^2.1.6",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.3.0-alpha.2",
+    "react-dom": "^16.3.0-alpha.2",
     "react-motion": "^0.5.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
@@ -73,7 +74,7 @@
     "source-map-loader": "^0.2.3",
     "ts-loader": "^4.0.1",
     "typescript": "^2.7.2",
-    "webpack": "^4.1.0",
+    "webpack": "^4.2.0",
     "webpack-cli": "^2.0.10",
     "webpack-dev-server": "^3.1.0"
   }
