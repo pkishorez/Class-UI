@@ -4,6 +4,7 @@ import * as propTypes from 'prop-types';
 import {FormElement, IValue} from './FormElement';
 import {IJSONSchema, Schema} from './Schema';
 import { FormContext } from 'classui/Components/Form/Form';
+import { css } from 'classui/Emotion';
 
 export interface ITextProps {
 	name: string,
@@ -11,6 +12,7 @@ export interface ITextProps {
 	autoFocus?: boolean
 	schema?: IJSONSchema
 	children?: string
+	className?: string
 	defaultValue?: string
 	onChange?: (value: IValue)=>void
 };
@@ -18,6 +20,7 @@ export interface ITextProps {
 export interface ITextState {
 	value?: string
 };
+
 
 export class Text extends FormElement<ITextProps, ITextState> {
 	static defaultProps = {
@@ -38,7 +41,6 @@ export class Text extends FormElement<ITextProps, ITextState> {
 	public validate(focusOnError?: boolean) {
 		let value = this.getValue();
 		if (value.error) {
-			console.log("Error : Focussing", this.input);
 			focusOnError && this.input && this.input.focus();
 		}
 		this.props.onChange && this.props.onChange(value);
@@ -55,13 +57,18 @@ export class Text extends FormElement<ITextProps, ITextState> {
 	_render() {
 		let props = {
 			autoFocus: this.props.autoFocus,
-			autoComplete: this.props.name,
+			autoComplete: "off",
 			ref: (ref: any)=>this.input = ref,
 			spellCheck: false,
 			name: this.props.name,
 			placeholder: this.props.children,
 			onChange: this.onChange,
-			value: this.state.value
+			value: this.state.value,
+			className: css`
+				width: 100%;
+				border-bottom: 2px solid grey;
+				padding: 5px 0px 3px 0px;
+			`
 		}
 		return (this.props.type=="area")?<textarea
 			{...props}>

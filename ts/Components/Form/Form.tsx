@@ -69,7 +69,6 @@ export class Form extends React.Component<IProps, IState> {
 		}
 	}
 	register(key: string, ref: FormElement<any, any>, func: any) {
-		console.log("Registering : ", key);
 		this.formElemRefs = [
 			...this.formElemRefs, {
 				key: key,

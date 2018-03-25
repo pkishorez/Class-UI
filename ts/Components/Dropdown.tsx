@@ -4,7 +4,9 @@ import {spring, Motion} from 'react-motion';
 import {SAnim, ISAnimProps} from '../Helper/Animation';
 import classNames = require('classnames');
 import { Button, IButtonProps } from './Button';
-import { BaseBlockComponent, IBaseBlockComponentProps } from './BaseComponent/index';
+import { IBaseComponentProps, BaseComponentProps, cardStyles } from './BaseComponent/index';
+import { styled, Hoverable, cx, IThemeColors, css } from 'classui/Emotion';
+import { StyledComponent } from 'react-emotion';
 
 export interface IProps {
 	buttonMaxWidth?: number
@@ -17,6 +19,20 @@ export interface IProps {
 export interface IState {
 	active: boolean
 };
+
+let EDropdown = styled('div')`
+	position: relative;
+	display: inline-block;
+`;
+let EContent = styled('ul')`
+	position: absolute;
+	background-color: white;
+	color: black;
+	top: 100%;
+
+	max-width: 200px;
+	min-width: 150px;
+`;
 
 export class Dropdown extends React.Component<IProps, IState> {
 	clickedWithinDropdown = false;
@@ -39,10 +55,6 @@ export class Dropdown extends React.Component<IProps, IState> {
 	}
 
 	dismiss() {
-		if (this.clickedWithinDropdown) {
-			this.clickedWithinDropdown = false;
-			return;
-		}
 		this.setState({
 			active: false
 		});
@@ -51,11 +63,10 @@ export class Dropdown extends React.Component<IProps, IState> {
 		this.setState({
 			active: !this.state.active
 		});
-		this.clickedWithinDropdown = true;
+		e.stopPropagation();
 	}
 	render() {
-		console.log(this.state.active);
-		return <div className={"__dropdown push-"+this.props.push}>
+		return <EDropdown>
 			<Button {...this.props.btnProps} active={this.state.active} onClick={this.toggle}>
 				{(typeof(this.props.button)=="string")?<>
 					<span className="inline-block noTextWrap" style={{
@@ -63,31 +74,45 @@ export class Dropdown extends React.Component<IProps, IState> {
 					}}>{this.props.button}</span> <i className="fa fa-angle-down"></i>
 				</>:this.props.button}
 			</Button>
-
 			<SAnim show={this.state.active} animType={this.props.animType?this.props.animType:(this.props.push=="up")?"slideTop":"slideBottom"}>
-				<ul onClick={()=>this.clickedWithinDropdown = true} className="__card _3">
-					{typeof this.props.children==="function"?this.props.children(()=>{
+				<EContent  onClick={(e)=>e.stopPropagation()} className={cx(css`
+					${cardStyles["3"]}
+					${()=>{
+						switch(this.props.push){
+							case "left":
+								return `right: 0px;`
+							case "right":
+								return `left: 0px`;
+							case "up":
+								return `top: auto;bottom: 100%;`;
+						}
+					}}
+				`)}>
+					{(typeof this.props.children==="function")?this.props.children(()=>{
 						this.setState({
 							active: !this.state.active
 						});
 					}):this.props.children}
-				</ul>
+				</EContent>
 			</SAnim>
-		</div>;
+		</EDropdown>;
 	}
 }
 
-export interface IDropdownItemProps extends IBaseBlockComponentProps {
+export interface IDropdownItemProps extends IBaseComponentProps {
 	active?: boolean
 	disable?: boolean
 	children?: any
 }
+
+let EDItem = styled('li')`
+	padding: 10px;
+`;
 export let DItem = (props: IDropdownItemProps)=>{
-	let cls = classNames(props.className, {
-		disable: props.disable,
-		active: props.active
-	});
-	return <li {...BaseBlockComponent(props)} className={cls}>
+	return <EDItem {...BaseComponentProps(props)} className={cx(Hoverable({
+		active: props.active,
+		disable: props.disable
+	}), props.className)}>
 		{props.children}
-	</li>;
+	</EDItem>;
 }

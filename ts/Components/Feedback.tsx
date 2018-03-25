@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {SAnim} from '../Helper/Animation';
 import * as classNames from 'classnames';
+import { styled } from 'classui/Emotion';
 
 export interface IProps {
 
@@ -12,6 +13,31 @@ export interface IState {
 	type: "success" | "error"
 	show: boolean
 };
+
+let EFeedBack = styled('div')`
+	position: fixed;
+	top: 0px;
+	left: 50%;
+`;
+let EContent = styled('div')`
+	display: inline-block;
+	position: relative;
+	right: 50%;
+	padding: 15px;
+	min-width: 200px;
+	text-align: center;
+
+	&.error {
+		background-color: rgb(255, 223, 223);
+		color: rgb(201, 0, 0);
+		font-weight: 900;
+	}
+	&.success {
+		background-color: rgb(212, 255, 212);
+		color: rgb(0, 119, 0);
+		font-weight: 900;
+	}
+`;
 
 let _instance: Feedback | null = null;
 export class Feedback extends React.Component<IProps, IState> {
@@ -50,8 +76,9 @@ export class Feedback extends React.Component<IProps, IState> {
 		});
 	}
 	render() {
-		return <SAnim animType="slideBottom" show={this.state.show}><div className="__feedback">
-			<div className={classNames("__card", "_3", "content ", this.state.type)}>{this.state.content}</div>
-		</div></SAnim>;
+		return <SAnim animType="slideBottom" show={this.state.show}>
+		<EFeedBack>
+			<EContent className={this.state.type}>{this.state.content}</EContent>
+		</EFeedBack></SAnim>;
 	}
 }

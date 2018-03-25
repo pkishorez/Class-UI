@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {SAnim} from '../Helper/Animation';
 import * as classNames from 'classnames';
 import { Button } from './Button';
+import { styled, cx } from 'classui/Emotion';
 
 export interface IProps {
 };
@@ -10,6 +11,29 @@ export interface IProps {
 export interface IState {
 	show: boolean
 };
+
+let EDrawer = styled('div')`
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0, 0.3);
+
+	&.nodismiss {
+		background-color: rgba(0, 0, 0, 0.8);
+	}
+`;
+let EContent = styled('div')`
+	position: relative;
+	max-width: 100%;
+	max-height: 100%;
+	overflow: auto;
+`;
+
 
 let _instance: Drawer | null = null;
 export class Drawer extends React.Component<IProps, IState> {
@@ -55,9 +79,6 @@ export class Drawer extends React.Component<IProps, IState> {
 	}
 
 	escapeDismiss(e: KeyboardEvent) {
-		if (this.noDismiss){
-			return;			
-		}
 		if (e.key=="Escape") {
 			this.dismiss();
 			window.removeEventListener("keydown", this.escapeDismiss);
@@ -78,17 +99,14 @@ export class Drawer extends React.Component<IProps, IState> {
 		this.setState({show: false});
 	}
 	render() {
-		let cls = classNames("__drawer", {
-			"noDismiss": this.noDismiss
-		});
-		let contentCls = classNames("content", this.contentClass);
-		let content = <div onClick={(e)=>{this.content_click=true}} className={contentCls}>
+		let content = <EContent onClick={(e)=>{this.content_click=true}} className={cx(this.contentClass,{
+			noDismiss: this.noDismiss
+		})}>
 			{this.content}
-			{(this.noDismiss || this.noCloseButton)?null:<Button className="close" onClick={this.dismiss}>x</Button>}
-		</div>;
-		let drawer = <div className={cls} onClick={this.clickDismiss}>
+		</EContent>;
+		let drawer = <EDrawer onClick={this.clickDismiss}>
 			{this.noAnimation?content:<SAnim animType="slideLeft" show={this.state.show}>{content}</SAnim>}
-		</div>;
+		</EDrawer>;
 		return this.state.show?drawer:null;
 	}
 }

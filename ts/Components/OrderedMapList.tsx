@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { Layout, Section } from './Layout';
 import {IOrderedMap} from '../DataStructures/OrderedMap';
 import * as classNames from 'classnames';
-import { Menu } from './Menu';
+import { Menu, MItem } from './Menu';
 import { Button } from './Button';
 
 export interface IProps {
@@ -61,9 +61,7 @@ export class OrderedMapList extends React.Component<IProps> {
 				<i className="fa fa-long-arrow-down"></i>
 			</Button>;
 
-			return <div className={classNames("item", {
-				disable: isHidden
-			})} key={item_id} onClick={(e)=>{
+			return <MItem disable={isHidden} key={item_id} onClick={(e)=>{
 				this.props.onClick?this.props.onClick(item_id):null;
 			}}>
 				<Layout align="center" style={{height: 30}}>
@@ -84,7 +82,7 @@ export class OrderedMapList extends React.Component<IProps> {
 						}}>
 							<i className="fa fa-trash"></i>
 						</span>:null}
-						{this.props.onHide?<Button className="primary" onClick={(e)=>{
+						{this.props.onHide?<Button primary onClick={(e)=>{
 							this.props.onHide?this.props.onHide(
 								isHidden?
 								_.difference(this.props.orderedMap.hidden, [item_id])
@@ -99,7 +97,7 @@ export class OrderedMapList extends React.Component<IProps> {
 						</Button>:null}
 					</Section>
 				</Layout>
-			</div>
+			</MItem>
 		})
 		return <Menu>
 			{order}

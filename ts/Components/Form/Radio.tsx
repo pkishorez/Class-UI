@@ -4,6 +4,7 @@ import {FormElement} from './FormElement';
 import * as propTypes from 'prop-types';
 import { IJSONSchema, Schema } from './Schema/index';
 import * as _ from 'lodash';
+import { styled, cx } from 'classui/Emotion';
 
 export interface IProps {
 	name: string
@@ -18,6 +19,48 @@ export interface IProps {
 
 export interface IState {
 }
+
+let ERadio = styled('label')`
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	user-select: none;
+	padding: 5px;
+
+	&.inline{
+		display: inline-flex;
+		padding-right: 10px;
+		margin-right: 5px;
+
+	}
+
+	&:hover{
+		background-color: #F4F4F4;
+	}
+
+	& > input{
+		display: none;
+	}
+`;
+
+let EFake = styled('div')`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 17px;
+	height: 17px;
+	margin-right: 10px;
+	border: 1px solid black;
+	border-radius: 50%;
+	font-size: 15px;
+	color: white;
+	transition: 0.3s all;
+
+	&.active{
+		border: 1px solid ${p=>p.theme.colorDarker};
+		background-color: ${p=>p.theme.color};
+	}
+`;
 
 export class Radio extends FormElement<IProps, IState> {
 
@@ -41,7 +84,9 @@ export class Radio extends FormElement<IProps, IState> {
 	_render() {
 		return <div>
 			{this.props.values.map((cb)=>{
-				return <label key={cb.value} className={"__input_radio"+(this.props.inline?" inline":"")}>
+				return <ERadio key={cb.value} className={cx({
+					inline: this.props.inline
+				})}>
 					<input type="radio" onChange={()=>{
 						this.setState({
 							value: cb.value
@@ -49,9 +94,11 @@ export class Radio extends FormElement<IProps, IState> {
 							this.props.onChange && this.props.onChange(cb.value)
 						});
 					}} checked={this.state.value==cb.value} value={cb.value} name={this.props.name}/>
-					<div className="fake">•</div>
+					<EFake className={cx({
+						active: this.state.value==cb.value
+					})}>•</EFake>
 					{cb.label}
-				</label>
+				</ERadio>
 			})}
 		</div>;
 	}

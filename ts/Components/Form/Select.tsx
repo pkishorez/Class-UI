@@ -5,6 +5,7 @@ import {FormElement} from './FormElement';
 import * as classNames from 'classnames';
 import { SAnim } from '../../Helper/Animation';
 import * as _ from 'lodash';
+import { styled, cx, css } from 'classui/Emotion';
 
 export interface IProps {
 	name: string
@@ -18,6 +19,47 @@ export interface IProps {
 export interface IState {
 	showSuggestions: boolean
 }
+
+let ESelect = styled('label')`
+	position: relative;
+	display: block;
+	border: 1px solid #C4C4C4;
+	display: flex;
+	align-items: center;
+	&:hover {
+		background-color: #F4F4F4;
+	}
+	margin-bottom: 10px;
+`;
+let ESuggestions = styled('ul')`
+	position: absolute;
+	top: -2px;
+	bottom: auto;
+	left: -2px;
+	padding: 10px 0px;
+	background-color: white;
+	width: calc(100% + 4px);
+	max-height: 300px;
+	overflow: auto;
+	box-shadow: 0px 0px 3px grey;
+`;
+let ESuggestionItem = styled('li')`
+	display: block;
+	cursor: pointer;
+	padding: 7px 10px;
+	&:hover{
+		background-color: ${p=>p.theme.color};
+		color: white;
+	}
+	&.active {
+		&, &:hover {
+			background-color: inherit;
+			color: ${p=>p.theme.color};
+			cursor: default;	
+		}
+	}
+`;
+
 export class Select extends FormElement<IProps, IState> {
 
 	constructor(props: IProps) {
@@ -67,16 +109,19 @@ export class Select extends FormElement<IProps, IState> {
 		});
 	}
 	_render() {
-		let cls = classNames("__input_select", {
-			top: this.props.top,
-			editable: !this.props.nonEditable
-		})
-		return <label className={cls}>
-			<input spellCheck={false} autoComplete="off" type="text" onClick={()=>{
+		return <ESelect>
+			<input spellCheck={false} className={css`
+				color: transparent;
+				text-shadow: 0px 0px 0px #000;
+				cursor: pointer;
+				padding: 10px 5px;
+				background-color: inherit;
+				flex-grow: 1;
+			`} autoComplete="off" type="text" onClick={()=>{
 				this.setState({
 					showSuggestions: true
 				})
-			}} className="input" onFocus={()=>{
+			}} onFocus={()=>{
 				this.setState({
 					showSuggestions: true
 				});
@@ -89,18 +134,21 @@ export class Select extends FormElement<IProps, IState> {
 					showSuggestions: false
 				}), 100);
 			}}/>
+			<i className="fa fa-angle-down" style={{marginRight: 15}}></i>
 			<SAnim show={this.state.showSuggestions && (this.getSuggestions().length>0)} animType={this.props.top?"slideTop":"slideBottom"}>
-				<div className="suggestions">
+				<ESuggestions>
 					{this.getSuggestions().map((option)=>{
-						return <span key={option} className={(option==this.state.value)?"active":""} onClick={()=>{
+						return <ESuggestionItem key={option} className={cx({
+								active: option==this.state.value
+							})} onClick={()=>{
 							this.setState({
 								value: option,
 								showSuggestions: false
 							})
-						}}>{option}</span>
+						}}>{option}</ESuggestionItem>
 					})}
-				</div>
+				</ESuggestions>
 			</SAnim>
-		</label>
+		</ESelect>
 	}
 };

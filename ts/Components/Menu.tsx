@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom';
 import * as classNames from 'classnames';
 import {TransitionMotion} from 'react-motion';
 import {RLink} from '../Helper/RLink';
+import { styled, cx, Hoverable } from 'classui/Emotion';
+import { IBaseComponentProps, BaseComponentProps } from 'classui/Components/BaseComponent';
 
 export interface IProps {
 	header?: string
@@ -10,36 +12,46 @@ export interface IProps {
 };
 export interface IState {};
 
+let ESideMenu = styled('div')`
+	border: 1px solid #DDDDDD;
+	background-color: white;
+	padding: 10px 0px;
+
+	& > h3 {
+		padding: 0px 10px;
+	}
+`;
+
 export class Menu extends React.Component<IProps, IState> {
 	render() {
-		return <div className="__sidemenu">
-			{this.props.header?<h3 className="header">{this.props.header}</h3>:null}
+		return <ESideMenu>
+			{this.props.header?<h3>{this.props.header}</h3>:null}
 			{this.props.children}
-		</div>;
+		</ESideMenu>;
 	}
 }
 
 
-export type IItemProps = {
+export interface IItemProps extends IBaseComponentProps {
 	disable?: boolean
 	active?: boolean
 	children: any
-	onClick?: any
-	style?: React.CSSProperties
-	badge?: string
-	to?: string
 };
 
-export let MDivider = ()=> {
-	return <div className="divider"></div>;
-}
+export let MDivider = styled('div')`
+	border-top: 1px solid grey;
+	margin: 10px 5px;
+`;
 
+let EItem = styled('div')`
+	padding: 7px 10px;
+`;
 export let MItem = (props: IItemProps)=>{
-	let cls = classNames("item", {
+
+	return <EItem {...BaseComponentProps(props)} className={cx(props.className, Hoverable({
 		disable: props.disable,
 		active: props.active
-	});
-	return <RLink to={props.to}><div className={cls} style={props.style} onClick={props.onClick}>
-		{props.children} {props.badge?<span className="badge">{props.badge}</span>:null}
-	</div></RLink>;
+	}))}>
+		{props.children}
+	</EItem>;
 }

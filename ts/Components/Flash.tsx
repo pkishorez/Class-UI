@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {SAnim, ISAnimProps} from '../Helper/Animation';
 import * as classNames from 'classnames';
 import { Button } from './Button';
+import { styled, css } from 'classui/Emotion';
 
 export interface IProps {
 };
@@ -10,6 +11,41 @@ export interface IProps {
 export interface IState {
 	show: boolean
 };
+
+let EFlash = styled('div')`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0, 0.5);
+
+	&.noDismiss {
+		background-color: rgba(0, 0, 0, 0.8);
+	}
+`;
+let EContent = styled('div')`
+	position: relative;
+	max-width: 100%;
+	max-height: 100%;
+	overflow: auto;
+`;
+let Close = css`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 900;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 10px;
+	min-width: 40px;
+	min-height: 40px;
+`;
+
 
 let _instance: Flash | null = null;
 export class Flash extends React.Component<IProps, IState> {
@@ -77,16 +113,15 @@ export class Flash extends React.Component<IProps, IState> {
 		this.setState({show: false});
 	}
 	render() {
-		let cls = classNames("__flash", {
-			"noDismiss": this.noDismiss
-		});
-		let contentCls = classNames("content", this.contentClass);
-		let content = <div className={cls} onClick={this.clickDismiss}>
-			<div onClick={(e)=>{this.content_click=true}} className={contentCls}>
+
+		let content = <EFlash className={cx({
+			noDismiss: this.noDismiss
+		})} onClick={this.clickDismiss}>
+			<EContent onClick={(e)=>{this.content_click=true}} className={this.contentClass}>
 				{this.content}
-				{this.noCloseButton?null:<Button className="close" onClick={this.dismiss}>x</Button>}
-			</div>
-		</div>;
+				{this.noCloseButton?null:<Button className={Close} onClick={this.dismiss}>x</Button>}
+			</EContent>
+		</EFlash>;
 
 		return (!this.animation)?(this.state.show?content:null):<SAnim show={this.state.show} animType={this.animation}>
 			{content}

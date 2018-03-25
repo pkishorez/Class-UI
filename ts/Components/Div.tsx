@@ -1,11 +1,11 @@
-import {BaseBlockComponent, IBaseBlockComponentProps} from './BaseComponent/index';
+import {BaseComponentProps, IBaseComponentProps} from './BaseComponent/index';
 import React = require('react');
 
-export interface IDivProps extends IBaseBlockComponentProps {
+export interface IDivProps extends IBaseComponentProps {
 	children: any
 }
 export let Div = (props: IDivProps)=>{
-	return <div {...BaseBlockComponent(props)}>
+	return <div {...BaseComponentProps(props)}>
 		{props.children}
 	</div>;
 }
