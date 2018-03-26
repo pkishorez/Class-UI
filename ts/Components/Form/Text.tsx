@@ -18,7 +18,7 @@ export interface ITextProps {
 };
 
 export interface ITextState {
-	value: string
+	value?: string
 };
 
 
@@ -62,7 +62,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 			name: this.props.name,
 			placeholder: this.props.children,
 			onChange: this.onChange,
-			value: this.state.value,
+			value: this.state.value?this.state.value:"",
 			className: css`
 				width: 100%;
 				border-bottom: 2px solid grey;

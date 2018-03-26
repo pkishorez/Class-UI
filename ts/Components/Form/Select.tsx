@@ -64,7 +64,7 @@ export class Select extends FormElement<IProps, IState> {
 	constructor(props: IProps) {
 		super(props);
 		this.state = {
-			value: this.props.defaultValue?this.props.defaultValue:"",
+			value: this.props.defaultValue,
 			showSuggestions: false
 		};
 		this.onChange = this.onChange.bind(this);
@@ -124,7 +124,7 @@ export class Select extends FormElement<IProps, IState> {
 				this.setState({
 					showSuggestions: true
 				});
-			}} value={this.state.value}
+			}} value={this.state.value?this.state.value:""}
 				name={this.props.name}
 				onKeyDown={this.suggestions}
 				onChange={this.onChange}
