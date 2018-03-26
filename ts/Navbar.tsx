@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as classNames from 'classnames';
 import * as _ from 'lodash';
 import { IBaseComponentProps, BaseComponentProps } from './Components/BaseComponent/index';
 import { styled, cx } from 'classui/Emotion';
@@ -71,16 +70,13 @@ export class NavBar extends React.Component<IProps, IState> {
 			{this.props.children}
 		</EContent>;
 
-		let dummyNavBar = <ENavBar style={{visibility: "hidden"}}>
+		let dummyNavBar = <ENavBar style={{visibility: "hidden"}} className="__navbar__">
 			{content}
 		</ENavBar>;
 
 		return <>
 			{(this.props.dummy)?dummyNavBar:null}
-			<ENavBar {...BaseComponentProps({
-				...this.props,
-				className: cx("__navbar__", this.props.className)
-			} as any)}>
+			<ENavBar {...BaseComponentProps(this.props, "__navbar__")}>
 				{content}
 			</ENavBar>
 		</>;

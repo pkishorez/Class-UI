@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {spring, Motion} from 'react-motion';
 import {SAnim, ISAnimProps} from '../Helper/Animation';
-import classNames = require('classnames');
 import { Button, IButtonProps } from './Button';
 import { IBaseComponentProps, BaseComponentProps, cardStyles } from './BaseComponent/index';
 import { styled, Hoverable, cx, IThemeColors, css } from 'classui/Emotion';

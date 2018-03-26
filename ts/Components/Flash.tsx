@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {SAnim, ISAnimProps} from '../Helper/Animation';
-import * as classNames from 'classnames';
 import { Button } from './Button';
-import { styled, css } from 'classui/Emotion';
+import { styled, css, cx } from 'classui/Emotion';
 
 export interface IProps {
 };

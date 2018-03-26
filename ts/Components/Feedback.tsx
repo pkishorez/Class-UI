@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {SAnim} from '../Helper/Animation';
-import * as classNames from 'classnames';
 import { styled } from 'classui/Emotion';
 
 export interface IProps {

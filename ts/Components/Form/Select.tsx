@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as propTypes from 'prop-types';
 import {FormElement} from './FormElement';
-import * as classNames from 'classnames';
 import { SAnim } from '../../Helper/Animation';
 import * as _ from 'lodash';
 import { styled, cx, css } from 'classui/Emotion';
@@ -65,7 +64,7 @@ export class Select extends FormElement<IProps, IState> {
 	constructor(props: IProps) {
 		super(props);
 		this.state = {
-			value: this.props.defaultValue,
+			value: this.props.defaultValue?this.props.defaultValue:"",
 			showSuggestions: false
 		};
 		this.onChange = this.onChange.bind(this);
@@ -117,7 +116,7 @@ export class Select extends FormElement<IProps, IState> {
 				padding: 10px 5px;
 				background-color: inherit;
 				flex-grow: 1;
-			`} autoComplete="off" type="text" onClick={()=>{
+			`} autoComplete={this.props.name} type="text" onClick={()=>{
 				this.setState({
 					showSuggestions: true
 				})

@@ -4,7 +4,6 @@ import {FormElement} from './FormElement';
 import * as propTypes from 'prop-types';
 import { IJSONSchema, Schema } from './Schema/index';
 import * as _ from 'lodash';
-import * as classNames from 'classnames';
 import { styled, css, cx } from 'classui/Emotion';
 
 export interface IProps {
@@ -37,25 +36,40 @@ let ECheckbox = styled('label')`
 	}
 
 	& > input{
-		display: none;
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		width: 0px;
+		height: 0px;
+		margin: 0px;
+		padding: 0px;
+		&:focus {
+			& ~ .fake {
+				border: 1px solid ${p=>p.theme.colorDarker};
+				box-shadow: 0px 0px 5px ${p=>p.theme.colorDarker};
+			}
+		}
+	}
+	>.fake {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 17px;
+		height: 17px;
+		margin-right: 10px;
+		border: 1px solid black;
+		font-size: 15px;
+		color: white;
+		transition: 0.3s all;
+
+		&.active{
+			border: 1px solid ${p=>p.theme.colorDarker};
+			background-color: ${p=>p.theme.color};
+		}
 	}
 `;
 let EFake = styled('div')`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 17px;
-	height: 17px;
-	margin-right: 10px;
-	border: 1px solid black;
-	font-size: 15px;
-	color: white;
-	transition: 0.3s all;
 
-	&.active{
-		border: 1px solid ${p=>p.theme.colorDarker};
-		background-color: ${p=>p.theme.color};
-	}
 `;
 
 export class Checkbox extends FormElement<IProps, IState> {
@@ -85,9 +99,9 @@ export class Checkbox extends FormElement<IProps, IState> {
 					value: !this.state.value
 				});
 			}} name={this.props.name}/>
-			<EFake className={cx({
+			<div className={cx("fake", {
 				active: this.state.value
-			})}>✔</EFake>
+			})}>✔</div>
 			{this.props.children}
 		</ECheckbox>;
 	}

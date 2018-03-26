@@ -3,9 +3,9 @@ import * as ReactDOM from 'react-dom';
 import * as _ from 'lodash';
 import { Layout, Section } from './Layout';
 import {IOrderedMap} from '../DataStructures/OrderedMap';
-import * as classNames from 'classnames';
 import { Menu, MItem } from './Menu';
 import { Button } from './Button';
+import { cx } from 'classui/Emotion';
 
 export interface IProps {
 	orderedMap: IOrderedMap<any>
@@ -90,7 +90,7 @@ export class OrderedMapList extends React.Component<IProps> {
 							):null
 							e.stopPropagation();
 						}}>
-							<i className={classNames("fa", {
+							<i className={cx("fa", {
 								"fa-eye-slash": !isHidden,
 								"fa-eye": isHidden
 							})}></i>

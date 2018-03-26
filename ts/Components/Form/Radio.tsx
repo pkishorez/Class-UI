@@ -39,27 +39,43 @@ let ERadio = styled('label')`
 	}
 
 	& > input{
-		display: none;
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		width: 0px;
+		height: 0px;
+		margin: 0px;
+		padding: 0px;
+
+		&:focus {
+			& ~ .fake {
+				border: 1px solid ${p=>p.theme.colorDarker};
+				box-shadow: 0px 0px 10px ${p=>p.theme.colorDarker};
+			}
+		}
+	}
+	& > .fake {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 17px;
+		height: 17px;
+		margin-right: 10px;
+		border: 1px solid black;
+		border-radius: 50%;
+		font-size: 15px;
+		color: white;
+		transition: 0.3s all;
+
+		&.active{
+			border: 1px solid ${p=>p.theme.colorDarker};
+			background-color: ${p=>p.theme.color};
+		}
 	}
 `;
 
 let EFake = styled('div')`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 17px;
-	height: 17px;
-	margin-right: 10px;
-	border: 1px solid black;
-	border-radius: 50%;
-	font-size: 15px;
-	color: white;
-	transition: 0.3s all;
 
-	&.active{
-		border: 1px solid ${p=>p.theme.colorDarker};
-		background-color: ${p=>p.theme.color};
-	}
 `;
 
 export class Radio extends FormElement<IProps, IState> {
@@ -94,9 +110,9 @@ export class Radio extends FormElement<IProps, IState> {
 							this.props.onChange && this.props.onChange(cb.value)
 						});
 					}} checked={this.state.value==cb.value} value={cb.value} name={this.props.name}/>
-					<EFake className={cx({
+					<div className={cx("fake", {
 						active: this.state.value==cb.value
-					})}>•</EFake>
+					})}>•</div>
 					{cb.label}
 				</ERadio>
 			})}

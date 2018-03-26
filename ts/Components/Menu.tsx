@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as classNames from 'classnames';
 import {TransitionMotion} from 'react-motion';
 import {RLink} from '../Helper/RLink';
 import { styled, cx, Hoverable } from 'classui/Emotion';

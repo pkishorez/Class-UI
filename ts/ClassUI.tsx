@@ -1,12 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Flash} from './Components/Flash';
-import * as classNames from 'classnames';
 import { Drawer } from './Components/Drawer';
 import { Feedback } from './Components/Feedback';
 import { BaseComponentProps, IBaseComponentProps } from './Components/BaseComponent/index';
 import { BrowserRouter, withRouter, RouteComponentProps } from 'react-router-dom';
-import {Themes, IThemes, IThemeColors} from './Emotion/index';
+import {Themes, IThemes, IThemeColors, cx} from './Emotion/index';
 import {ThemeProvider} from 'emotion-theming';
 
 let _instance: ClassUI|undefined = undefined;
@@ -65,7 +64,7 @@ export class ClassUI extends React.Component<IProps, IState> {
 		_instance = undefined;
 	}
 	render() {
-		let cls = classNames("classui", this.state.theme, this.props.className, {
+		let cls = cx("classui", this.state.theme, this.props.className, {
 			fullheight: this.props.fullHeight
 		});
 

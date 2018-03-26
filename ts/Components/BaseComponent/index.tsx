@@ -21,7 +21,7 @@ export let cardStyles = {
 	"5": `box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);`
 }
 
-export let BaseComponentProps = (props: Partial<IBaseComponentProps>, defaults?: Partial<IBaseComponentProps>): IBaseComponentProps => {
+export let BaseComponentProps = (props: Partial<IBaseComponentProps>, ...className: string[]): IBaseComponentProps => {
 	return {
 		onClick: (e: any)=>{
 			if (!props.onClick) {
@@ -38,7 +38,7 @@ export let BaseComponentProps = (props: Partial<IBaseComponentProps>, defaults?:
 		},
 		className: cx(props.className, props.card?cx(css`
 			${cardStyles[props.card]}
-		`):undefined),
+		`, ...className):undefined),
 		style: props.style
 	}
 };

@@ -1,23 +1,21 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as classNames from 'classnames';
+import { cx, css, styled } from 'classui/Emotion';
+import { IBaseComponentProps, BaseComponentProps } from 'classui/Components/BaseComponent';
 
-export interface IProps {
+export interface IProps extends IBaseComponentProps {
 	basis?: number|string
-	inline?: boolean
 	column?: boolean
 	wrap?: boolean
-	justify?: "center" | "start" | "end" | "space-between" | "space-around"
-	align?: "center" | "start" | "end" | "stretch"
+	justify?: "center" | "flex-start" | "flex-end" | "space-between" | "space-around"
+	align?: "center" | "flex-start" | "flex-end" | "stretch"
 	gutter?: number
 	margin?: number
 	spread?: boolean
-	mediaNoMatch?: IProps
-	style?: React.CSSProperties
+	remain?: boolean
 	className?: string
 
 	// Common Child Properties.
-	c_props?: ISectionProps
 	children?: any
 };
 export interface IState {};
@@ -26,31 +24,38 @@ export class Layout extends React.Component<IProps, IState> {
 
 	public static defaultProps:IProps = {
 		basis: 'auto',
-		inline: false,
 		column: false,
 		wrap: false,
 		justify: "center",
 		align: "center",
 		gutter: 0,
 		margin: 0,
-		spread: true,
-
-		c_props: undefined
+		spread: false
 	};
 
 	render() {
-		let cls = classNames("flexbox", this.props.className,
-			"justify-"+this.props.justify,
-			"align-"+this.props.align,
-			{
-				"eq-width": this.props.spread,
-				"column": this.props.column,
-				"wrap": this.props.wrap
+		let cls = cx(css`
+			display: flex;
+			flex-direction: ${this.props.column?`column`:`row`};
+			flex-wrap: ${this.props.wrap?`wrap`: `nowrap`};
+			${this.props.column?
+				`height: ${this.props.basis};`:
+				`width: ${this.props.basis};`
 			}
-		);
+			justify-content: ${this.props.justify};
+			align-items: ${this.props.align};
+			${this.props.remain?`
+				flex-grow: 1;
+			`:undefined}
+
+			${this.props.spread?`
+			& > * {
+				flex: 1 1 auto;
+			}`:undefined}
+		`, this.props.className);
 		let count = React.Children.count(this.props.children);
 		let children = React.Children.map(this.props.children, (elem: any, i)=>{
-			if (!elem || ((elem.type!==Section) && (elem.type!==LSection))) {
+			if (!elem || ((elem.type!==Section) && (elem.type!==Layout))) {
 				console.error("Unknown type child passed.");
 				return;
 			}
@@ -70,19 +75,14 @@ export class Layout extends React.Component<IProps, IState> {
 					style.marginRight = this.props.margin;
 			}
 			return React.cloneElement(elem, {
-				...this.props.c_props,
 				...elem.props,
 				style: {
-					...(this.props.c_props?this.props.c_props.style:undefined),
 					...style,
 					...elem.props.style
 				}
 			});
 		});
-		return <div style={{
-			[this.props.column?"height":"width"]: this.props.basis,
-			...this.props.style
-		}} className={cls} >
+		return <div {...BaseComponentProps(this.props)} className={cls} >
 			{
 				children
 			}
@@ -90,10 +90,10 @@ export class Layout extends React.Component<IProps, IState> {
 	}
 }
 
-export type ISectionProps = {
-	card?: boolean
-	style?: React.CSSProperties,
-	className?: string
+
+let ESection = styled('div')`
+`;
+export interface ISectionProps extends IBaseComponentProps {
 	basis?: number|string,
 	children?: any,
 	remain?: boolean
@@ -103,33 +103,12 @@ export type ISectionProps = {
  * Section is an extendable ClassUI Component.
  */
 export let Section = (props: ISectionProps)=>{
-	let cls = classNames({
-		"remain": props.remain,
-		"card-1": props.card
-	});
-	cls = props.className?cls+" "+props.className:cls;
-	let style: React.CSSProperties = {
-		flexBasis: props.basis,
-		backgroundColor: props.card?"white":undefined,
-		padding: props.card?10:undefined,
-		...props.style
-	};
-
-	return <div className={cls} style={style}>
+	return <ESection {...BaseComponentProps(props)} className={cx(css`
+		flex-basis: ${props.basis}px;
+		${props.remain?
+			`flex-grow: 1;flex-shrink: 1;`
+		:undefined}
+	`, props.className)}>
 		{props.children}
-	</div>;
+	</ESection>;
 };
-
-
-export type ILSProps = IProps & {
-	SProps?: ISectionProps
-	children: any
-}
-
-export let LSection = (props: ILSProps)=>{
-	return <Section {...props.SProps}>
-		<Layout {...props}>
-			{props.children}
-		</Layout>
-	</Section>
-}

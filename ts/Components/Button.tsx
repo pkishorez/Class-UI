@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {BaseComponentProps, IBaseComponentProps} from './BaseComponent/index';
-import classNames = require('classnames');
 import {styled, cx, css} from 'classui/Emotion/index';
 
 export interface IButtonProps extends IBaseComponentProps {
@@ -10,61 +9,63 @@ export interface IButtonProps extends IBaseComponentProps {
 	primary?: boolean
 }
 
-export let Button = (props: IButtonProps)=>{
-	let EButton = styled('div')`
-		user-select: none;
-		padding: 10px;
-		cursor: pointer;
+let EButton = styled('div')`
+	user-select: none;
+	padding: 10px;
+	cursor: pointer;
+	${props=>props.color}
 
-		// Default Styles goes here..
-		background-color: #EEEEEE;
-		&:hover {
+	// Default Styles goes here..
+	background-color: #EEEEEE;
+	&:hover {
+		background-color: #DDDDDD;
+	}
+	&:active {
+		background-color: #CCCCCC;
+	}
+	&.active{
+		&, &:hover {
 			background-color: #DDDDDD;
 		}
-		&:active {
-			background-color: #CCCCCC;
+	}
+	&.disable {
+		&, &:hover{
+			cursor: default;
+			color: grey;
 		}
-		${p=>props.active?`
-			&, &:hover {
-				background-color: #DDDDDD;
-			}`:undefined}
-		${p=>props.disable?`
-			&, :hover{
-				cursor: default;
-				color: grey;
-			}`:undefined}
+	}
+	.__navbar__ & {
+		background-color: inherit;
+		&:hover {
+			background-color: ${p=>p.theme.colorDark};
+		}
+		&.active, &:active {
+			background-color: ${p=>p.theme.colorDark};
+		}
+	}
 
-
-		// Primary styles goes here :)
-		${p=>(props.primary)?`
-			background-color: ${p.theme.color};
+	${p=>`
+	&.primary {
+		//background-color: ${p.theme.color};
+		//color: black;
+		&:hover, &.active {
 			color: ${p.theme.contrast};
-			&:hover {
-				background-color: ${p.theme.colorLight};
-			}
-			${props.active?`
-			&, &:hover {
-				background-color: ${p.theme.colorLight};
-			}`:undefined}
-			${props.disable?`
-			&, :hover{
-				cursor: default;
-				background-color: ${p.theme.colorLight}
-			}`:undefined}
-		`:undefined}
-
-		// Buttons in navbar styles goes here...
-		.__navbar__ & {
-			background-color: inherit;
-			&:hover {
-				background-color: ${p=>p.theme.colorDark};
-			}
-			${p=>props.active?`
-				background-color: ${p.theme.colorDark};
-			`:undefined}
+			background-color: ${p.theme.colorLight};
 		}
-	`;
-	return <EButton {...BaseComponentProps(props)}>
+		&.disable {
+			&, :hover{
+			cursor: default;
+			background-color: ${p.theme.colorLight}
+		}
+	}`}
+`;
+
+export let Button = (props: IButtonProps)=>{
+	return <EButton {...BaseComponentProps(props)} className={cx({
+		primary: props.primary,
+		active: props.active,
+		disable: props.disable
+	})}>
 		{props.children}
 	</EButton>;
 }

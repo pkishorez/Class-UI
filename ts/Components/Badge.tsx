@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as classNames from "classnames";
 import {IBaseComponentProps, BaseComponentProps} from './BaseComponent/index';
 import { styled, PColors } from 'classui/Emotion';
 import { IPColors } from 'classui/Emotion/_theme';

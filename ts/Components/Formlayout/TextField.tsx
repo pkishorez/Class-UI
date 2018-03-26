@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Text, ITextProps} from '../Form/Text';
 import {SAnim} from '../../Helper/Animation';
-import * as classNames from 'classnames';
 import { IValue } from 'classui/Components/Form/FormElement';
 import { styled, css, cx } from 'classui/Emotion';
 import { CColors } from 'classui/Emotion/_theme';
@@ -24,7 +23,6 @@ let EContainer = styled('label')`
 	> .error {
 		max-height: 0px;
 		overflow: hidden;
-		visibility: hidden;
 		padding: 5px 0px;
 		font-size: 13px;
 		color: #ff1744;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as classNames from 'classnames';
 import { Layout, Section } from './Layout';
 import * as _ from 'lodash';
 import { Menu } from './Menu';
+import { cx } from 'classui/Emotion';
 
 export interface IProps {
 	hoverable?: boolean
@@ -154,7 +154,7 @@ export class Table extends React.Component<IProps, IState> {
 		
 		let groupMenu = this.state.group.by?<Menu header={_.capitalize(this.state.group.by)}>
 			{[undefined, ...Object.keys(_.groupBy(this.props.data, this.state.group.by))].map((item)=>{
-				let cls = classNames("item", {
+				let cls = cx("item", {
 					active: this.state.group.value==item
 				});
 				return <div key={item?item:Math.random()+""} className={cls} style={{minWidth: 150}} onClick={()=>{
@@ -164,7 +164,7 @@ export class Table extends React.Component<IProps, IState> {
 		</Menu>:null;
 
 
-		let cls = classNames("__table", {
+		let cls = cx("__table", {
 			hoverable: this.props.hoverable
 		});
 		let dataTable = <table className={cls}>
@@ -175,7 +175,7 @@ export class Table extends React.Component<IProps, IState> {
 				{bodyItems}
 			</TBody>
 		</table>;
-		return this.state.group.by?<Layout gutter={20} align="start">
+		return this.state.group.by?<Layout gutter={20} align="flex-start">
 			<Section>{groupMenu}</Section>
 			<Section remain>{dataTable}</Section>
 		</Layout>:dataTable;
