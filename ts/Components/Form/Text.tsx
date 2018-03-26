@@ -32,7 +32,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 	constructor(props: ITextProps) {
 		super(props);
 		this.state = {
-			value: this.props.defaultValue?this.props.defaultValue:""
+			value: this.props.defaultValue
 		};
 		this.validate = this.validate.bind(this);
 		this.onChange = this.onChange.bind(this);

@@ -23,7 +23,7 @@ export abstract class FormElement<IProps, IState> extends React.Component<IProps
 
 	public getValue() {
 		return {
-			value: this.state.value,
+			value: (this.state.value=="")?undefined:this.state.value,
 			error: this.schema?this.schema.validate(this.state.value): null
 		};
 	}
