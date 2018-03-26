@@ -6,6 +6,7 @@ import { styled, cx } from 'classui/Emotion';
 
 let ENavBar = styled('div')`
 	position: relative;
+	z-index: 10;
 	top: 0px;
 	left: 0px;
 	width: 100%;
@@ -38,10 +39,11 @@ let ELogo = styled('div')`
 	}
 `;
 
-export let NavbarRemain = styled('div')`
-	flex-grow: 1;
-`;
-
+export let NavbarRemain = ()=>{
+	return <div style={{
+		flexGrow: 1
+	}}></div>
+};
 
 export interface IProps extends IBaseComponentProps {
 	dummy?: boolean

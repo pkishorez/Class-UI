@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {TransitionMotion} from 'react-motion';
 import {RLink} from '../Helper/RLink';
-import { styled, cx, Hoverable } from 'classui/Emotion';
+import { styled, cx, Hoverable, css } from 'classui/Emotion';
 import { IBaseComponentProps, BaseComponentProps } from 'classui/Components/BaseComponent';
 
 export interface IProps {
@@ -37,10 +37,13 @@ export interface IItemProps extends IBaseComponentProps {
 	children: any
 };
 
-export let MDivider = styled('div')`
-	border-top: 1px solid grey;
-	margin: 10px 5px;
-`;
+export let MDivider = ()=>{
+	return <div className={css`
+		border-top: 1px solid grey;
+		margin: 10px 5px;
+	`}>
+	</div>
+}
 
 let EItem = styled('div')`
 	padding: 7px 10px;
