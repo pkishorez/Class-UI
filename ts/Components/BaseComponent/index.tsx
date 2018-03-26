@@ -38,7 +38,7 @@ export let BaseComponentProps = (props: Partial<IBaseComponentProps>, ...classNa
 		},
 		className: cx(props.className, props.card?cx(css`
 			${cardStyles[props.card]}
-		`, ...className):undefined),
+		`):undefined, ...className),
 		style: props.style
 	}
 };
