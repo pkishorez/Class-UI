@@ -1,12 +1,12 @@
 import emotionStyled, {ThemedReactEmotionInterface, css} from 'react-emotion';
-import { IThemeColors } from 'classui/Emotion/_theme';
-export {Themes, IThemes, IThemeColors, PColors} from './_theme';
+import { IThemeColors } from './theme';
+export {Themes, IThemes, IThemeColors, PColors} from './theme';
 
-import './_reset';
+import './reset';
 export let styled = emotionStyled as ThemedReactEmotionInterface<IThemeColors>
 export {cx, css} from 'react-emotion';
 
-interface IHoverable {
+export interface IHoverable {
 	active?: boolean
 	disable?: boolean
 }

@@ -42,7 +42,11 @@ export let Themes: IThemes = {
 	}
 };
 
-export let CColors = {
+export interface ICColors {
+	error: string
+	success: string
+}
+export let CColors: ICColors = {
 	error: "#ff1744",
 	success: "green"
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {IBaseComponentProps, BaseComponentProps} from './BaseComponent/index';
 import { styled, PColors } from 'classui/Emotion';
-import { IPColors } from 'classui/Emotion/_theme';
+import { IPColors } from 'classui/Emotion/theme';
 
 export interface IBadgeProps extends IBaseComponentProps {
 	type?: keyof(IPColors)

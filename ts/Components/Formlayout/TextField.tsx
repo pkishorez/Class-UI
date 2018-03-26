@@ -4,7 +4,7 @@ import {Text, ITextProps} from '../Form/Text';
 import {SAnim} from '../../Helper/Animation';
 import { IValue } from 'classui/Components/Form/FormElement';
 import { styled, css, cx } from 'classui/Emotion';
-import { CColors } from 'classui/Emotion/_theme';
+import { CColors } from 'classui/Emotion/theme';
 
 export interface IProps extends ITextProps {
 	label?: string
