@@ -13,6 +13,7 @@ export interface IState {
 
 let EFlash = styled('div')`
 	display: flex;
+	z-index: 20;
 	align-items: center;
 	justify-content: center;
 	position: fixed;
