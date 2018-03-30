@@ -20,7 +20,6 @@
 }
 
 label.__input_checkbox, label.__input_radio {
-	@include ui_flex-box(flex-start);
 	@include user-select(none);
 	padding: 5px;
 
@@ -52,7 +51,6 @@ label.__input_checkbox, label.__input_radio {
 		border-radius: 10px;
 	}
 	> .fake {
-		@include ui_flex-box(center);
 		width: 17px;
 		height: 17px;
 		margin-right: 10px;

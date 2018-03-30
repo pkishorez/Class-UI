@@ -1,10 +1,10 @@
 @import 'vendor/compass/css3';
 
 // Reset
-@import 'partial/reset';
-@import	'partial/normalize';
 
 // Helpers
+//@import 'partial/reset';
+//@import 'partial/normalize';
 @import 'helper/flex';
 @import './themes';
 
@@ -23,26 +23,13 @@
 		}
 	
 		// Components
-		@import 'helper/component';
-		@import 'helper/utilities';
-
-		@import 'component/button';
-		@import 'component/dropdown';
 	
-		@import 'component/badge';
-		@import 'component/navbar';
-		@import 'component/form';
-		@import 'component/flash';
-		@import 'component/drawer';
-		@import 'component/feedback';
-		@import 'component/sidemenu';
+//		@import 'component/form';
 		@import 'component/table';
 	
-		@import 'component/card';
-	
-		@import 'component/zindex';
+//		@import 'component/zindex';
 		// Should be placed above all.
-		@import 'helper/component';
+//		@import 'helper/component';
 
 		@content;
 	}
