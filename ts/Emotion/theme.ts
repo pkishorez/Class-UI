@@ -16,6 +16,8 @@ export interface IThemes {
 	fb: IThemeColors,
 	flat: IThemeColors,
 	green: IThemeColors
+	offline: IThemeColors
+	pink: IThemeColors
 };
 
 export let Themes: IThemes = {
@@ -39,6 +41,20 @@ export let Themes: IThemes = {
 		colorDark: "#167916",
 		colorDarker: "#146c14",
 		colorLight: "#2f932f",
+	},
+	offline: {
+		color: "#424242",
+		contrast: "white",
+		colorDark: "#1e1e1e",
+		colorDarker: "#000000",
+		colorLight: "#4e4e4e"
+	},
+	pink: {
+		color: "#fc3468",
+		contrast: "white",
+		colorDark: "#ff084a",
+		colorDarker: "#f50041",
+		colorLight: "#ff6289"
 	}
 };
 
