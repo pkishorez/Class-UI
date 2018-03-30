@@ -5,8 +5,9 @@ import { Drawer } from './Components/Drawer';
 import { Feedback } from './Components/Feedback';
 import { BaseComponentProps, IBaseComponentProps } from './Components/BaseComponent/index';
 import { BrowserRouter, withRouter, RouteComponentProps } from 'react-router-dom';
-import {Themes, IThemes, IThemeColors, cx} from './Emotion/index';
+import {Themes, IThemes, IThemeColors, cx, css} from './Emotion/index';
 import {ThemeProvider} from 'emotion-theming';
+import { Floater } from './Components/Floater';
 
 let _instance: ClassUI|undefined = undefined;
 
@@ -64,9 +65,12 @@ export class ClassUI extends React.Component<IProps, IState> {
 		_instance = undefined;
 	}
 	render() {
-		let cls = cx("classui", this.state.theme, this.props.className, {
-			fullheight: this.props.fullHeight
-		});
+		let cls = cx(css`
+			background-color: #ECECEC;
+			${this.props.fullHeight?`
+				min-height: 100vh;
+			`:undefined}
+		`, this.state.theme, this.props.className);
 
 		let DummyRouter: any;
 		if (this.props.EnableRouting) {
@@ -78,9 +82,13 @@ export class ClassUI extends React.Component<IProps, IState> {
 		}
 		let classui = <div {...BaseComponentProps(this.props)} className={cls}>
 			{this.props.children}
-			<Flash />
-			<Drawer />
-			<Feedback />
+
+			<div style={{position: "absolute",top: 0, left: 0, zIndex: 30}}>
+				<Flash />
+				<Drawer />
+				<Feedback />
+				<Floater />
+			</div>
 			{this.props.EnableRouting?<DummyRouter />:null}
 		</div>;
 		return <ThemeProvider theme={(typeof this.state.theme=="string")?Themes[this.state.theme?this.state.theme:"flat"]:this.state.theme}>{

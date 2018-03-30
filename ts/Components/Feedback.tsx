@@ -15,7 +15,6 @@ export interface IState {
 
 let EFeedBack = styled('div')`
 	position: fixed;
-	z-index: 30;
 	top: 0px;
 	left: 50%;
 `;
