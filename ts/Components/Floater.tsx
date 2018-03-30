@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {styled} from 'classui/Emotion/index';
 
-interface IProps {};
-interface IState {
+export interface IFloaterProps {};
+export interface IFloaterState {
 	children?: ()=>JSX.Element
 };
 
@@ -16,17 +16,17 @@ let EFloater = styled('div')`
 let _instance: Floater|undefined = undefined;
 
 let FloaterRef: HTMLDivElement | null;
-export class Floater extends React.Component<IProps, IState> {
+export class Floater extends React.Component<IFloaterProps, IFloaterState> {
 	static _render: boolean;
-	static children: IState["children"];
-	constructor(props: IProps) {
+	static children: IFloaterState["children"];
+	constructor(props: IFloaterProps) {
 		super(props);
 		_instance = this;
 		this.state = {
 			children: undefined
 		};
 	}
-	static float(children: IState["children"]) {
+	static float(children: IFloaterState["children"]) {
 		this._render = true;
 		this.children = children;
 		this.keepRendering();
