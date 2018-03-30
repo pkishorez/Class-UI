@@ -35,6 +35,7 @@ export interface IProps {
 	className?: string
 	style?: React.CSSProperties
 	onSubmit?: Function
+	onError?: Function
 	default?: any
 	schema?: IJSONSchema
 	autocomplete?: "on" | "off"
@@ -82,8 +83,13 @@ export class Form extends React.Component<IProps, IState> {
 			}
 		}
 		if (this.props.onSubmit && !fErrorRef) {
-			if (this.props.schema)
-				Schema.validate(this.props.schema, formData);
+			if (this.props.schema){
+				let error = Schema.validate(this.props.schema, formData);
+				if (error) {
+					this.props.onError && this.props.onError(error);
+					return;
+				}
+			}
 			this.props.onSubmit(formData);
 		}
 	}
