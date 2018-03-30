@@ -8,6 +8,7 @@ export interface IBaseComponentProps {
 	style?: React.CSSProperties
 	className?: string
 	onClick?: (e: any)=>any
+	onDblClick?: (e: any)=>any
 	to?: string
 	children?: any
 }
