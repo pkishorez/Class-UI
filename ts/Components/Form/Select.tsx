@@ -13,6 +13,7 @@ export interface IProps {
 	inline?: boolean
 	width?: number|string
 	children?: any
+	label?: string
 	top?: boolean
 	nonEditable?: boolean
 	defaultValue?: string
@@ -34,10 +35,6 @@ let ESelect = styled('label')`
 `;
 let ESuggestions = styled('ul')`
 	position: absolute;
-	top: -2px;
-	bottom: auto;
-	left: -2px;
-	padding: 10px 0px;
 	background-color: white;
 	max-height: 300px;
 	overflow: auto;
@@ -87,13 +84,17 @@ export class Select extends FormElement<IProps, IState> {
 		Floater.float(()=>
 			<SAnim show={this.state.showSuggestions && (this.getSuggestions().length>0)} animType={this.props.top?"slideTop":"slideBottom"}>
 				<ESuggestions className={css`
-					position: 'absolute';
+					position: absolute;
 					${this.select?`
 						top: ${this.select.getBoundingClientRect().top -2}px;
 						left: ${this.select.getBoundingClientRect().left-2}px;
 						width: ${this.select.getBoundingClientRect().width}px;
 					`: undefined}
 				`}>
+					{this.props.label?<h3 style={{
+						cursor: "default",
+						paddingLeft: 10
+					}}>{this.props.label}</h3>:undefined}
 					{this.getSuggestions().map((option)=>{
 						return <ESuggestionItem key={option} className={cx({
 								active: option==this.state.value

@@ -63,12 +63,10 @@ let S_User: IJSONSchema = {
 
 ReactDOM.render(
 	<ClassUI theme="fb" fullHeight EnableRouting>
-		<Layout>
 			<Layout remain column align="center" justify="center">
 				<Section>
 					<NavBar card="2" logo="Class-UI" dummy className={css`
 						position: fixed;
-						padding-right: 200px;
 					`} width={1024}>
 						<NavbarRemain />
 						<Dropdown button="tasks" push="left">
@@ -84,18 +82,12 @@ ReactDOM.render(
 						<Button>Kittu</Button>
 					</NavBar>
 				</Section>
-				<Section style={{width: 1024}}>
+				<Section>
 					<div>
 						<Page1/>
 					</div>
 				</Section>
 			</Layout>
-			<Section basis={200} className={css`
-				background-color: green;
-			`}>
-				Kishore is a good boy.
-			</Section>
-		</Layout>
 	</ClassUI>,
 	document.getElementById('app')
 );

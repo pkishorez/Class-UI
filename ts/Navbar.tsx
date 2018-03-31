@@ -27,7 +27,7 @@ let EContent = styled('div')`
 let ELogo = styled('div')`
 	cursor: default;
 	color: white;
-	padding: 0px 7px;
+	padding: 0px 5px;
 	font-size: 20px;
 	text-shadow: 0px 0px 15px white, 0px 0px 15px white;
 	transition: all 0.3s;
