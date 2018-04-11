@@ -5,7 +5,7 @@ import { IFormContext, FormContext } from 'classui/Components/Form/Form';
 import { IJSONSchema, Schema } from 'classui/Components/Form/Schema';
 
 export interface IValue {
-	value: string | undefined
+	value: any
 	error: string | null
 };
 
@@ -23,7 +23,7 @@ export abstract class FormElement<IProps, IState> extends React.Component<IProps
 
 	public getValue() {
 		return {
-			value: (this.state.value=="")?undefined:this.state.value,
+			value: this.state.value,
 			error: this.schema?this.schema.validate(this.state.value): null
 		};
 	}

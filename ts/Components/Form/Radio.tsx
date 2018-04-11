@@ -18,6 +18,7 @@ export interface IProps {
 };
 
 export interface IState {
+	error: boolean
 }
 
 let ERadio = styled('label')`
@@ -31,7 +32,9 @@ let ERadio = styled('label')`
 		display: inline-flex;
 		padding-right: 10px;
 		margin-right: 5px;
-
+	}
+	&.error {
+		color: red;
 	}
 
 	&:hover{
@@ -86,14 +89,23 @@ export class Radio extends FormElement<IProps, IState> {
 		this.getValue = this.getValue.bind(this);
 		this.validate = this.validate.bind(this);
 		this.state = {
-			value: this.props.defaultValue
-		}
+			value: this.props.defaultValue,
+			error: false
+		};
 	}
 
 	validate() {
 		let error = this.schema?this.schema.validate(this.state.value):null;
 		if (error) {
 			// Do something here.
+			this.setState({
+				error: true
+			});
+		}
+		else {
+			this.setState({
+				error: false
+			});
 		}
 	}
 
@@ -101,13 +113,15 @@ export class Radio extends FormElement<IProps, IState> {
 		return <div>
 			{this.props.values.map((cb)=>{
 				return <ERadio key={cb.value} className={cx({
-					inline: this.props.inline
+					inline: this.props.inline,
+					error: this.state.error
 				})}>
 					<input type="radio" onChange={()=>{
 						this.setState({
 							value: cb.value
 						}, ()=>{
-							this.props.onChange && this.props.onChange(cb.value)
+							this.props.onChange && this.props.onChange(cb.value);
+							this.validate();
 						});
 					}} checked={this.state.value==cb.value} value={cb.value} name={this.props.name}/>
 					<div className={cx("fake", {

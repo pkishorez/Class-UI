@@ -15,6 +15,7 @@ export interface IProps {
 };
 
 export interface IState {
+	error: boolean
 }
 
 let ECheckbox = styled('label')`
@@ -23,6 +24,10 @@ let ECheckbox = styled('label')`
 	align-items: center;
 	user-select: none;
 	padding: 5px;
+
+	&.error {
+		color: red;
+	}
 
 	&.inline{
 		display: inline-flex;
@@ -79,25 +84,35 @@ export class Checkbox extends FormElement<IProps, IState> {
 		this.getValue = this.getValue.bind(this);
 		this.validate = this.validate.bind(this);
 		this.state = {
-			value: false
+			value: false,
+			error: false
 		};
 	}
 
 	validate(focusOnError?: boolean) {
 		// No Validation For Now.
-		if (this.props.shouldBeChecked) {
-			// The value should be checked. Otherwise error should be shown.
+		let error = this.schema?this.schema.validate(this.state.value):null;
+		if (error) {
+			this.setState({
+				error: true
+			});
+		}
+		else {
+			this.setState({
+				error: false
+			});
 		}
 	}
 
 	_render() {
 		return <ECheckbox className={cx({
-			inline: this.props.inline
+			inline: this.props.inline,
+			error: this.state.error
 		})}>
 			<input type="checkbox" checked={this.state.value} onChange={(e)=>{
 				this.setState({
 					value: !this.state.value
-				});
+				}, this.validate);
 			}} name={this.props.name}/>
 			<div className={cx("fake", {
 				active: this.state.value

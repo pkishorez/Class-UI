@@ -21,11 +21,15 @@ export interface IProps {
 
 export interface IState {
 	showSuggestions: boolean
+	error: boolean
 }
 
 let ESelect = styled('label')`
 	cursor: pointer;
 	border: 1px solid #C4C4C4;
+	&.error {
+		border: 1px solid red;
+	}
 	display: flex;
 	align-items: center;
 	&:hover {
@@ -52,7 +56,7 @@ let ESuggestionItem = styled('li')`
 		&, &:hover {
 			background-color: inherit;
 			color: ${p=>p.theme.color};
-			cursor: default;	
+			cursor: default;
 		}
 	}
 `;
@@ -63,6 +67,7 @@ export class Select extends FormElement<IProps, IState> {
 		super(props);
 		this.state = {
 			value: this.props.defaultValue,
+			error: false,
 			showSuggestions: true
 		};
 		this.onChange = this.onChange.bind(this);
@@ -71,7 +76,17 @@ export class Select extends FormElement<IProps, IState> {
 	}
 
 	public validate(focusOnError?: boolean) {
-		// No Validation as of now.
+		let error = this.schema?this.schema.validate(this.state.value):null;
+		if (error) {
+			this.setState({
+				error: true
+			});
+		}
+		else {
+			this.setState({
+				error: false
+			});
+		}
 	}
 	componentWillUnmount() {
 		Floater.remove();
@@ -101,7 +116,7 @@ export class Select extends FormElement<IProps, IState> {
 							})} onClick={()=>{
 							this.setState({
 								value: option
-							});
+							}, this.validate);
 							this.hideSuggestions();
 						}}>{option}</ESuggestionItem>
 					})}
@@ -150,8 +165,10 @@ export class Select extends FormElement<IProps, IState> {
 			${this.props.inline?`display: inline-block;`:undefined}
 			${this.props.width?`width: ${width}`:undefined};
 		`}>
-			<ESelect innerRef={ref=>this.select = ref}>
-				<input spellCheck={false} className={css`
+			<ESelect innerRef={ref=>this.select = ref} className={cx({
+				error: this.state.error
+			})}>
+				<input spellCheck={false} readOnly className={css`
 					color: transparent;
 					cursor: pointer;
 					width: 0;
