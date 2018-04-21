@@ -104,7 +104,7 @@ export class Checkbox extends FormElement<IProps, IState> {
 		}
 	}
 
-	_render() {
+	Render() {
 		return <ECheckbox className={cx({
 			inline: this.props.inline,
 			error: this.state.error

@@ -8,7 +8,7 @@ import { css } from 'classui/Emotion';
 
 export interface ITextProps {
 	name: string,
-	type?: "text" | "password" | "area"
+	type?: "text" | "password" | "area" | "number"
 	autoFocus?: boolean
 	schema?: IJSONSchema
 	children?: string
@@ -53,7 +53,7 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		}, this.validate);
 	}
 
-	_render() {
+	Render() {
 		let props = {
 			autoFocus: this.props.autoFocus,
 			autoComplete: this.props.name,

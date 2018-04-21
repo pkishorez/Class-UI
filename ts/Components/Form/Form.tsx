@@ -6,8 +6,9 @@ import {FormElement} from './FormElement';
 import * as _ from 'lodash';
 import {cx} from 'classui/Emotion/index';
 
+type IRegisterFunc = (schema: IJSONSchema|undefined, defaultValue: any)=>void;
 export interface IFormContext {
-	register: (key: string, ref: FormElement<any, any>, func: (schema: IJSONSchema, defaultValue: any)=>void)=>void,
+	register: (key: string, ref: FormElement<any, any>, register: IRegisterFunc)=>void,
 	unregister: (key: string)=>void
 }
 
@@ -75,18 +76,20 @@ export class Form extends React.Component<IProps, IState> {
 			this.props.onSubmit(formData);
 		}
 	}
-	register(key: string, ref: FormElement<any, any>, func: any) {
+	register: IFormContext["register"] = (key: string, ref: FormElement<any, any>, elementRegister: IRegisterFunc) => {
 		this.formElemRefs = [
 			...this.formElemRefs, {
 				key: key,
 				ref: ref
 			}
 		];
-		let jschema_key = "properties."+key.replace(/\./g, ".properties.");
-		let pschema = _.get(this.props.schema, jschema_key);
+		let pschema = undefined;
+		if (this.props.schema) {
+			pschema = Schema.getSchema(this.props.schema?this.props.schema:{}, key);
+		}
 		let defaultValue = _.get(this.props.default, key);
-		if (func)
-			func(pschema, defaultValue);
+		if (elementRegister)
+			elementRegister(pschema, defaultValue);
 	}
 	unregister(key: string) {
 		this.formElemRefs = this.formElemRefs.filter(fe=>fe.key!=key);

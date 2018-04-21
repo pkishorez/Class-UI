@@ -28,7 +28,7 @@ export abstract class FormElement<IProps, IState> extends React.Component<IProps
 		};
 	}
 
-	abstract _render(): JSX.Element;
+	abstract Render(): JSX.Element;
 
 	componentWillUnmount() {
 		this.unregister && this.unregister(this.props.name);
@@ -50,7 +50,7 @@ export abstract class FormElement<IProps, IState> extends React.Component<IProps
 						}
 					});
 					this.unregister = FE.unregister;
-					return this._render();
+					return this.Render();
 				}
 			}
 		</FormContext.Consumer>;

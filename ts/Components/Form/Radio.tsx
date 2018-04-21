@@ -109,7 +109,7 @@ export class Radio extends FormElement<IProps, IState> {
 		}
 	}
 
-	_render() {
+	Render() {
 		return <div>
 			{this.props.values.map((cb)=>{
 				return <ERadio key={cb.value} className={cx({

@@ -17,6 +17,10 @@ export class Schema {
 
 		this._validate = validate;
 	}
+	getSchema(key: string) {
+		let jschema_key = "properties."+key.replace(/\./g, ".properties.");
+		return _.get(this.schema, jschema_key);
+	}
 	validate(data: any) {
 		let valid = this._validate(data);
 		if (!valid) {
@@ -24,18 +28,10 @@ export class Schema {
 		}
 		return null;
 	}
+	static getSchema(schema: IJSONSchema, key: string) {
+		return new Schema(schema).getSchema(key);
+	}
 	static validate(schema: IJSONSchema, data: any) {
-		let ajv = new AJV({
-			allErrors: true,
-			useDefaults: true,
-			coerceTypes: true,
-			removeAdditional: true
-		});
-		var validate = ajv.compile(schema);
-		let valid = validate(data);
-		if (!valid) {
-			return _.map(validate.errors, "message").join(".");
-		}
-		return null;
+		return new Schema(schema).validate(data);
 	}
 }
