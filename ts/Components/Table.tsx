@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Layout, Section } from './Layout';
 import * as _ from 'lodash';
-import { Menu } from './Menu';
-import { cx } from 'classui/Emotion';
+import { Menu, MItem } from './Menu';
+import { cx, styled } from 'classui/Emotion';
 
 export interface IProps {
 	hoverable?: boolean
@@ -33,6 +33,60 @@ export interface IState {
 	}
 	selected: any[]
 };
+
+let ETable = styled('table')`
+	display: table;
+	background-color: white;
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+
+	> thead {
+		> tr {
+			font-weight: 900;
+
+			> th {
+				cursor: pointer;
+				opacity: 0.7;
+				text-transform: capitalize;
+				&:hover {
+					background-color: rgba(0,0,0,0.01);
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	&.hoverable {
+		> tbody {
+			> tr:hover{
+				background-color: rgb(245, 245, 245);
+			}
+		}
+	}
+
+	> tbody {
+		tr{
+			@include transition(all 0.3s);
+		}
+		> tr.active {
+			&:hover, & {
+				background-color: map-get($theme, color);
+				color: white;	
+			}
+		}
+	}
+	> thead, > tbody {
+		> tr {
+			border-bottom: 1px solid #CACACA;
+			text-align: left;
+
+			> td, >th {
+				padding: 7px 17px;
+			}
+		}
+	}
+`;
 
 export class Table extends React.Component<IProps, IState> {
 	static defaultProps: Partial<IProps> = {
@@ -154,27 +208,23 @@ export class Table extends React.Component<IProps, IState> {
 		
 		let groupMenu = this.state.group.by?<Menu header={_.capitalize(this.state.group.by)}>
 			{[undefined, ...Object.keys(_.groupBy(this.props.data, this.state.group.by))].map((item)=>{
-				let cls = cx("item", {
-					active: this.state.group.value==item
-				});
-				return <div key={item?item:Math.random()+""} className={cls} style={{minWidth: 150}} onClick={()=>{
+				return <MItem key={item?item:Math.random()+""} active={this.state.group.value==item}
+					style={{minWidth: 150}} onClick={()=>{
 					this.state.group.by?this.groupBy(this.state.group.by, item):null;
-				}}>{item?item:"All"}</div>;
+				}}>{item?item:"All"}</MItem>;
 			})}
 		</Menu>:null;
 
-
-		let cls = cx("__table", {
+		let dataTable = <ETable className={cx({
 			hoverable: this.props.hoverable
-		});
-		let dataTable = <table className={cls}>
+		})}>
 			<THead>
 				{headerItems}
 			</THead>
 			<TBody>
 				{bodyItems}
 			</TBody>
-		</table>;
+		</ETable>;
 		return this.state.group.by?<Layout gutter={20} align="flex-start">
 			<Section>{groupMenu}</Section>
 			<Section remain>{dataTable}</Section>
