@@ -28,6 +28,7 @@ let EContent = styled('ul')`
 	background-color: white;
 	color: black;
 	top: 100%;
+	z-index: 1;
 
 	max-width: 200px;
 	min-width: 150px;
@@ -45,15 +46,19 @@ export class Dropdown extends React.Component<IProps, IState> {
 			active: false
 		};
 		this.toggle = this.toggle.bind(this);
-		this.dismiss = this.dismiss.bind(this);
-		window.addEventListener("click", this.dismiss);
+		this.windowDismiss = this.windowDismiss.bind(this);
+		window.addEventListener("click", this.windowDismiss);
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener("click", this.dismiss);
+		window.removeEventListener("click", this.windowDismiss);
 	}
 
-	dismiss() {
+	windowDismiss() {
+		if (this.clickedWithinDropdown) {
+			this.clickedWithinDropdown = false;
+			return;
+		}
 		this.setState({
 			active: false
 		});
@@ -62,11 +67,13 @@ export class Dropdown extends React.Component<IProps, IState> {
 		this.setState({
 			active: !this.state.active
 		});
-		e.stopPropagation();
 	}
 	render() {
 		return <EDropdown>
-			<Button {...this.props.btnProps} active={this.state.active} onClick={this.toggle}>
+			<Button {...this.props.btnProps} active={this.state.active} onClick={(e)=>{
+				this.clickedWithinDropdown = true;
+				this.toggle(e)
+			}}>
 				{(typeof(this.props.button)=="string")?<>
 					<span className="inline-block noTextWrap" style={{
 						maxWidth: this.props.buttonMaxWidth
@@ -74,7 +81,9 @@ export class Dropdown extends React.Component<IProps, IState> {
 				</>:this.props.button}
 			</Button>
 			<SAnim show={this.state.active} animType={this.props.animType?this.props.animType:(this.props.push=="up")?"slideTop":"slideBottom"}>
-				<EContent  onClick={(e)=>e.stopPropagation()} className={cx(css`
+				<EContent onClick={(e)=>{
+					this.clickedWithinDropdown = true;
+				}} className={cx(css`
 					${cardStyles["3"]}
 					${()=>{
 						switch(this.props.push){
