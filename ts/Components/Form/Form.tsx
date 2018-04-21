@@ -11,24 +11,6 @@ export interface IFormContext {
 	unregister: (key: string)=>void
 }
 
-/*
-    type Provider<T> = new()=>React.Component<{
-        value: T,
-        children?: ReactNode,
-    }>;
-
-    type Consumer<T> = new()=>React.Component<{
-        children: (value: T) => ReactNode,
-    }>;
-    type Context<T> = {
-        Provider: Provider<T>,
-        Consumer: Consumer<T>,
-    };
-
-
-    function createContext<T>(defaultValue: T): Context<T>;
-	// Keep this types for a while. Since we are using alpha version of 16.3 context.
-*/
 export let FormContext = React.createContext<IFormContext>({} as any);
 
 export interface IProps {
