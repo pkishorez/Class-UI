@@ -7,7 +7,6 @@ import { BaseComponentProps, IBaseComponentProps } from './Components/BaseCompon
 import { BrowserRouter, withRouter, RouteComponentProps } from 'react-router-dom';
 import {Themes, IThemes, IThemeColors, cx, css} from './Emotion/index';
 import {ThemeProvider} from 'emotion-theming';
-import { Floater } from './Components/Floater';
 
 let _instance: ClassUI|undefined = undefined;
 
@@ -87,7 +86,6 @@ export class ClassUI extends React.Component<IProps, IState> {
 				<Flash />
 				<Drawer />
 				<Feedback />
-				<Floater />
 			</div>
 			{this.props.EnableRouting?<DummyRouter />:null}
 		</div>;

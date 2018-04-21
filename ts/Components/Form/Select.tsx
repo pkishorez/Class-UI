@@ -5,7 +5,6 @@ import {FormElement} from './FormElement';
 import { SAnim } from '../../Helper/Animation';
 import * as _ from 'lodash';
 import { styled, cx, css } from 'classui/Emotion';
-import { Floater } from 'classui/Components/Floater';
 
 export interface IProps {
 	name: string
@@ -35,7 +34,6 @@ let ESelect = styled('label')`
 	&:hover {
 		background-color: #F4F4F4;
 	}
-	margin-bottom: 10px;
 `;
 let ESuggestions = styled('ul')`
 	position: absolute;
@@ -68,7 +66,7 @@ export class Select extends FormElement<IProps, IState> {
 		this.state = {
 			value: this.props.defaultValue,
 			error: false,
-			showSuggestions: true
+			showSuggestions: false
 		};
 		this.onChange = this.onChange.bind(this);
 		this.suggestions = this.suggestions.bind(this);
@@ -88,41 +86,11 @@ export class Select extends FormElement<IProps, IState> {
 			});
 		}
 	}
-	componentWillUnmount() {
-		Floater.remove();
-	}
 
 	private showSuggestions() {
 		this.setState({
 			showSuggestions: true
 		});
-		Floater.float(()=>
-			<SAnim show={this.state.showSuggestions && (this.getSuggestions().length>0)} animType={this.props.top?"slideTop":"slideBottom"}>
-				<ESuggestions className={css`
-					position: absolute;
-					${this.select?`
-						top: ${this.select.getBoundingClientRect().top -2}px;
-						left: ${this.select.getBoundingClientRect().left-2}px;
-						width: ${this.select.getBoundingClientRect().width}px;
-					`: undefined}
-				`}>
-					{this.props.label?<h3 style={{
-						cursor: "default",
-						paddingLeft: 10
-					}}>{this.props.label}</h3>:undefined}
-					{this.getSuggestions().map((option)=>{
-						return <ESuggestionItem key={option} className={cx({
-								active: option==this.state.value
-							})} onClick={()=>{
-							this.setState({
-								value: option
-							}, this.validate);
-							this.hideSuggestions();
-						}}>{option}</ESuggestionItem>
-					})}
-				</ESuggestions>
-			</SAnim>
-		);
 	}
 	private hideSuggestions() {
 		this.setState({
@@ -137,7 +105,7 @@ export class Select extends FormElement<IProps, IState> {
 		}
 		this.setState({
 			value: e.target.value
-		});
+		}, this.validate);
 	}
 	private suggestions(e: React.KeyboardEvent<HTMLInputElement>) {
 		// Suggestions and navigating the suggestions logic goes here... TODO
@@ -162,21 +130,22 @@ export class Select extends FormElement<IProps, IState> {
 		let width = (typeof this.props.width=="string")?this.props.width:this.props.width+"px";
 		return <div className={css`
 			position: relative;
+			margin-bottom: 10px;
 			${this.props.inline?`display: inline-block;`:undefined}
 			${this.props.width?`width: ${width}`:undefined};
 		`}>
 			<ESelect innerRef={ref=>this.select = ref} className={cx({
 				error: this.state.error
 			})}>
-				<input spellCheck={false} readOnly className={css`
-					color: transparent;
-					cursor: pointer;
+				<input spellCheck={false} readOnly={this.props.nonEditable?true:false} className={css`
+					color: ${this.props.nonEditable?'transparent':'black'};
+					cursor: ${this.props.nonEditable?'pointer':'inherit'};
 					width: 0;
 					text-shadow: 0px 0px 0px #000;
 					padding: 10px 5px;
 					background-color: inherit;
 					flex-grow: 1;
-				`} autoComplete={this.props.name} type="text" onClick={()=>{
+				`} autoComplete="off" type="text" onClick={()=>{
 					this.showSuggestions();
 				}} onFocus={()=>{
 					this.showSuggestions();
@@ -186,12 +155,59 @@ export class Select extends FormElement<IProps, IState> {
 					onChange={this.onChange}
 					onBlur={()=>{
 						setTimeout(()=>{
-							this.hideSuggestions();
+							//this.hideSuggestions();
 						}, 100);
 					}}
 				/>
 				<i className="fa fa-angle-down" style={{marginRight: 15}}></i>
 			</ESelect>
+			<SAnim show={this.state.showSuggestions && (this.getSuggestions().length>0)} animType={this.props.top?"slideTop":"slideBottom"}>
+				<ESuggestions className={css`
+					position: absolute;
+					${this.props.top?`
+						bottom: ${this.props.nonEditable?"-5px":"100%"};
+						top: auto;
+					`:`
+						top: ${this.props.nonEditable?"-5px":"100%"};
+						bottom: auto;
+					`}
+					left: -2px;
+					width: calc(100% + 4px);
+					z-index: 1;
+					padding: 5px 0px;
+				`}>
+					{this.props.label?<h3 style={{
+						cursor: "default",
+						paddingLeft: 10
+					}}>{this.props.label}</h3>:undefined}
+					{this.getSuggestions().map((option)=>{
+						return <ESuggestionItem key={option} className={cx({
+								active: option==this.state.value
+							})} onClick={()=>{
+							this.setState({
+								value: option
+							}, this.validate);
+							this.hideSuggestions();
+						}}>{highlight(option, this.state.value)}</ESuggestionItem>
+					})}
+				</ESuggestions>
+			</SAnim>
 		</div>;
 	}
 };
+
+let highlight = (option: string|number, highlight="")=>{
+	option = option+"";
+	highlight = highlight+"";
+	let index = option.indexOf(highlight);
+	if (index==-1)
+		return option;
+	return <>
+		{option.substring(0, index)}
+		<span style={{
+			color: "green",
+			fontWeight: 900
+		}}>{option.substring(index, index+highlight.length)}</span>
+		{option.substring(index+highlight.length)}
+	</>;
+}
