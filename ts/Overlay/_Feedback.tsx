@@ -17,6 +17,7 @@ let EFeedBack = styled('div')`
 	position: fixed;
 	top: 0px;
 	left: 50%;
+	z-index: 2000;
 `;
 let EContent = styled('div')`
 	display: inline-block;

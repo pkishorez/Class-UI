@@ -13,6 +13,7 @@ let EButton = styled('div')`
 	user-select: none;
 	padding: 10px;
 	cursor: pointer;
+	display: inline-block;
 	${props=>props.color}
 
 	// Default Styles goes here..
@@ -29,9 +30,10 @@ let EButton = styled('div')`
 		}
 	}
 	&.disable {
-		&, &:hover{
+		&, &:hover, &:active{
 			cursor: default;
 			color: grey;
+			background-color: #EEEEEE;
 		}
 	}
 	.__navbar__ & {
@@ -48,23 +50,28 @@ let EButton = styled('div')`
 	&.primary {
 		//background-color: ${p.theme.color};
 		//color: black;
-		&:hover, &.active {
+		&:hover {
 			color: ${p.theme.contrast};
 			background-color: ${p.theme.colorLight};
 		}
+		&:active, &.active {
+			color: ${p.theme.contrast};
+			background-color: ${p.theme.color};
+		}
 		&.disable {
-			&, :hover{
+			&, &:hover, &:active{
 			cursor: default;
+			color: grey;
 			background-color: ${p.theme.colorLight}
 		}
 	}`}
 `;
 
 export let Button = (props: IButtonProps)=>{
-	return <EButton {...BaseComponentProps(props)} className={cx({
+	return <EButton {...BaseComponentProps(props)} className={cx(props.className, {
 		primary: props.primary,
 		active: props.active,
-		disable: props.disable
+		disable: props.disable,
 	})}>
 		{props.children}
 	</EButton>;

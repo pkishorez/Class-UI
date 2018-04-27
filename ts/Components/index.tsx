@@ -1,8 +1,5 @@
 export {Badge} from './Badge';
 export {Button} from './Button';
-export {Drawer} from './Drawer';
-export {Flash} from './Flash';
-export {Feedback} from './Feedback';
 export {TextField} from './Formlayout/TextField';
 export {Div} from './Div';
 

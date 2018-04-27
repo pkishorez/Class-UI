@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Flash} from './Components/Flash';
-import { Drawer } from './Components/Drawer';
-import { Feedback } from './Components/Feedback';
+import { Overlay} from 'classui/Overlay/index';
+import { Feedback } from 'classui/Overlay/_Feedback';
 import { BaseComponentProps, IBaseComponentProps } from './Components/BaseComponent/index';
 import { BrowserRouter, withRouter, RouteComponentProps } from 'react-router-dom';
 import {Themes, IThemes, IThemeColors, cx, css} from './Emotion/index';
@@ -82,11 +81,10 @@ export class ClassUI extends React.Component<IProps, IState> {
 		let classui = <div {...BaseComponentProps(this.props)} className={cls}>
 			{this.props.children}
 
-			<div style={{position: "absolute",top: 0, left: 0, zIndex: 30}}>
-				<Flash />
-				<Drawer />
-				<Feedback />
+			<div style={{position: "absolute",top: 0, left: 0, zIndex: 1000}}>
+				<Overlay />
 			</div>
+			<Feedback />
 			{this.props.EnableRouting?<DummyRouter />:null}
 		</div>;
 		return <ThemeProvider theme={(typeof this.state.theme=="string")?Themes[this.state.theme?this.state.theme:"flat"]:this.state.theme}>{

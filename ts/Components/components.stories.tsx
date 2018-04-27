@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { storiesOf } from '@storybook/react';
 import {ClassUI} from 'classui/index';
-import { Flash, Button, Dropdown as DD, Badge, Drawer, Div, Feedback, Menu } from 'classui/Components';
+import { Button, Dropdown as DD, Badge, Div, Menu } from 'classui/Components';
 import { MD } from 'classui/Helper/MarkDown';
 import { Table } from 'classui/Components/Table';
 
@@ -151,73 +151,3 @@ let NodeComponents = storiesOf("Components/Node", module)
 	return <>
 	</>;
 })
-
-
-let Behavioural = storiesOf("Components/Behavioural", module)
-
-.add("Drawer", ()=><>
-<Badge>Inline</Badge>
-<MD language="typescript">{`
-## Drawer
-
-Drawer:
-~~~~
-Drawer.open(d=>{
-	return <h1 style={{backgroundColor: 'white', padding: 10}}>
-		Kishore is a good boy.
-	</h1>;
-});
-~~~~
-`}</MD>
-<Button onClick={()=>{
-	Drawer.open(d=>{
-		return <Div style={{backgroundColor: 'white', padding: 10}} card="5">
-			Kishore is a good boy.
-		</Div>;
-	})
-}}>Drawer</Button>
-</>)
-
-
-
-.add("Feedback", ()=><>
-<MD language="typescript">{`
-## Feedback
-
-Feedback:
-~~~~
-Feedback.show();
-~~~~
-`}</MD>
-
-<Button onClick={()=>{
-	Feedback.show("Success!!!");
-}}>Feedback</Button>
-<Button onClick={()=>{
-	Feedback.show("Error!!!", "error");
-}}>Error Feedback</Button>
-</>)
-
-
-
-
-.add("Flash", ()=><>
-<MD language="typescript">{`
-## Flash
-
-Flash:
-~~~~
-Flash.flash();
-~~~~
-`}</MD>
-<Button onClick={()=>{
-	Flash.flash(d=>{
-		return <h1 style={{
-			backgroundColor: "white",
-			padding: 20
-		}}>Kishore is a good boy.</h1>
-	}, false, "slideRight")
-}}>
-	Open FLash
-</Button>
-</>);

@@ -7,13 +7,11 @@ import {Dropdown, DItem} from '../Components/Dropdown';
 import {Button} from '../Components/Button';
 import {Demo1} from './Demo1';
 import {Demo2} from './Demo2';
-import { Feedback } from '../Components/Feedback';
 import { Table } from '../Components/Table';
 import { Layout, Section } from '../Components/Layout';
-import { Flash } from '../Components/Flash';
+import { Overlay } from '../Overlay';
 import { TextField } from '../Components/Formlayout/TextField';
 import { Select, Checkbox, Radio } from '../Components/Form/index';
-import { Drawer } from '../Components/Drawer';
 import { Page1 } from './Page1';
 import { IJSONSchema } from '../Components/Form/Schema/index';
 import { Schema } from 'classui/Components/Form/Schema/Schema';
@@ -77,7 +75,7 @@ ReactDOM.render(
 							}}>Dashboard (TODO)</DItem>
 						</Dropdown>
 						<Button active={true} to="/page" onClick={()=>{
-							Feedback.show("Hello Dude", "error");
+							Overlay.feedback("Hello Dude", "error");
 						}}>Kittu</Button>
 						<Button>Kittu</Button>
 					</NavBar>
