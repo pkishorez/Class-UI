@@ -10,12 +10,12 @@ export interface IBadgeProps extends IBaseComponentProps {
 
 export let Badge = (props: IBadgeProps)=>{
 	let EBadge = styled('div')`
+		display: inline-block;
 		padding: 7px 10px;
 		cursor: default;
 		color: white;
 		transition: all 0.4s;
-
-		${props.type?`background-color: ${PColors[props.type]};`:undefined}
+		background-color: ${PColors[props.type?props.type:"success"]};
 	`;
 	return <EBadge {...BaseComponentProps(props)}>
 		{props.children}

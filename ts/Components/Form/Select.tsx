@@ -49,9 +49,11 @@ let ESuggestionItem = styled('li')`
 	cursor: pointer;
 	padding: 7px 10px;
 	&.active {
-		background-color: inherit;
-		color: ${p=>p.theme.color};
-		cursor: default;
+		&, &:hover {
+			background-color: inherit;
+			color: ${p=>p.theme.color};
+			cursor: default;
+		}
 	}
 	&.hover{
 		background-color: ${p=>p.theme.color};
@@ -97,6 +99,7 @@ export class Select extends FormElement<IProps, IState> {
 	}
 	private hideSuggestions() {
 		this.setState({
+			hover: -1,
 			showSuggestions: false
 		});
 	}
@@ -113,19 +116,39 @@ export class Select extends FormElement<IProps, IState> {
 	private suggestions(e: React.KeyboardEvent<HTMLInputElement>) {
 		// Suggestions and navigating the suggestions logic goes here... TODO
 		let suggestions = this.state.suggestions;
-		let length = suggestions.length;
 		let hover = this.state.hover;
+
+		let sIndexes = suggestions.map((s,i)=>i).filter(i=>suggestions[i]!=this.state.value);
+		let length = sIndexes.length;
+
+		let move = {
+			down: ()=>{
+				hover = sIndexes.indexOf(hover);
+				hover = (hover==-1)?0:hover+1;
+				hover = (hover>=length)?0:hover;
+				hover = sIndexes[hover];
+				this.setState({
+					hover,
+					showSuggestions: true
+				});
+			},
+			up: ()=>{
+				hover = sIndexes.indexOf(hover);
+				hover -= 1;
+				hover = (hover<0)?length-1:hover;
+				hover = sIndexes[hover];
+				this.setState({
+					hover,
+					showSuggestions: true
+				});
+			}
+		}
+
 		if (e.key=="ArrowDown") {
-			this.setState({
-				hover: (hover!=-1)?(hover+1)%length:0,
-				showSuggestions: true
-			});
+			move.down();
 		}
 		else if (e.key=="ArrowUp") {
-			this.setState({
-				hover: (hover!=-1)?((hover-1)<0?length-1:(hover-1))%length:0,
-				showSuggestions: true
-			});
+			move.up();
 		}
 		else if (e.key=="Enter") {
 			if (hover!=-1) {
@@ -214,7 +237,7 @@ export class Select extends FormElement<IProps, IState> {
 					left: -2px;
 					width: calc(100% + 4px);
 					z-index: 1;
-					padding: 0px;
+					${this.props.nonEditable?`padding: 7px 0px;`:`padding: 0px 0px 7px 0px;`}
 				`}>
 					{this.props.label?<h3 style={{
 						cursor: "default",
@@ -222,7 +245,8 @@ export class Select extends FormElement<IProps, IState> {
 					}}>{this.props.label}</h3>:undefined}
 					{this.state.suggestions.map((option, i)=>{
 						return <ESuggestionItem onMouseOver={()=>{
-							this.setState({hover: i});
+							if (this.state.value!=this.state.suggestions[i])
+								this.setState({hover: i});
 						}} key={option} className={cx({
 								active: option==this.state.value,
 								hover: i==this.state.hover
@@ -248,8 +272,7 @@ let highlight = (option: string|number, highlight="")=>{
 	return <>
 		{option.substring(0, index)}
 		<span style={{
-			color: "green",
-			fontWeight: 900
+			color: "green"
 		}}>{option.substring(index, index+highlight.length)}</span>
 		{option.substring(index+highlight.length)}
 	</>;

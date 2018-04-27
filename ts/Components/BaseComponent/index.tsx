@@ -7,6 +7,8 @@ export interface IBaseComponentProps {
 	card?: "0"|"1"|"2"|"3"|"4"|"5"
 	style?: React.CSSProperties
 	className?: string
+	block?: boolean
+	inline?: boolean
 	onClick?: (e: any)=>any
 	onDblClick?: (e: any)=>any
 	to?: string
@@ -39,6 +41,8 @@ export let BaseComponentProps = (props: Partial<IBaseComponentProps>, ...classNa
 		},
 		className: cx(props.className, props.card?cx(css`
 			${cardStyles[props.card]}
+			${props.block?`display: block;`: undefined}
+			${props.inline?`display: inline-block;`:undefined}
 		`):undefined, ...className),
 		style: props.style
 	}

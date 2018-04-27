@@ -2,11 +2,13 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as _ from 'lodash';
 import {Motion, spring, TransitionMotion, OpaqueConfig, TransitionProps, presets} from 'react-motion';
+import { css } from 'classui/Emotion';
 
 export interface ISAnimProps {
 	show: boolean,
 	children: React.ReactElement<any>
-	animType?: "appear" | "slideLeft" | "slideRight" | "slideBottom" | "slideTop"
+	animType?: "appear" | "opacity" | "slideLeft" | "slideRight" | "slideBottom" | "slideTop" | "none"
+	onRemoved?: ()=>void
 };
 
 let Animate = (value: number, type: ISAnimProps["animType"])=>{
@@ -17,6 +19,11 @@ let Animate = (value: number, type: ISAnimProps["animType"])=>{
 				transformOrigin: 'middle',
 				opacity: value
 			}
+		case "opacity": {
+			return {
+				opacity: value
+			}
+		}
 		case "slideBottom":
 			return {
 				transform: `scaleY(${value})`,
@@ -44,7 +51,7 @@ let Animate = (value: number, type: ISAnimProps["animType"])=>{
 }
 
 export class SAnim extends React.Component<ISAnimProps, any> {
-	private rested: boolean = true;
+	private rested: boolean = false;
 	static defaultProps: Partial<ISAnimProps> = {
 		animType: "appear"
 	};
@@ -56,6 +63,9 @@ export class SAnim extends React.Component<ISAnimProps, any> {
 	onRest()
 	{
 		this.rested = true;
+		if (!this.props.show) {
+			this.props.onRemoved && this.props.onRemoved();
+		}
 		this.forceUpdate();
 	}
 	render() {
@@ -63,6 +73,9 @@ export class SAnim extends React.Component<ISAnimProps, any> {
 			return null;
 		}
 		this.rested = false;
+		if (this.props.animType=="none") {
+			return this.props.children;
+		}
 		return <Motion defaultStyle={{opac: 0}} style={{opac: spring(this.props.show?1:0, presets.stiff)}} onRest={this.onRest}>{
 			(obj)=>{
 				let props = {

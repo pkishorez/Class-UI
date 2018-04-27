@@ -6,7 +6,7 @@ import {FormElement} from './FormElement';
 import * as _ from 'lodash';
 import {cx} from 'classui/Emotion/index';
 
-type IRegisterFunc = (schema: IJSONSchema|undefined, defaultValue: any)=>void;
+export type IRegisterFunc = (schema: IJSONSchema|undefined, defaultValue: any)=>void;
 export interface IFormContext {
 	register: (key: string, ref: FormElement<any, any>, register: IRegisterFunc)=>void,
 	unregister: (key: string)=>void
