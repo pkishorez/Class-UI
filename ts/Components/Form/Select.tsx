@@ -237,7 +237,7 @@ export class Select extends FormElement<IProps, IState> {
 					left: -2px;
 					width: calc(100% + 4px);
 					z-index: 1;
-					${this.props.nonEditable?`padding: 7px 0px;`:`padding: 0px 0px 7px 0px;`}
+					padding: 7px 0px;
 				`}>
 					{this.props.label?<h3 style={{
 						cursor: "default",
