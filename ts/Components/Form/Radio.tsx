@@ -61,8 +61,8 @@ let ERadio = styled('label')`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 17px;
-		height: 17px;
+		width: 20px;
+		height: 20px;
 		margin-right: 10px;
 		border: 1px solid black;
 		border-radius: 50%;
@@ -73,6 +73,9 @@ let ERadio = styled('label')`
 		&.active{
 			border: 1px solid ${p=>p.theme.colorDarker};
 			background-color: ${p=>p.theme.color};
+		}
+		> span {
+			margin: auto;
 		}
 	}
 `;
@@ -113,7 +116,7 @@ export class Radio extends FormElement<IProps, IState> {
 		return <div>
 			{this.props.values.map((cb)=>{
 				return <ERadio key={cb.value} className={cx({
-					inline: this.props.inline,
+					inline: !!this.props.inline,
 					error: this.state.error
 				})}>
 					<input type="radio" onChange={()=>{
@@ -126,7 +129,7 @@ export class Radio extends FormElement<IProps, IState> {
 					}} checked={this.state.value==cb.value} value={cb.value} name={this.props.name}/>
 					<div className={cx("fake", {
 						active: this.state.value==cb.value
-					})}>•</div>
+					})}><span>•</span></div>
 					{cb.label}
 				</ERadio>
 			})}

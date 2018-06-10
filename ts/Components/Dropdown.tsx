@@ -85,7 +85,7 @@ export class Dropdown extends React.Component<IProps, IState> {
 					this.clickedWithinDropdown = true;
 				}} className={cx(css`
 					${cardStyles["3"]}
-					${()=>{
+					${(()=>{
 						switch(this.props.push){
 							case "left":
 								return `right: 0px;`
@@ -94,7 +94,7 @@ export class Dropdown extends React.Component<IProps, IState> {
 							case "up":
 								return `top: auto;bottom: 100%;`;
 						}
-					}}
+					})()}
 				`)}>
 					{(typeof this.props.children==="function")?this.props.children(()=>{
 						this.setState({

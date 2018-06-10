@@ -16,6 +16,7 @@ import { Page1 } from './Page1';
 import { IJSONSchema } from '../Components/Form/Schema/index';
 import { Schema } from 'classui/Components/Form/Schema/Schema';
 import { css } from 'classui/Emotion';
+import { CropHelper } from 'classui/Components/CropHelper';
 
 
 let S_User: IJSONSchema = {
@@ -79,10 +80,21 @@ ReactDOM.render(
 						}}>Kittu</Button>
 						<Button>Kittu</Button>
 					</NavBar>
+					
 				</Section>
 				<Section>
 					<div>
 						<Page1/>
+					</div>
+				</Section>
+				<Section>
+					<div style={{
+						margin: "auto",
+						maxWidth: 900
+					}}>
+						<CropHelper minWidth={50} minHeight={50} imgsrc="/assets/pic.jpg">
+							<img draggable={false} src="/assets/pic.jpg"/>
+						</CropHelper>
 					</div>
 				</Section>
 			</Layout>

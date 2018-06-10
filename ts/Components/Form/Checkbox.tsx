@@ -59,9 +59,9 @@ let ECheckbox = styled('label')`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 17px;
-		height: 17px;
 		margin-right: 10px;
+		width: 20px;
+		height: 20px;
 		border: 1px solid black;
 		font-size: 15px;
 		color: white;
@@ -70,6 +70,9 @@ let ECheckbox = styled('label')`
 		&.active{
 			border: 1px solid ${p=>p.theme.colorDarker};
 			background-color: ${p=>p.theme.color};
+		}
+		& > * {
+			margin: auto;
 		}
 	}
 `;
@@ -106,7 +109,7 @@ export class Checkbox extends FormElement<IProps, IState> {
 
 	Render() {
 		return <ECheckbox className={cx({
-			inline: this.props.inline,
+			inline: !!this.props.inline,
 			error: this.state.error
 		})}>
 			<input type="checkbox" checked={this.state.value} onChange={(e)=>{
@@ -116,7 +119,7 @@ export class Checkbox extends FormElement<IProps, IState> {
 			}} name={this.props.name}/>
 			<div className={cx("fake", {
 				active: this.state.value
-			})}>✔</div>
+			})}><span>✔</span></div>
 			{this.props.children}
 		</ECheckbox>;
 	}

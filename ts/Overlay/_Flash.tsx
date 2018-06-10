@@ -95,7 +95,7 @@ export class Flash extends React.Component<IProps, IState> {
 		this.setState({show: false});
 	}
 	render() {
-		let content = <EFlash className={cx({noDismiss: this.props.noDismiss})}
+		let content = <EFlash className={cx({noDismiss: !!this.props.noDismiss})}
 			onClick={this.clickDismiss}>
 			<EContent onClick={(e)=>{this.content_click=true}}>
 				{this.props.content}

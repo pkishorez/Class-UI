@@ -14,7 +14,7 @@ let EButton = styled('div')`
 	padding: 10px;
 	cursor: pointer;
 	display: inline-block;
-	${props=>props.color}
+	${props=>props.theme.color}
 
 	// Default Styles goes here..
 	background-color: #EEEEEE;
@@ -69,9 +69,9 @@ let EButton = styled('div')`
 
 export let Button = (props: IButtonProps)=>{
 	return <EButton {...BaseComponentProps(props)} className={cx(props.className, {
-		primary: props.primary,
-		active: props.active,
-		disable: props.disable,
+		primary: !!props.primary,
+		active: !!props.active,
+		disable: !!props.disable,
 	})}>
 		{props.children}
 	</EButton>;

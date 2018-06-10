@@ -216,7 +216,7 @@ export class Table extends React.Component<IProps, IState> {
 		</Menu>:null;
 
 		let dataTable = <ETable className={cx({
-			hoverable: this.props.hoverable
+			hoverable: !!this.props.hoverable
 		})}>
 			<THead>
 				{headerItems}

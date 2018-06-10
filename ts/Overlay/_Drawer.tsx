@@ -87,7 +87,7 @@ export class Drawer extends React.Component<IProps, IState> {
 	}
 	render() {
 		let content = <EContent onClick={(e)=>{this.content_click=true}} className={cx({
-			noDismiss: this.props.noDismiss
+			noDismiss: !!this.props.noDismiss
 		})}>
 			{this.props.content}
 		</EContent>;
