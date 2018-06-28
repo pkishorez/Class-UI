@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { cx, css } from 'emotion';
 import _ = require('lodash');
 import { Motion, spring } from 'react-motion';
 
@@ -21,7 +20,6 @@ interface IChildStats {
 interface IAnimState {
 	display: any
 	children: IChildStatus[]
-	shouldUpdate: boolean
 	childState: {
 		[key: string]: IChildStats
 	}
@@ -29,24 +27,35 @@ interface IAnimState {
 let i=0;
 export class Anim extends React.Component<IAnimProps, IAnimState> {
 	dummyRef: HTMLDivElement | null = null;
+	shouldUpdate = true;
+	
 	constructor(props: IAnimProps) {
 		super(props);
 		this.state = {
 			children: [],
-			shouldUpdate: false,
 			childState: {},
 			display: undefined
 		};
 		this.addRef = this.addRef.bind(this);
 	}
-	static getDerivedStateFromProps(props: any, state: IAnimState) {
-		// Gather all refs of dummy ones.
+	addRef(r: HTMLDivElement | null) {
+		this.dummyRef = r;
+	}
+
+	componentWillReceiveProps() {
+		this.shouldUpdate = true;
+	}
+	componentDidUpdate() {
+		if (!this.dummyRef || !this.shouldUpdate)
+			return;
+
+
 		const curChildren = React.Children
-			.toArray(props.children);
+		.toArray(this.props.children);
 
 		const curKeys = curChildren
 			.map((child: any)=>child.key);
-		const prevKeys = state.children.map(c=>c.key);
+		const prevKeys = this.state.children.map(c=>c.key);
 		const allKeys = _.union(prevKeys, curKeys) as string[];
 
 		const children: IAnimState["children"] = allKeys.map(key=>{
@@ -55,7 +64,7 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 			const child: IChildStatus = {
 				status: "add",
 				kid: _.find(curChildren, (child: any)=>child.key==key)
-					|| (_.find(state.children, (child: any)=>child.key==key) as any).kid,
+					|| (_.find(this.state.children, (child: any)=>child.key==key) as any).kid,
 				key
 			};
 			if (inPrev && inCur) {
@@ -68,25 +77,7 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 			return child;
 		})
 
-		const display = curChildren.map((child: any)=>React.cloneElement(child, {
-			"data-key": child.key,
-			key: child.key+"disp",
-			visibility: "hidden"
-		}))
-		return {
-			children,
-			display,
-			shouldUpdate: true
-		};
-	}
-	addRef(r: HTMLDivElement | null) {
-		this.dummyRef = r;
-	}
 
-
-	componentDidMount() {
-		if (!this.dummyRef || !this.state.shouldUpdate)
-			return;
 		let child: HTMLDivElement;
 		let childState: IAnimState["childState"] = {};
 		for (child of this.dummyRef.children as any) {
@@ -105,9 +96,10 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 			};
 			console.log(key, child.offsetLeft, child.offsetTop)
 		}
+		this.shouldUpdate = false;
 		this.setState({
-			shouldUpdate: false,
-			childState
+			childState,
+			children
 		})
 	}
 	public render() {
@@ -118,7 +110,17 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 				position: "relative"
 			}} className={className}>
 				{/* Dummy first and content later! */}
-				{this.state.display}
+				{React.Children.toArray(this.props.children)
+					.map((child: any)=>React.cloneElement(child, {
+						"data-key": child.key,
+						key: child.key+"disp",
+						style: {
+							...child.props.style,
+							visibility: "",
+							backgroundColor: "red"
+						}
+					}))
+				}
 				{
 					this.state.children.map(child=>{
 						const stats = this.state.childState[child.key];
@@ -138,20 +140,51 @@ type IAnimChildProps = {
 	// Any child related props go here.
 	status: IChildStatus
 }
-let AnimChild = (props: IAnimChildProps) => {
-	const {kid} = props.status;
-	// Check for configuration here...
-	return <Motion defaultStyle={{opacity: 0, top: 0}} style={{opacity: spring(1), top: props.stats?spring(props.stats.top):0}}>{
-		obj=>{
-			return React.cloneElement(kid, {
-				style: {
-					width: "100%",
-					...kid.props.style,
-					opacity: obj.opacity,
-					top: obj.top,
-					position: "absolute"
-				}
-			})
-		}
-	}</Motion>
+interface IAnimChildState {
+}
+class AnimChild extends React.Component<IAnimChildProps, IAnimChildState> {
+	stats: IChildStats
+	defaultStyle = {
+		left: 0,
+		top: 0,
+		height: 0,
+		width: 0
+	};
+	constructor(props: IAnimChildProps) {
+		super(props);
+		this.stats = this.props.stats || this.defaultStyle;
+	}
+
+	render() {
+		const {status} = this.props;
+		this.stats = this.props.stats || {
+			...this.stats,
+			height: 0
+		};
+		let stats: any = {
+			...this.stats,
+			opacity: (status.status=="delete")?0:1
+		};
+		Object.keys(stats).forEach(k=>stats[k]=spring(stats[k]))
+
+		// Check for configuration here...
+		return <Motion defaultStyle={{
+				...this.defaultStyle,
+				opacity: 0
+			}} style={{
+				opacity: spring(1),
+				...stats
+			}}>{
+			obj=>{
+				return React.cloneElement(status.kid, {
+					style: {
+						...obj,
+						width: "100%",
+						...status.kid.props.style,
+						position: "absolute",
+					}
+				})
+			}
+		}</Motion>
+	}
 }
