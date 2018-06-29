@@ -45,7 +45,13 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 	componentWillReceiveProps() {
 		this.shouldUpdate = true;
 	}
+	componentDidMount() {
+		this.updateChildren();
+	}
 	componentDidUpdate() {
+		this.updateChildren();
+	}
+	updateChildren() {
 		if (!this.dummyRef || !this.shouldUpdate)
 			return;
 
@@ -116,8 +122,8 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 						key: child.key+"disp",
 						style: {
 							...child.props.style,
-							visibility: "",
-							backgroundColor: "red"
+							visibility: "hidden",
+							// backgroundColor: "red"
 						}
 					}))
 				}
@@ -179,8 +185,9 @@ class AnimChild extends React.Component<IAnimChildProps, IAnimChildState> {
 				return React.cloneElement(status.kid, {
 					style: {
 						...obj,
-						width: "100%",
+						// width: "100%",
 						...status.kid.props.style,
+						margin: 0,
 						position: "absolute",
 					}
 				})

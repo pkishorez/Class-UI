@@ -20,7 +20,7 @@ class App extends React.Component<any, any> {
 	}
 	generate = () => {
 		this.setState({
-			children: _.uniq(_.times(5).map(()=>_.random(1,10)))
+			children: _.uniq(_.times(100).map(()=>_.random(1,100)))
 		});
 	}
 	render() {
@@ -63,9 +63,12 @@ class App extends React.Component<any, any> {
 						</h1>
 					)}
 				</HAnim> */}
-				<Anim>
+				<Anim style={{
+					display: "flex",
+					flexWrap: "wrap",
+				}}>
 					{this.state.children.map((c: any)=>
-						<div style={{marginBottom: 20, padding: 20,backgroundColor: "green", color: "white", textAlign: "center", fontSize: 20}} key={c}>
+						<div style={{marginBottom: 20, margin: 20, padding: 20,backgroundColor: "green", color: "white", textAlign: "center", fontSize: 20}} key={c}>
 							{c}
 						</div>
 					)}
