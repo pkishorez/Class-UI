@@ -171,15 +171,34 @@ class AnimChild extends React.Component<IAnimChildProps, IAnimChildState> {
 			...this.stats,
 			opacity: (status.status=="delete")?0:1
 		};
-		Object.keys(stats).forEach(k=>stats[k]=spring(stats[k]))
+
+
 
 		// Check for configuration here...
+
+		return React.cloneElement(status.kid, {
+			style: {
+				...stats,
+				...status.kid.props.style,
+				transition: "0.5s all ease-out",
+				height: "auto",
+				margin: 0,
+				position: "absolute"
+			}
+		})
+
+		const spr = Object.keys(stats)
+			.reduce((agg: any, k: any)=>({
+				...agg,
+				[k]: spring(stats[k])
+			}), {});
+
 		return <Motion defaultStyle={{
 				...this.defaultStyle,
 				opacity: 0
 			}} style={{
 				opacity: spring(1),
-				...stats
+				...spr
 			}}>{
 			obj=>{
 				return React.cloneElement(status.kid, {
