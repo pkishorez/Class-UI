@@ -1,83 +1,80 @@
-import { styled, css } from "classui/Emotion";
+import { css, styled } from "classui/Emotion";
 
 export interface IThemeColors {
-	color: string
-	colorDark: string
-	colorDarker: string
-
-	colorLight: string
-
-	contrast: string
-
-	[id: string]: any
+	color: string;
+	colorDark: string;
+	colorDarker: string;
+	colorLight: string;
+	contrast: string;
+	[id: string]: any;
 }
 
 export interface IThemes {
-	fb: IThemeColors,
-	flat: IThemeColors,
-	green: IThemeColors
-	offline: IThemeColors
-	pink: IThemeColors
-};
+	fb: IThemeColors;
+	flat: IThemeColors;
+	green: IThemeColors;
+	offline: IThemeColors;
+	pink: IThemeColors;
+}
 
 export let Themes: IThemes = {
 	fb: {
 		color: "#3b5998",
-		contrast: "white",
 		colorDark: "#355088",
 		colorDarker: "#2f4779",
-		colorLight: "#4e69a2"
+		colorLight: "#4e69a2",
+		contrast: "white"
 	},
 	flat: {
 		color: "#27a15a",
-		contrast: "white",
 		colorDark: "#289254",
 		colorDarker: "#217a45",
-		colorLight: "#27AE60"
+		colorLight: "#27AE60",
+		contrast: "white"
 	},
 	green: {
 		color: "#198719",
-		contrast: "white",
 		colorDark: "#167916",
 		colorDarker: "#146c14",
 		colorLight: "#2f932f",
+		contrast: "white"
 	},
 	offline: {
 		color: "#424242",
-		contrast: "white",
 		colorDark: "#1e1e1e",
 		colorDarker: "#000000",
-		colorLight: "#4e4e4e"
+		colorLight: "#4e4e4e",
+		contrast: "white"
 	},
 	pink: {
 		color: "#fc3468",
-		contrast: "white",
 		colorDark: "#ff084a",
 		colorDarker: "#f50041",
-		colorLight: "#ff6289"
+		colorLight: "#ff6289",
+		contrast: "white"
 	}
 };
 
 export interface ICColors {
-	error: string
-	success: string
+	error: string;
+	success: string;
 }
 export let CColors: ICColors = {
 	error: "#ff1744",
 	success: "green"
-}
+};
 
 export interface IPColors {
-	success: string
-	error: string
-	sunflower: string
-	carrot: string
-	grey: string
+	success: string;
+	error: string;
+	sunflower: string;
+	carrot: string;
+	grey: string;
 }
 export let PColors: IPColors = {
-	success: "#27AE60",
-	error: "#E74C3C",
-	sunflower: "#F1C404",
 	carrot: "#E67E22",
-	grey: "#95A5A6"
-}
+	error: "#E74C3C",
+	grey: "#95A5A6",
+	success: "#27AE60",
+	sunflower: "#F1C404"
+};
