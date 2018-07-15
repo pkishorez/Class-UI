@@ -25,7 +25,6 @@
 	],
 	"scripts": {
 		"start": "./node_modules/.bin/webpack-dev-server",
-		"publish": "./publish.sh",
 		"testpublish": "./testpublish.sh"
 	},
 	"author": "Kishore",
