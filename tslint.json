@@ -5,7 +5,9 @@
 	"rules": {
 		"indent": [true, "tabs", 4],
 		"array-type": [true, "array"],
-		"member-access": false
+		"member-access": false,
+		"no-unused-expression": false,
+		"variable-name": false
 	},
 	"rulesDirectory": []
 }
