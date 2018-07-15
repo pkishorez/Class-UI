@@ -22,4 +22,4 @@ index.d.ts
 index.js
 yarn.lock
 yarn-error.log
-# package-lock.json
+package-lock.json

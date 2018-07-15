@@ -4,6 +4,10 @@
 	"description": "Class-UI - A Web based User interface Framework.",
 	"main": "./index.js",
 	"types": "./index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git+https://www.github.com/kishoreiiitn/Class-UI"
+	},
 	"files": [
 		"Components",
 		"DataStructures",
