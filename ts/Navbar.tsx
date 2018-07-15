@@ -1,8 +1,8 @@
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/BaseComponent";
-import { cardClasses } from "classui/Components/BaseComponent/Card";
+} from "classui/Components/Base";
+import { cardClasses } from "classui/Components/Base/Card";
 import { css, cx, styled } from "classui/Emotion";
 import * as React from "react";
 

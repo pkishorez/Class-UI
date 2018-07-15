@@ -1,7 +1,7 @@
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/BaseComponent";
+} from "classui/Components/Base";
 import { css, cx, Hoverable, styled } from "classui/Emotion";
 import * as React from "react";
 

@@ -1,6 +1,6 @@
 import { css, cx, styled } from "classui/Emotion/index";
 import * as React from "react";
-import { BaseComponentProps, IBaseComponentProps } from "./BaseComponent/index";
+import { BaseComponentProps, IBaseComponentProps } from "./Base/index";
 
 export interface IButtonProps extends IBaseComponentProps {
 	children?: any;

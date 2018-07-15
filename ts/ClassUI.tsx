@@ -9,7 +9,7 @@ import {
 	RouteComponentProps,
 	withRouter
 } from "react-router-dom";
-import { IBaseComponentProps } from "./Components/BaseComponent/index";
+import { IBaseComponentProps } from "./Components/Base/index";
 import { css, cx, IThemeColors, IThemes, Themes } from "./Emotion/index";
 
 let instance: ClassUI | undefined;

@@ -1,5 +1,5 @@
 import React = require("react");
-import { IBaseComponentProps } from "./BaseComponent/index";
+import { IBaseComponentProps } from "./Base/index";
 
 export interface IDivProps extends IBaseComponentProps {
 	children: any;

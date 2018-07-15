@@ -1,7 +1,7 @@
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/BaseComponent";
+} from "classui/Components/Base";
 import * as React from "react";
 
 export interface ICardProps extends IBaseComponentProps {
@@ -31,10 +31,10 @@ export const Card = (props: ICardProps) => {
 		<div
 			{...BaseComponentProps(props)}
 			style={{
-				...props.style,
 				backgroundColor: "white",
 				boxShadow: cardStyles[props.card ? props.card : "1"],
-				padding: 10
+				padding: 10,
+				...props.style
 			}}
 		>
 			{props.children}

@@ -1,7 +1,7 @@
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/BaseComponent";
+} from "classui/Components/Base";
 import { css, cx, IPColors, PColors } from "classui/Emotion";
 import * as React from "react";
 import { HTMLProps } from "react";

@@ -5,7 +5,7 @@ import {
 	BaseComponentProps,
 	cardClasses,
 	IBaseComponentProps
-} from "./BaseComponent/index";
+} from "./Base/index";
 import { Button, IButtonProps } from "./Button";
 
 export interface IProps {
