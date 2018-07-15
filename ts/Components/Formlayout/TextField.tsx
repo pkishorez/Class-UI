@@ -1,17 +1,15 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {Text, ITextProps} from '../Form/Text';
-import {SAnim} from '../../Helper/Animation';
-import { IValue } from 'classui/Components/Form/FormElement';
-import { styled, css, cx } from 'classui/Emotion';
-import { CColors } from 'classui/Emotion/theme';
+import { IValue } from "classui/Components/Form/FormElement";
+import { cx, styled } from "classui/Emotion";
+import { CColors } from "classui/Emotion/theme";
+import * as React from "react";
+import { ITextProps, Text } from "../Form/Text";
 
 export interface IProps extends ITextProps {
-	label?: string
-	name: string
-};
+	label?: string;
+	name: string;
+}
 
-let EContainer = styled('label')`
+const EContainer = styled("label")`
 	display: block;
 	margin-bottom: 5px;
 	text-align: left;
@@ -29,7 +27,10 @@ let EContainer = styled('label')`
 		transition: all 0.5s;
 	}
 	&.error {
-		> input[type="text"], input[type='number'], input[type='password'], textarea {
+		> input[type="text"],
+		input[type="number"],
+		input[type="password"],
+		textarea {
 			border-bottom: 2px solid ${CColors.error};
 			&:focus {
 				border-bottom: 2px solid darkred;
@@ -43,37 +44,50 @@ let EContainer = styled('label')`
 		}
 	}
 	&.success {
-		> input[type="text"], input[type='number'], input[type='password'], textarea {
-			border-bottom: 2px solid ${p=>p.theme.colorDarker};
+		> input[type="text"],
+		input[type="number"],
+		input[type="password"],
+		textarea {
+			border-bottom: 2px solid ${p => p.theme.colorDarker};
 		}
 		> .label {
-			color: ${p=>p.theme.colorDarker};
+			color: ${p => p.theme.colorDarker};
 		}
 	}
 `;
 
-export class TextField extends React.Component<IProps, {error: null|string|undefined}> {
+export class TextField extends React.Component<
+	IProps,
+	{ error: null | string | undefined }
+> {
 	constructor(props: IProps) {
 		super(props);
 		this.state = {
 			error: undefined
 		};
-		this.onChange=this.onChange.bind(this);
+		this.onChange = this.onChange.bind(this);
 	}
-	onChange(value: IValue)
-	{
+	onChange(value: IValue) {
 		this.setState({
 			error: value.error
-		})
+		});
 	}
 	render() {
-		return <EContainer className={cx({
-			"error": this.state.error?true:false,
-			"success": (this.state.error===null)?true:false
-		})}>
-			{this.props.label?<div className="label">{this.props.label}</div>:null}
-			<Text {...this.props} onChange={this.onChange}>{this.props.children}</Text>
-			<div className="error">{this.state.error}</div>
-		</EContainer>;
+		return (
+			<EContainer
+				className={cx({
+					error: this.state.error ? true : false,
+					success: this.state.error === null ? true : false
+				})}
+			>
+				{this.props.label ? (
+					<div className="label">{this.props.label}</div>
+				) : null}
+				<Text {...this.props} onChange={this.onChange}>
+					{this.props.children}
+				</Text>
+				<div className="error">{this.state.error}</div>
+			</EContainer>
+		);
 	}
-};
+}
