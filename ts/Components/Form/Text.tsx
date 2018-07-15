@@ -1,26 +1,22 @@
-import * as React from 'react';
-import * as _ from 'lodash';
-import * as propTypes from 'prop-types';
-import {FormElement, IValue} from './FormElement';
-import {IJSONSchema, Schema} from './Schema';
-import { FormContext } from 'classui/Components/Form/Form';
-import { css } from 'classui/Emotion';
+import { css } from "classui/Emotion";
+import * as React from "react";
+import { FormElement, IValue } from "./FormElement";
+import { IJSONSchema } from "./Schema";
 
 export interface ITextProps {
-	name: string,
-	type?: "text" | "password" | "area" | "number"
-	autoFocus?: boolean
-	schema?: IJSONSchema
-	children?: string
-	className?: string
-	defaultValue?: string
-	onChange?: (value: IValue)=>void
-};
+	name: string;
+	type?: "text" | "password" | "area" | "number";
+	autoFocus?: boolean;
+	schema?: IJSONSchema;
+	children?: string;
+	className?: string;
+	defaultValue?: string;
+	onChange?: (value: IValue) => void;
+}
 
 export interface ITextState {
-	value?: string
-};
-
+	value?: string;
+}
 
 export class Text extends FormElement<ITextProps, ITextState> {
 	static defaultProps = {
@@ -37,32 +33,10 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		this.validate = this.validate.bind(this);
 		this.onChange = this.onChange.bind(this);
 	}
-
-	public validate(focusOnError?: boolean) {
-		let value = this.getValue();
-		if (value.error) {
-			focusOnError && this.input && this.input.focus();
-		}
-		this.props.onChange && this.props.onChange(value);
-	}
-
-	private onChange(e: any) {
-		let value = e.target.value;
-		this.setState({
-			value: (value=="")?undefined: value
-		}, this.validate);
-	}
-
 	Render() {
-		let props = {
-			autoFocus: this.props.autoFocus,
+		const props = {
 			autoComplete: this.props.name,
-			ref: (ref: any)=>this.input = ref,
-			spellCheck: false,
-			name: this.props.name,
-			placeholder: this.props.children,
-			onChange: this.onChange,
-			value: this.state.value?this.state.value:"",
+			autoFocus: this.props.autoFocus,
 			className: css`
 				width: 100%;
 				border-bottom: 2px solid grey;
@@ -70,12 +44,36 @@ export class Text extends FormElement<ITextProps, ITextState> {
 				&:focus {
 					border-bottom: 2px solid black;
 				}
-			`
-		}
-		return (this.props.type=="area")?<textarea
-			{...props}>
-		</textarea>:<input type={this.props.type} 
-			{...props}
-		/>;
+			`,
+			name: this.props.name,
+			onChange: this.onChange,
+			placeholder: this.props.children,
+			ref: (ref: any) => (this.input = ref),
+			spellCheck: false,
+			value: this.state.value ? this.state.value : ""
+		};
+		return this.props.type === "area" ? (
+			<textarea {...props} />
+		) : (
+			<input type={this.props.type} {...props} />
+		);
 	}
-};
+
+	public validate(focusOnError?: boolean) {
+		const value = this.getValue();
+		if (value.error) {
+			focusOnError && this.input && this.input.focus();
+		}
+		this.props.onChange && this.props.onChange(value);
+	}
+
+	private onChange(e: any) {
+		const value = e.target.value;
+		this.setState(
+			{
+				value: value === "" ? undefined : value
+			},
+			this.validate
+		);
+	}
+}

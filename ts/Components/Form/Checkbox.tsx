@@ -1,24 +1,20 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {FormElement} from './FormElement';
-import * as propTypes from 'prop-types';
-import { IJSONSchema, Schema } from './Schema/index';
-import * as _ from 'lodash';
-import { styled, css, cx } from 'classui/Emotion';
+import { cx, styled } from "classui/Emotion";
+import * as React from "react";
+import { FormElement } from "./FormElement";
 
 export interface IProps {
-	name: string,
-	children: any,
-	inline?: boolean
-	onChange?: (value: boolean)=>void
-	shouldBeChecked?: boolean
-};
-
-export interface IState {
-	error: boolean
+	name: string;
+	children: any;
+	inline?: boolean;
+	onChange?: (value: boolean) => void;
+	shouldBeChecked?: boolean;
 }
 
-let ECheckbox = styled('label')`
+export interface IState {
+	error: boolean;
+}
+
+const ECheckbox = styled("label")`
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -29,18 +25,17 @@ let ECheckbox = styled('label')`
 		color: red;
 	}
 
-	&.inline{
+	&.inline {
 		display: inline-flex;
 		padding-right: 10px;
 		margin-right: 5px;
-
 	}
 
-	&:hover{
-		background-color: #F4F4F4;
+	&:hover {
+		background-color: #f4f4f4;
 	}
 
-	& > input{
+	& > input {
 		position: fixed;
 		top: 0px;
 		left: 0px;
@@ -50,12 +45,12 @@ let ECheckbox = styled('label')`
 		padding: 0px;
 		&:focus {
 			& ~ .fake {
-				border: 1px solid ${p=>p.theme.colorDarker};
-				box-shadow: 0px 0px 5px ${p=>p.theme.colorDarker};
+				border: 1px solid ${p => p.theme.colorDarker};
+				box-shadow: 0px 0px 5px ${p => p.theme.colorDarker};
 			}
 		}
 	}
-	>.fake {
+	> .fake {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -67,17 +62,14 @@ let ECheckbox = styled('label')`
 		color: white;
 		transition: 0.3s all;
 
-		&.active{
-			border: 1px solid ${p=>p.theme.colorDarker};
-			background-color: ${p=>p.theme.color};
+		&.active {
+			border: 1px solid ${p => p.theme.colorDarker};
+			background-color: ${p => p.theme.color};
 		}
 		& > * {
 			margin: auto;
 		}
 	}
-`;
-let EFake = styled('div')`
-
 `;
 
 export class Checkbox extends FormElement<IProps, IState> {
@@ -87,20 +79,21 @@ export class Checkbox extends FormElement<IProps, IState> {
 		this.getValue = this.getValue.bind(this);
 		this.validate = this.validate.bind(this);
 		this.state = {
-			value: false,
-			error: false
+			error: false,
+			value: false
 		};
 	}
 
-	validate(focusOnError?: boolean) {
+	validate() {
 		// No Validation For Now.
-		let error = this.schema?this.schema.validate(this.state.value):null;
+		const error = this.schema
+			? this.schema.validate(this.state.value)
+			: null;
 		if (error) {
 			this.setState({
 				error: true
 			});
-		}
-		else {
+		} else {
 			this.setState({
 				error: false
 			});
@@ -108,19 +101,35 @@ export class Checkbox extends FormElement<IProps, IState> {
 	}
 
 	Render() {
-		return <ECheckbox className={cx({
-			inline: !!this.props.inline,
-			error: this.state.error
-		})}>
-			<input type="checkbox" checked={this.state.value} onChange={(e)=>{
-				this.setState({
-					value: !this.state.value
-				}, this.validate);
-			}} name={this.props.name}/>
-			<div className={cx("fake", {
-				active: this.state.value
-			})}><span>✔</span></div>
-			{this.props.children}
-		</ECheckbox>;
+		return (
+			<ECheckbox
+				className={cx({
+					error: this.state.error,
+					inline: !!this.props.inline
+				})}
+			>
+				<input
+					type="checkbox"
+					checked={this.state.value}
+					onChange={() => {
+						this.setState(
+							{
+								value: !this.state.value
+							},
+							this.validate
+						);
+					}}
+					name={this.props.name}
+				/>
+				<div
+					className={cx("fake", {
+						active: this.state.value
+					})}
+				>
+					<span>✔</span>
+				</div>
+				{this.props.children}
+			</ECheckbox>
+		);
 	}
-};
+}

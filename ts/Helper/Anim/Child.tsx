@@ -13,6 +13,7 @@ export interface IAnimChildProps {
 	kid: any;
 	status: "add" | "update" | "delete";
 	dimensions: IChildDimensions;
+	delay?: number;
 }
 export interface IChildState {
 	mounted: boolean;
@@ -27,7 +28,7 @@ const defaultClass = css`
 	position: absolute;
 	margin: 0px;
 	opacity: 0;
-	transition: 5s all ease-out;
+	transition: 0.5s all ease-out;
 `;
 
 export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
@@ -65,7 +66,7 @@ export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
 
 	render() {
 		const { mounted } = this.state;
-		const { kid, status } = this.props;
+		const { kid, status, delay } = this.props;
 		if (!mounted) {
 			return this.kid;
 		}
@@ -82,8 +83,9 @@ export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
 		} else {
 			style = {
 				...style,
-				opacity: 1
-			};
+				opacity: 1,
+				transitionDelay: `${delay ? delay * 0.01 : 0}s`
+			} as React.CSSProperties;
 		}
 
 		return React.cloneElement(this.kid, {

@@ -1,11 +1,10 @@
-import { cx, styled } from "classui/Emotion";
-import * as _ from "lodash";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "./Components/BaseComponent/index";
+} from "classui/Components/BaseComponent";
+import { cardClasses } from "classui/Components/BaseComponent/Card";
+import { css, cx, styled } from "classui/Emotion";
+import * as React from "react";
 
 const ENavBar = styled("div")`
 	position: relative;
@@ -56,6 +55,7 @@ export interface IProps extends IBaseComponentProps {
 	dummy?: boolean;
 	logo?: string; // Logo text if any
 	width?: string | number;
+	fixed?: boolean;
 }
 
 export class NavBar extends React.Component<IProps> {
@@ -82,7 +82,11 @@ export class NavBar extends React.Component<IProps> {
 		);
 
 		const dummyNavBar = (
-			<ENavBar style={{ visibility: "hidden" }} className="__navbar__">
+			<ENavBar
+				{...BaseComponentProps(this.props)}
+				style={{ visibility: "hidden" }}
+				className="__navbar__"
+			>
 				{content}
 			</ENavBar>
 		);
@@ -90,7 +94,16 @@ export class NavBar extends React.Component<IProps> {
 		return (
 			<>
 				{this.props.dummy ? dummyNavBar : null}
-				<ENavBar {...BaseComponentProps(this.props, "__navbar__")}>
+				<ENavBar
+					{...BaseComponentProps(this.props)}
+					className={cx(
+						"__navbar__",
+						css`
+							position: fixed;
+							${cardClasses["2"]};
+						`
+					)}
+				>
 					{content}
 				</ENavBar>
 			</>

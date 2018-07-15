@@ -20,6 +20,8 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 			children: []
 		};
 		this.addRef = this.addRef.bind(this);
+		this.updateChildren = _.throttle(this.updateChildren.bind(this), 100);
+		window.addEventListener("resize", this.updateChildren);
 	}
 	public addRef(r: HTMLDivElement | null) {
 		this.dummyRef = r;
@@ -89,6 +91,7 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 	}
 	public render() {
 		const { style, className } = this.props;
+		let delay = 0;
 		return (
 			<div
 				ref={this.addRef}
@@ -111,12 +114,14 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 					})
 				)}
 				{this.state.children.map(child => {
+					const d = child.status === "add" ? delay++ : undefined;
 					return (
 						<AnimChild
 							key={child.key}
 							status={child.status}
 							dimensions={child.dimensions}
 							kid={child.kid}
+							delay={d}
 						/>
 					);
 				})}

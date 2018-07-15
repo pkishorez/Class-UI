@@ -1,34 +1,30 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {FormElement} from './FormElement';
-import * as propTypes from 'prop-types';
-import { IJSONSchema, Schema } from './Schema/index';
-import * as _ from 'lodash';
-import { styled, cx } from 'classui/Emotion';
+import { cx, styled } from "classui/Emotion";
+import * as React from "react";
+import { FormElement } from "./FormElement";
 
 export interface IProps {
-	name: string
+	name: string;
 	values: {
-		label: string
-		value: string
-	}[]
-	inline?: boolean
-	defaultValue?: string
-	onChange?: (value: string)=>void
-};
-
-export interface IState {
-	error: boolean
+		label: string;
+		value: string;
+	}[];
+	inline?: boolean;
+	defaultValue?: string;
+	onChange?: (value: string) => void;
 }
 
-let ERadio = styled('label')`
+export interface IState {
+	error: boolean;
+}
+
+const ERadio = styled("label")`
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	user-select: none;
 	padding: 5px;
 
-	&.inline{
+	&.inline {
 		display: inline-flex;
 		padding-right: 10px;
 		margin-right: 5px;
@@ -37,11 +33,11 @@ let ERadio = styled('label')`
 		color: red;
 	}
 
-	&:hover{
-		background-color: #F4F4F4;
+	&:hover {
+		background-color: #f4f4f4;
 	}
 
-	& > input{
+	& > input {
 		position: fixed;
 		top: 0px;
 		left: 0px;
@@ -52,8 +48,8 @@ let ERadio = styled('label')`
 
 		&:focus {
 			& ~ .fake {
-				border: 1px solid ${p=>p.theme.colorDarker};
-				box-shadow: 0px 0px 10px ${p=>p.theme.colorDarker};
+				border: 1px solid ${p => p.theme.colorDarker};
+				box-shadow: 0px 0px 10px ${p => p.theme.colorDarker};
 			}
 		}
 	}
@@ -70,9 +66,9 @@ let ERadio = styled('label')`
 		color: white;
 		transition: 0.3s all;
 
-		&.active{
-			border: 1px solid ${p=>p.theme.colorDarker};
-			background-color: ${p=>p.theme.color};
+		&.active {
+			border: 1px solid ${p => p.theme.colorDarker};
+			background-color: ${p => p.theme.color};
 		}
 		> span {
 			margin: auto;
@@ -80,32 +76,28 @@ let ERadio = styled('label')`
 	}
 `;
 
-let EFake = styled('div')`
-
-`;
-
 export class Radio extends FormElement<IProps, IState> {
-
 	constructor(props: IProps) {
 		super(props);
 
 		this.getValue = this.getValue.bind(this);
 		this.validate = this.validate.bind(this);
 		this.state = {
-			value: this.props.defaultValue,
-			error: false
+			error: false,
+			value: this.props.defaultValue
 		};
 	}
 
 	validate() {
-		let error = this.schema?this.schema.validate(this.state.value):null;
+		const error = this.schema
+			? this.schema.validate(this.state.value)
+			: null;
 		if (error) {
 			// Do something here.
 			this.setState({
 				error: true
 			});
-		}
-		else {
+		} else {
 			this.setState({
 				error: false
 			});
@@ -113,26 +105,47 @@ export class Radio extends FormElement<IProps, IState> {
 	}
 
 	Render() {
-		return <div>
-			{this.props.values.map((cb)=>{
-				return <ERadio key={cb.value} className={cx({
-					inline: !!this.props.inline,
-					error: this.state.error
-				})}>
-					<input type="radio" onChange={()=>{
-						this.setState({
-							value: cb.value
-						}, ()=>{
-							this.props.onChange && this.props.onChange(cb.value);
-							this.validate();
-						});
-					}} checked={this.state.value==cb.value} value={cb.value} name={this.props.name}/>
-					<div className={cx("fake", {
-						active: this.state.value==cb.value
-					})}><span>•</span></div>
-					{cb.label}
-				</ERadio>
-			})}
-		</div>;
+		return (
+			<div>
+				{this.props.values.map(cb => {
+					return (
+						<ERadio
+							key={cb.value}
+							className={cx({
+								error: this.state.error,
+								inline: !!this.props.inline
+							})}
+						>
+							<input
+								type="radio"
+								onChange={() => {
+									this.setState(
+										{
+											value: cb.value
+										},
+										() => {
+											this.props.onChange &&
+												this.props.onChange(cb.value);
+											this.validate();
+										}
+									);
+								}}
+								checked={this.state.value === cb.value}
+								value={cb.value}
+								name={this.props.name}
+							/>
+							<div
+								className={cx("fake", {
+									active: this.state.value === cb.value
+								})}
+							>
+								<span>•</span>
+							</div>
+							{cb.label}
+						</ERadio>
+					);
+				})}
+			</div>
+		);
 	}
-};
+}

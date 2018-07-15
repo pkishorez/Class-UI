@@ -1,23 +1,32 @@
-import * as React from 'react';
-import {IBaseComponentProps, BaseComponentProps} from './BaseComponent/index';
-import { styled, PColors } from 'classui/Emotion';
-import { IPColors } from 'classui/Emotion/theme';
+import {
+	BaseComponentProps,
+	IBaseComponentProps
+} from "classui/Components/BaseComponent";
+import { css, cx, IPColors, PColors } from "classui/Emotion";
+import * as React from "react";
+import { HTMLProps } from "react";
 
 export interface IBadgeProps extends IBaseComponentProps {
-	type?: keyof(IPColors)
-	children: any
+	type?: keyof (IPColors);
+	children: any;
+	extend?: HTMLProps<any>;
 }
 
-export let Badge = (props: IBadgeProps)=>{
-	let EBadge = styled('div')`
-		display: inline-block;
-		padding: 7px 10px;
-		cursor: default;
-		color: white;
-		transition: all 0.4s;
-		background-color: ${PColors[props.type?props.type:"success"]};
-	`;
-	return <EBadge {...BaseComponentProps(props)}>
-		{props.children}
-	</EBadge>;
-}
+const badgeCSS = css`
+	display: inline-block;
+	padding: 7px 10px;
+	cursor: default;
+	color: white;
+	transition: all 0.4s;
+`;
+export let Badge = (props: IBadgeProps) => {
+	const { type, children, ...eProps } = props;
+	return (
+		<div
+			{...BaseComponentProps(props)}
+			className={cx(badgeCSS, props.className)}
+		>
+			{children}
+		</div>
+	);
+};

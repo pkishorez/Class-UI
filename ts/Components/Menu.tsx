@@ -1,18 +1,17 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {TransitionMotion} from 'react-motion';
-import {RLink} from '../Helper/RLink';
-import { styled, cx, Hoverable, css } from 'classui/Emotion';
-import { IBaseComponentProps, BaseComponentProps } from 'classui/Components/BaseComponent';
+import {
+	BaseComponentProps,
+	IBaseComponentProps
+} from "classui/Components/BaseComponent";
+import { css, cx, Hoverable, styled } from "classui/Emotion";
+import * as React from "react";
 
-export interface IProps {
-	header?: string
-	children: any
-};
-export interface IState {};
+export interface IProps extends IBaseComponentProps {
+	header?: string;
+	children: any;
+}
 
-let ESideMenu = styled('div')`
-	border: 1px solid #DDDDDD;
+const ESideMenu = styled("div")`
+	border: 1px solid #dddddd;
 	background-color: white;
 	padding: 10px 0px;
 
@@ -21,39 +20,52 @@ let ESideMenu = styled('div')`
 	}
 `;
 
-export class Menu extends React.Component<IProps, IState> {
+export class Menu extends React.Component<IProps> {
 	render() {
-		return <ESideMenu>
-			{this.props.header?<h3>{this.props.header}</h3>:null}
-			{this.props.children}
-		</ESideMenu>;
+		const { header, children, ...props } = this.props;
+		return (
+			<ESideMenu {...props}>
+				{header ? <h3>{header}</h3> : null}
+				{children}
+			</ESideMenu>
+		);
 	}
 }
 
-
 export interface IItemProps extends IBaseComponentProps {
-	disable?: boolean
-	active?: boolean
-	children: any
+	disable?: boolean;
+	active?: boolean;
+	children: any;
+}
+
+export let MDivider = () => {
+	return (
+		<div
+			className={css`
+				border-top: 1px solid grey;
+				margin: 10px 5px;
+			`}
+		/>
+	);
 };
 
-export let MDivider = ()=>{
-	return <div className={css`
-		border-top: 1px solid grey;
-		margin: 10px 5px;
-	`}>
-	</div>
-}
-
-let EItem = styled('div')`
+const EItem = styled("div")`
 	padding: 7px 10px;
+	min-height: 48px;
 `;
-export let MItem = (props: IItemProps)=>{
-
-	return <EItem {...BaseComponentProps(props)} className={cx(props.className, Hoverable({
-		disable: props.disable,
-		active: props.active
-	}))}>
-		{props.children}
-	</EItem>;
-}
+export let MItem = (props: IItemProps) => {
+	return (
+		<EItem
+			{...BaseComponentProps(props)}
+			className={cx(
+				props.className,
+				Hoverable({
+					active: props.active,
+					disable: props.disable
+				})
+			)}
+		>
+			{props.children}
+		</EItem>
+	);
+};

@@ -49,8 +49,8 @@ export interface IJSONSchema {
 	 * Default json for the object represented by
 	 * this schema
 	 */
-	'default'?: any;
-  
+	default?: any;
+
 	/////////////////////////////////////////////////
 	// Number Validation
 	/////////////////////////////////////////////////
@@ -69,7 +69,7 @@ export interface IJSONSchema {
 	 * If true minimum must be < value, <= otherwise
 	 */
 	exclusiveMinimum?: boolean;
-  
+
 	/////////////////////////////////////////////////
 	// String Validation
 	/////////////////////////////////////////////////
@@ -80,7 +80,7 @@ export interface IJSONSchema {
 	 * conform to
 	 */
 	pattern?: string;
-  
+
 	/////////////////////////////////////////////////
 	// Array Validation
 	/////////////////////////////////////////////////
@@ -89,7 +89,7 @@ export interface IJSONSchema {
 	maxItems?: number;
 	minItems?: number;
 	uniqueItems?: boolean;
-  
+
 	/////////////////////////////////////////////////
 	// Object Validation
 	/////////////////////////////////////////////////
@@ -101,17 +101,17 @@ export interface IJSONSchema {
 	 * Holds simple JSON Schema definitions for
 	 * referencing from elsewhere.
 	 */
-	definitions?: {[key: string]: IJSONSchema};
+	definitions?: { [key: string]: IJSONSchema };
 	/**
 	 * The keys that can exist on the object with the
 	 * json schema that should validate their value
 	 */
-	properties?: {[property: string]: IJSONSchema};
+	properties?: { [property: string]: IJSONSchema };
 	/**
 	 * The key of this object is a regex for which
 	 * properties the schema applies to
 	 */
-	patternProperties?: {[pattern: string]: IJSONSchema};
+	patternProperties?: { [pattern: string]: IJSONSchema };
 	/**
 	 * If the key is present as a property then the
 	 * string of properties must also be present.
@@ -119,8 +119,8 @@ export interface IJSONSchema {
 	 * also be valid for the object if the key is
 	 * present.
 	 */
-	dependencies?: {[key: string]: IJSONSchema | string[]};
-  
+	dependencies?: { [key: string]: IJSONSchema | string[] };
+
 	/////////////////////////////////////////////////
 	// Generic
 	/////////////////////////////////////////////////
@@ -128,16 +128,31 @@ export interface IJSONSchema {
 	 * Enumerates the values that this schema can be
 	 * e.g.
 	 * {"type": "string",
-	   *  "enum": ["red", "green", "blue"]}
+	 *  "enum": ["red", "green", "blue"]}
 	 */
-	'enum'?: any[];
+	enum?: any[];
 	/**
 	 * The basic type of this schema, can be one of
 	 * [string, number, object, array, boolean, null]
 	 * or an array of the acceptable types
 	 */
-	type?: 'string' | 'number' | 'object' | 'array' | 'boolean' | 'null' | 'integer' | ('string' | 'number' | 'object' | 'array' | 'boolean' | 'null' | 'integer')[];
-  
+	type?:
+		| "string"
+		| "number"
+		| "object"
+		| "array"
+		| "boolean"
+		| "null"
+		| "integer"
+		| (
+				| "string"
+				| "number"
+				| "object"
+				| "array"
+				| "boolean"
+				| "null"
+				| "integer")[];
+
 	/////////////////////////////////////////////////
 	// Combining Schemas
 	/////////////////////////////////////////////////
@@ -149,4 +164,4 @@ export interface IJSONSchema {
 	 */
 	not?: IJSONSchema;
 	[key: string]: any;
-  }
+}

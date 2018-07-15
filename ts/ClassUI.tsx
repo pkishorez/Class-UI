@@ -9,10 +9,7 @@ import {
 	RouteComponentProps,
 	withRouter
 } from "react-router-dom";
-import {
-	BaseComponentProps,
-	IBaseComponentProps
-} from "./Components/BaseComponent/index";
+import { IBaseComponentProps } from "./Components/BaseComponent/index";
 import { css, cx, IThemeColors, IThemes, Themes } from "./Emotion/index";
 
 let instance: ClassUI | undefined;
@@ -74,7 +71,7 @@ export class ClassUI extends React.Component<IProps, IState> {
 		const cls = cx(
 			css`
 				background-color: #ececec;
-				${this.props.fullHeight ? `min-height: 100vh;` : undefined};
+				${this.props.fullHeight ? `min-height: 100vh;` : null};
 			`,
 			this.state.theme,
 			this.props.className
@@ -89,7 +86,7 @@ export class ClassUI extends React.Component<IProps, IState> {
 			DummyRouter = withRouter(DummyRouter);
 		}
 		const classui = (
-			<div {...BaseComponentProps(this.props)} className={cls}>
+			<div className={cls}>
 				{this.props.children}
 
 				<div

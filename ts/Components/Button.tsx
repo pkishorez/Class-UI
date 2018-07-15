@@ -1,52 +1,53 @@
-import * as React from 'react';
-import {BaseComponentProps, IBaseComponentProps} from './BaseComponent/index';
-import {styled, cx, css} from 'classui/Emotion/index';
+import { css, cx, styled } from "classui/Emotion/index";
+import * as React from "react";
+import { BaseComponentProps, IBaseComponentProps } from "./BaseComponent/index";
 
 export interface IButtonProps extends IBaseComponentProps {
-	children?: any
-	active?: boolean
-	disable?: boolean
-	primary?: boolean
+	children?: any;
+	active?: boolean;
+	disable?: boolean;
+	primary?: boolean;
 }
 
-let EButton = styled('div')`
+const EButton = styled("div")`
 	user-select: none;
 	padding: 10px;
 	cursor: pointer;
 	display: inline-block;
-	${props=>props.theme.color}
-
-	// Default Styles goes here..
-	background-color: #EEEEEE;
+	background-color: #eeeeee;
 	&:hover {
-		background-color: #DDDDDD;
+		background-color: #dddddd;
 	}
 	&:active {
-		background-color: #CCCCCC;
+		background-color: #cccccc;
 	}
-	&.active{
-		&, &:hover {
-			background-color: #DDDDDD;
+	&.active {
+		&,
+		&:hover {
+			background-color: #dddddd;
 		}
 	}
 	&.disable {
-		&, &:hover, &:active{
+		&,
+		&:hover,
+		&:active {
 			cursor: default;
 			color: grey;
-			background-color: #EEEEEE;
+			background-color: #eeeeee;
 		}
 	}
 	.__navbar__ & {
 		background-color: inherit;
 		&:hover {
-			background-color: ${p=>p.theme.colorDark};
+			background-color: ${p => p.theme.colorDark};
 		}
-		&.active, &:active {
-			background-color: ${p=>p.theme.colorDark};
+		&.active,
+		&:active {
+			background-color: ${p => p.theme.colorDark};
 		}
 	}
 
-	${p=>`
+	${p => `
 	&.primary {
 		//background-color: ${p.theme.color};
 		//color: black;
@@ -64,15 +65,19 @@ let EButton = styled('div')`
 			color: grey;
 			background-color: ${p.theme.colorLight}
 		}
-	}`}
+	}`};
 `;
 
-export let Button = (props: IButtonProps)=>{
-	return <EButton {...BaseComponentProps(props)} className={cx(props.className, {
-		primary: !!props.primary,
-		active: !!props.active,
-		disable: !!props.disable,
-	})}>
-		{props.children}
-	</EButton>;
-}
+export const Button = (props: IButtonProps) => {
+	return (
+		<EButton
+			{...BaseComponentProps(props)}
+			className={cx(props.className, {
+				active: !!props.active,
+				disable: !!props.disable
+			})}
+		>
+			{props.children}
+		</EButton>
+	);
+};

@@ -1,30 +1,31 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as propTypes from 'prop-types';
-import { IFormContext, FormContext } from 'classui/Components/Form/Form';
-import { IJSONSchema, Schema } from 'classui/Components/Form/Schema';
+import { FormContext, IFormContext } from "classui/Components/Form/Form";
+import { Schema } from "classui/Components/Form/Schema";
+import * as React from "react";
 
 export interface IValue {
-	value: any
-	error: string | null
-};
+	value: any;
+	error: string | null;
+}
 
-export abstract class FormElement<IProps, IState> extends React.Component<IProps & {
-	name: string
-} , {
-	value: any
-} & IState> {
-	private unregister?: IFormContext["unregister"];
-
-	private _schema?: IJSONSchema;
+export abstract class FormElement<IProps, IState> extends React.Component<
+	IProps & {
+		name: string;
+	},
+	{
+		value: any;
+	} & IState
+> {
+	_schema: any;
 	protected schema?: Schema;
+	private unregister?: IFormContext["unregister"];
+	// tslint:disable-next-line:variable-name
 
 	abstract validate(focusOnError?: boolean): void;
 
 	public getValue() {
 		return {
-			value: this.state.value,
-			error: this.schema?this.schema.validate(this.state.value): null
+			error: this.schema ? this.schema.validate(this.state.value) : null,
+			value: this.state.value
 		};
 	}
 
@@ -35,24 +36,28 @@ export abstract class FormElement<IProps, IState> extends React.Component<IProps
 	}
 
 	render() {
-		return <FormContext.Consumer>
-			{
-				(FE)=>{
-					FE.register(this.props.name, this, (schema, defaultValue)=>{
-						if (schema) {
-							this._schema = schema;
-							this.schema = new Schema(schema);	
+		return (
+			<FormContext.Consumer>
+				{FE => {
+					FE.register(
+						this.props.name,
+						this,
+						(schema, defaultValue) => {
+							if (schema) {
+								this._schema = schema;
+								this.schema = new Schema(schema);
+							}
+							if (defaultValue) {
+								this.setState({
+									value: defaultValue
+								});
+							}
 						}
-						if (defaultValue) {
-							this.setState({
-								value: defaultValue
-							});	
-						}
-					});
+					);
 					this.unregister = FE.unregister;
 					return this.Render();
-				}
-			}
-		</FormContext.Consumer>;
+				}}
+			</FormContext.Consumer>
+		);
 	}
 }
