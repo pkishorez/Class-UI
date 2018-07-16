@@ -2,7 +2,7 @@ import { IValue } from "classui/Components/Form/FormElement";
 import { cx, styled } from "classui/Emotion";
 import { CColors } from "classui/Emotion/theme";
 import * as React from "react";
-import { ITextProps, Text } from "../Form/Text";
+import { ITextProps, Text } from "classui/Components/Form/Text";
 
 export interface IProps extends ITextProps {
 	label?: string;

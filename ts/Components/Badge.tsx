@@ -20,11 +20,15 @@ const badgeCSS = css`
 	transition: all 0.4s;
 `;
 export let Badge = (props: IBadgeProps) => {
-	const { type, children, ...eProps } = props;
+	const { type="success", children, ...eProps } = props;
 	return (
 		<div
 			{...BaseComponentProps(props)}
 			className={cx(badgeCSS, props.className)}
+			style={{
+				...props.style,
+				backgroundColor: PColors[type]
+			}}
 		>
 			{children}
 		</div>

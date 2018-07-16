@@ -1,24 +1,23 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {SAnim, ISAnimProps} from '../Helper/Animation';
-import { Button } from 'classui/Components/Button';
-import { styled, css, cx } from 'classui/Emotion';
-import { IOverlayProps } from 'classui/Overlay';
+import { Button } from "classui/Components/Button";
+import { css, cx, styled } from "classui/Emotion";
+import { ISAnimProps, SAnim } from "classui/Helper/Animation";
+import { IOverlayProps } from "classui/Overlay";
+import * as React from "react";
 
 export interface IFlashProps {
-	noDismiss?: boolean
-	animation?: ISAnimProps["animType"]
-	noCloseButton?: boolean
-	content: any
-};
+	noDismiss?: boolean;
+	animation?: ISAnimProps["animType"];
+	noCloseButton?: boolean;
+	content: any;
+}
 
 export type IProps = IFlashProps & IOverlayProps;
 
 export interface IState {
-	show: boolean
-};
+	show: boolean;
+}
 
-let EFlash = styled('div')`
+let EFlash = styled("div")`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -27,13 +26,13 @@ let EFlash = styled('div')`
 	left: 0px;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0, 0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 
 	&.noDismiss {
 		background-color: rgba(0, 0, 0, 0.8);
 	}
 `;
-let EContent = styled('div')`
+let EContent = styled("div")`
 	position: relative;
 	max-width: 100%;
 	max-height: 100%;
@@ -72,40 +71,61 @@ export class Flash extends React.Component<IProps, IState> {
 	}
 
 	escapeDismiss(e: KeyboardEvent) {
-		if (this.props.noDismiss){
+		if (this.props.noDismiss) {
 			return;
 		}
-		if (e.key=="Escape") {
+		if (e.key == "Escape") {
 			this.dismiss();
 			window.removeEventListener("keydown", this.escapeDismiss);
 		}
 	}
 	clickDismiss() {
-		if (this.props.noDismiss){
+		if (this.props.noDismiss) {
 			// DO NOT Dismiss.
 			return;
 		}
-		if (this.content_click){
+		if (this.content_click) {
 			this.content_click = false;
 			return;
 		}
 		this.dismiss();
 	}
 	dismiss() {
-		this.setState({show: false});
+		this.setState({ show: false });
 	}
 	render() {
-		let content = <EFlash className={cx({noDismiss: !!this.props.noDismiss})}
-			onClick={this.clickDismiss}>
-			<EContent onClick={(e)=>{this.content_click=true}}>
-				{this.props.content}
-				{this.props.noCloseButton?null:<Button className={Close} onClick={this.dismiss}>x</Button>}
-			</EContent>
-		</EFlash>;
+		let content = (
+			<EFlash
+				className={cx({ noDismiss: !!this.props.noDismiss })}
+				onClick={this.clickDismiss}
+			>
+				<EContent
+					onClick={() => {
+						this.content_click = true;
+					}}
+				>
+					{this.props.content}
+					{this.props.noCloseButton ? null : (
+						<Button className={Close} onClick={this.dismiss}>
+							x
+						</Button>
+					)}
+				</EContent>
+			</EFlash>
+		);
 
-		return (!this.props.animation)?(this.state.show?content:null):
-		<SAnim show={this.state.show} animType={this.props.animation} onRemoved={this.props.remove}>
-			{content}
-		</SAnim>;
+		return !this.props.animation ? (
+			this.state.show ? (
+				content
+			) : null
+		) : (
+			<SAnim
+				show={this.state.show}
+				animType={this.props.animation}
+				onRemoved={this.props.remove}
+			>
+				{content}
+			</SAnim>
+		);
 	}
 }

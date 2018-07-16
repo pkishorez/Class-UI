@@ -1,6 +1,6 @@
 import { cx, styled } from "classui/Emotion";
 import * as React from "react";
-import { FormElement } from "./FormElement";
+import { FormElement } from "classui/Components/Form/FormElement";
 
 export interface IProps {
 	name: string;

@@ -1,5 +1,5 @@
 import * as React from "react";
-export { cardClasses } from "./Card";
+export { cardClasses } from "classui/Components/Base/Card";
 
 export interface IBaseComponentProps {
 	style?: React.CSSProperties;

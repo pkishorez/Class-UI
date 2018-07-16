@@ -1,39 +1,45 @@
-import {v4} from 'uuid';
-import * as _ from 'lodash';
-import {Schema, IJSONSchema} from '../Components/Form/Schema';
+import { v4 } from "uuid";
+import * as _ from "lodash";
+import { Schema, IJSONSchema } from "classui/Components/Form/Schema";
 
-export interface IOrderedMap<T>{
+export interface IOrderedMap<T> {
 	map: {
-		[id: string]: T
-	},
-	order: string[]
-	hidden?: string[]
+		[id: string]: T;
+	};
+	order: string[];
+	hidden?: string[];
 }
 
-export type IOrderedMapAction<T> = {
-	type: "INIT"
-	state: IOrderedMap<T>
-} | {
-	type: "ADD"
-	_id?: string
-	value: T
-} | {
-	type: "MODIFY"
-	_id: string
-	value: Partial<T>
-} | {
-	type: "DELETE"
-	_id: string
-} | {
-	type: "REORDER"
-	order: string[]
-} | {
-	type: "HIDDEN"
-	hidden: string[]
-};
+export type IOrderedMapAction<T> =
+	| {
+			type: "INIT";
+			state: IOrderedMap<T>;
+	  }
+	| {
+			type: "ADD";
+			_id?: string;
+			value: T;
+	  }
+	| {
+			type: "MODIFY";
+			_id: string;
+			value: Partial<T>;
+	  }
+	| {
+			type: "DELETE";
+			_id: string;
+	  }
+	| {
+			type: "REORDER";
+			order: string[];
+	  }
+	| {
+			type: "HIDDEN";
+			hidden: string[];
+	  };
 
 export class OrderedMap<T> {
-	private orderedMap: IOrderedMap<T> = {map: {}, order: []};
+	private orderedMap: IOrderedMap<T> = { map: {}, order: [] };
 	private Tschema: IJSONSchema;
 	constructor(orderedMap: IOrderedMap<T>, schema: IJSONSchema = {}) {
 		this.init(orderedMap);
@@ -41,13 +47,13 @@ export class OrderedMap<T> {
 	}
 
 	performAction(action: IOrderedMapAction<T>): IOrderedMapAction<T> | string {
-		switch(action.type) {
+		switch (action.type) {
 			case "INIT": {
 				this.init(action.state);
 				break;
 			}
 			case "ADD": {
-				if (!action._id){
+				if (!action._id) {
 					console.error("Action ID should be provided to add.");
 					break;
 				}
@@ -99,8 +105,10 @@ export class OrderedMap<T> {
 		this.orderedMap = {
 			...orderedMap,
 			order,
-			hidden: orderedMap.hidden?_.intersection(orderedMap.hidden, mapKeys):[]
-		}
+			hidden: orderedMap.hidden
+				? _.intersection(orderedMap.hidden, mapKeys)
+				: []
+		};
 	}
 
 	add(value: T, _id: string) {
@@ -111,7 +119,7 @@ export class OrderedMap<T> {
 			return;
 		}
 		if (this.orderedMap.map[_id]) {
-			console.error("Record with id: "+_id+" already present");
+			console.error("Record with id: " + _id + " already present");
 			return;
 		}
 		this.orderedMap = {
@@ -120,16 +128,13 @@ export class OrderedMap<T> {
 				...this.orderedMap.map,
 				[_id]: value
 			},
-			order: [
-				...this.orderedMap.order,
-				_id
-			]
+			order: [...this.orderedMap.order, _id]
 		};
 	}
 
 	del(map_id: string) {
 		if (!this.orderedMap.map[map_id]) {
-			console.error("Couldn't find record with id : "+map_id);
+			console.error("Couldn't find record with id : " + map_id);
 			return;
 		}
 		this.orderedMap = {
@@ -142,8 +147,8 @@ export class OrderedMap<T> {
 
 	modify(map_id: string, value: Partial<T>) {
 		value = {
-			...this.orderedMap.map[map_id] as any,
-			...value as any
+			...(this.orderedMap.map[map_id] as any),
+			...(value as any)
 		};
 		// START VALIDATE SCHEMA
 		let error = Schema.validate(this.Tschema, value);
@@ -159,10 +164,8 @@ export class OrderedMap<T> {
 					...this.orderedMap.map,
 					[map_id]: value as any
 				}
-			}
-		}
-		else
-			console.error("No record found to modify the value.");
+			};
+		} else console.error("No record found to modify the value.");
 	}
 
 	reorder(order: string[]) {
@@ -171,8 +174,7 @@ export class OrderedMap<T> {
 				...this.orderedMap,
 				order
 			};
-		}
-		else {
+		} else {
 			console.error("ORDER MISMATCH!!!");
 		}
 	}

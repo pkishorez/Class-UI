@@ -33,7 +33,7 @@ export const Card = (props: ICardProps) => {
 			style={{
 				backgroundColor: "white",
 				boxShadow: cardStyles[props.card ? props.card : "1"],
-				padding: 10,
+				padding: 15,
 				...props.style
 			}}
 		>

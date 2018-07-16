@@ -1,7 +1,7 @@
+import { FormElement, IValue } from "classui/Components/Form/FormElement";
+import { IJSONSchema } from "classui/Components/Form/Schema";
 import { css } from "classui/Emotion";
 import * as React from "react";
-import { FormElement, IValue } from "./FormElement";
-import { IJSONSchema } from "./Schema";
 
 export interface ITextProps {
 	name: string;

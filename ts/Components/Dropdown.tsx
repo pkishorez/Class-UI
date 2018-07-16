@@ -1,12 +1,12 @@
-import { css, cx, Hoverable, styled } from "classui/Emotion";
-import * as React from "react";
-import { ISAnimProps, SAnim } from "../Helper/Animation";
 import {
 	BaseComponentProps,
 	cardClasses,
 	IBaseComponentProps
-} from "./Base/index";
-import { Button, IButtonProps } from "./Button";
+} from "classui/Components/Base";
+import { Button, IButtonProps } from "classui/Components/Button";
+import { css, cx, Hoverable, styled } from "classui/Emotion";
+import { ISAnimProps, SAnim } from "classui/Helper/Animation";
+import * as React from "react";
 
 export interface IProps {
 	buttonMaxWidth?: number;

@@ -1,4 +1,4 @@
-import { css, cx, Hoverable } from "classui/Emotion/index";
+import { css, cx, Hoverable } from "classui/Emotion";
 import * as React from "react";
 
 export interface ISubmitProps

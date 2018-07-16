@@ -1,6 +1,6 @@
 import * as AJV from "ajv";
+import { IJSONSchema } from "classui/Components/Form/Schema/JSONSchema";
 import * as _ from "lodash";
-import { IJSONSchema } from "./JSONSchema";
 
 export class Schema {
 	static getSchema(schema: IJSONSchema, key: string) {

@@ -1,8 +1,8 @@
-import { cx } from "classui/Emotion/index";
+import { cx } from "classui/Emotion";
 import * as _ from "lodash";
 import * as React from "react";
-import { FormElement } from "./FormElement";
-import { IJSONSchema, Schema } from "./Schema";
+import { FormElement } from "classui/Components/Form/FormElement";
+import { IJSONSchema, Schema } from "classui/Components/Form/Schema";
 
 export type IRegisterFunc = (
 	schema: IJSONSchema | undefined,
@@ -94,10 +94,7 @@ export class Form extends React.Component<IProps> {
 		];
 		let pschema;
 		if (this.props.schema) {
-			pschema = Schema.getSchema(
-				this.props.schema ? this.props.schema : {},
-				key
-			);
+			pschema = Schema.getSchema(this.props.schema, key);
 		}
 		const defaultValue = _.get(this.props.default, key);
 		if (elementRegister) {

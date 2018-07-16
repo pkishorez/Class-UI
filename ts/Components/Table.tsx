@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Layout, Section } from './Layout';
+import { Layout, Section } from 'classui/Components/Layout';
 import * as _ from 'lodash';
-import { Menu, MItem } from './Menu';
+import { Menu, MItem } from 'classui/Components/Menu';
 import { cx, styled } from 'classui/Emotion';
 
 export interface IProps {

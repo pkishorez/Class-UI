@@ -1,2 +1,2 @@
-export {ClassUI} from './ClassUI';
-export {NavBar, NavbarRemain} from './Navbar';
+export { ClassUI } from "classui/ClassUI";
+export { NavBar, NavbarRemain } from "classui/Navbar";

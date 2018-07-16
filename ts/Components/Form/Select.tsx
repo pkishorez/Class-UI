@@ -1,8 +1,8 @@
+import { FormElement } from "classui/Components/Form/FormElement";
 import { css, cx, styled } from "classui/Emotion";
+import { SAnim } from "classui/Helper/Animation";
 import * as _ from "lodash";
 import * as React from "react";
-import { SAnim } from "../../Helper/Animation";
-import { FormElement } from "./FormElement";
 
 export interface IProps {
 	name: string;

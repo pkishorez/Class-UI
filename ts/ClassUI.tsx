@@ -1,7 +1,9 @@
 // Reset CSS Styles.
+import { IBaseComponentProps } from "classui/Components/Base";
+import { css, cx, IThemeColors, IThemes, Themes } from "classui/Emotion";
 import "classui/Emotion/reset";
+import { Overlay } from "classui/Overlay";
 import { Feedback } from "classui/Overlay/_Feedback";
-import { Overlay } from "classui/Overlay/index";
 import { ThemeProvider } from "emotion-theming";
 import * as React from "react";
 import {
@@ -9,8 +11,6 @@ import {
 	RouteComponentProps,
 	withRouter
 } from "react-router-dom";
-import { IBaseComponentProps } from "./Components/Base/index";
-import { css, cx, IThemeColors, IThemes, Themes } from "./Emotion/index";
 
 let instance: ClassUI | undefined;
 

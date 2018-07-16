@@ -1,25 +1,23 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {SAnim} from '../Helper/Animation';
-import { styled } from 'classui/Emotion';
+import { styled } from "classui/Emotion";
+import { SAnim } from "classui/Helper/Animation";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
-export interface IProps {
-
-};
+export interface IProps {}
 
 export interface IState {
-	content?: any
-	type: "success" | "error"
-	show: boolean
-};
+	content?: any;
+	type: "success" | "error";
+	show: boolean;
+}
 
-let EFeedBack = styled('div')`
+let EFeedBack = styled("div")`
 	position: fixed;
 	top: 0px;
 	left: 50%;
 	z-index: 2000;
 `;
-let EContent = styled('div')`
+let EContent = styled("div")`
 	display: inline-block;
 	position: relative;
 	right: 50%;
@@ -54,7 +52,11 @@ export class Feedback extends React.Component<IProps, IState> {
 	componentWillUnmount() {
 		_instance = null;
 	}
-	static show(content: string, type: IState["type"] = "success", timeout: number=2) {
+	static show(
+		content: string,
+		type: IState["type"] = "success",
+		timeout: number = 2
+	) {
 		if (!_instance) {
 			console.error("Feedback component not found.");
 			return;
@@ -68,7 +70,7 @@ export class Feedback extends React.Component<IProps, IState> {
 			clearTimeout(this.timeout);
 			this.timeout = null;
 		}
-		this.timeout = setTimeout(_instance.hide, timeout*1000);
+		this.timeout = setTimeout(_instance.hide, timeout * 1000);
 	}
 	hide() {
 		this.setState({
@@ -76,9 +78,14 @@ export class Feedback extends React.Component<IProps, IState> {
 		});
 	}
 	render() {
-		return <SAnim animType="slideBottom" show={this.state.show}>
-		<EFeedBack>
-			<EContent className={this.state.type}>{this.state.content}</EContent>
-		</EFeedBack></SAnim>;
+		return (
+			<SAnim animType="slideBottom" show={this.state.show}>
+				<EFeedBack>
+					<EContent className={this.state.type}>
+						{this.state.content}
+					</EContent>
+				</EFeedBack>
+			</SAnim>
+		);
 	}
 }
