@@ -8,7 +8,7 @@ import { css, cx, Hoverable, styled } from "classui/Emotion";
 import { ISAnimProps, SAnim } from "classui/Helper/Animation";
 import * as React from "react";
 
-export interface IProps {
+export interface IProps extends IBaseComponentProps {
 	buttonMaxWidth?: number;
 	button: string | React.ReactElement<any>;
 	btnProps?: IButtonProps;
@@ -71,7 +71,7 @@ export class Dropdown extends React.Component<IProps, IState> {
 	}
 	render() {
 		return (
-			<EDropdown>
+			<EDropdown {...BaseComponentProps(this.props)}>
 				<Button
 					{...this.props.btnProps}
 					active={this.state.active}

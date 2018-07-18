@@ -1,10 +1,14 @@
+import {
+	BaseComponentProps,
+	IBaseComponentProps
+} from "classui/Components/Base";
 import { IValue } from "classui/Components/Form/FormElement";
+import { ITextProps, Text } from "classui/Components/Form/Text";
 import { cx, styled } from "classui/Emotion";
 import { CColors } from "classui/Emotion/theme";
 import * as React from "react";
-import { ITextProps, Text } from "classui/Components/Form/Text";
 
-export interface IProps extends ITextProps {
+export interface IProps extends ITextProps, IBaseComponentProps {
 	label?: string;
 	name: string;
 }
@@ -75,6 +79,7 @@ export class TextField extends React.Component<
 	render() {
 		return (
 			<EContainer
+				{...BaseComponentProps(this.props)}
 				className={cx({
 					error: this.state.error ? true : false,
 					success: this.state.error === null ? true : false

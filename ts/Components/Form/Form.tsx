@@ -1,8 +1,12 @@
+import {
+	BaseComponentProps,
+	IBaseComponentProps
+} from "classui/Components/Base";
+import { FormElement } from "classui/Components/Form/FormElement";
+import { IJSONSchema, Schema } from "classui/Components/Form/Schema";
 import { cx } from "classui/Emotion";
 import * as _ from "lodash";
 import * as React from "react";
-import { FormElement } from "classui/Components/Form/FormElement";
-import { IJSONSchema, Schema } from "classui/Components/Form/Schema";
 
 export type IRegisterFunc = (
 	schema: IJSONSchema | undefined,
@@ -19,7 +23,7 @@ export interface IFormContext {
 
 export let FormContext = React.createContext<IFormContext>({} as any);
 
-export interface IProps {
+export interface IProps extends IBaseComponentProps {
 	className?: string;
 	style?: React.CSSProperties;
 	onSubmit?: (json: any) => void;
@@ -115,8 +119,7 @@ export class Form extends React.Component<IProps> {
 				}}
 			>
 				<form
-					className={cls}
-					style={{ ...this.props.style }}
+					{...BaseComponentProps(this.props)}
 					autoComplete={this.props.autocomplete}
 					onSubmit={this.submit}
 				>

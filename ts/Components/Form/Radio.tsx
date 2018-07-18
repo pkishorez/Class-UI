@@ -1,8 +1,12 @@
+import {
+	BaseComponentProps,
+	IBaseComponentProps
+} from "classui/Components/Base";
 import { FormElement } from "classui/Components/Form/FormElement";
 import { cx, styled } from "classui/Emotion";
 import * as React from "react";
 
-export interface IProps {
+export interface IProps extends IBaseComponentProps {
 	name: string;
 	values: {
 		label: string;
@@ -106,7 +110,7 @@ export class Radio extends FormElement<IProps, IState> {
 
 	Render() {
 		return (
-			<div>
+			<div {...BaseComponentProps(this.props)}>
 				{this.props.values.map(cb => {
 					return (
 						<ERadio

@@ -96,10 +96,13 @@ export class NavBar extends React.Component<IProps> {
 				{this.props.dummy ? dummyNavBar : null}
 				<ENavBar
 					{...BaseComponentProps(this.props)}
+					style={{
+						...this.props.style,
+						position: this.props.fixed ? "fixed" : undefined
+					}}
 					className={cx(
 						"__navbar__",
 						css`
-							position: fixed;
 							${cardClasses["2"]};
 						`
 					)}

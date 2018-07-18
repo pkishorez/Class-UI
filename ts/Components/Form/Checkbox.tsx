@@ -1,8 +1,12 @@
+import {
+	BaseComponentProps,
+	IBaseComponentProps
+} from "classui/Components/Base";
+import { FormElement } from "classui/Components/Form/FormElement";
 import { cx, styled } from "classui/Emotion";
 import * as React from "react";
-import { FormElement } from "classui/Components/Form/FormElement";
 
-export interface IProps {
+export interface IProps extends IBaseComponentProps {
 	name: string;
 	children: any;
 	inline?: boolean;
@@ -103,6 +107,7 @@ export class Checkbox extends FormElement<IProps, IState> {
 	Render() {
 		return (
 			<ECheckbox
+				{...BaseComponentProps(this.props)}
 				className={cx({
 					error: this.state.error,
 					inline: !!this.props.inline

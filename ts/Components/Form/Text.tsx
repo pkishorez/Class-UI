@@ -9,6 +9,7 @@ export interface ITextProps {
 	autoFocus?: boolean;
 	schema?: IJSONSchema;
 	children?: string;
+	style?: React.CSSProperties;
 	className?: string;
 	defaultValue?: string;
 	onChange?: (value: IValue) => void;

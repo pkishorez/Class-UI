@@ -1,10 +1,14 @@
+import {
+	BaseComponentProps,
+	IBaseComponentProps
+} from "classui/Components/Base";
 import { FormElement } from "classui/Components/Form/FormElement";
 import { css, cx, styled } from "classui/Emotion";
 import { SAnim } from "classui/Helper/Animation";
 import * as _ from "lodash";
 import * as React from "react";
 
-export interface IProps {
+export interface IProps extends IBaseComponentProps {
 	name: string;
 	options: (string | number)[];
 	inline?: boolean;
@@ -83,15 +87,19 @@ export class Select extends FormElement<IProps, IState> {
 				: this.props.width + "px";
 		return (
 			<div
-				className={css`
-					position: relative;
-					margin-bottom: 10px;
-					${this.props.inline
-						? `display: inline-block;`
-						: undefined} ${this.props.width
-						? `width: ${width}`
-						: undefined};
-				`}
+				{...BaseComponentProps(this.props)}
+				className={cx(
+					css`
+						position: relative;
+						margin-bottom: 10px;
+						${this.props.inline
+							? `display: inline-block;`
+							: undefined} ${this.props.width
+							? `width: ${width}`
+							: undefined};
+					`,
+					this.props.className
+				)}
 			>
 				<ESelect
 					innerRef={ref => (this.select = ref)}
