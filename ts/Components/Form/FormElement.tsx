@@ -1,4 +1,8 @@
-import { FormContext, IFormContext } from "classui/Components/Form/Form";
+import {
+	FormContext,
+	IFormContext,
+	IRegisterFunc
+} from "classui/Components/Form/Form";
 import { Schema } from "classui/Components/Form/Schema";
 import * as React from "react";
 
@@ -16,6 +20,12 @@ export abstract class FormElement<IProps, IState> extends React.Component<
 	} & IState
 > {
 	_schema: any;
+	register!: (
+		key: string,
+		ref: FormElement<any, any>,
+		register: IRegisterFunc
+	) => void;
+
 	protected schema?: Schema;
 	private unregister?: IFormContext["unregister"];
 	// tslint:disable-next-line:variable-name
@@ -34,26 +44,22 @@ export abstract class FormElement<IProps, IState> extends React.Component<
 	componentWillUnmount() {
 		this.unregister && this.unregister(this.props.name);
 	}
+	componentDidMount() {
+		this.register(this.props.name, this, (schema, defaultValue) => {
+			this._schema = schema;
+			schema && (this.schema = new Schema(schema));
+			defaultValue &&
+				this.setState({
+					value: defaultValue
+				});
+		});
+	}
 
 	render() {
 		return (
 			<FormContext.Consumer>
 				{FE => {
-					FE.register(
-						this.props.name,
-						this,
-						(schema, defaultValue) => {
-							if (schema) {
-								this._schema = schema;
-								this.schema = new Schema(schema);
-							}
-							if (defaultValue) {
-								this.setState({
-									value: defaultValue
-								});
-							}
-						}
-					);
+					this.register = FE.register;
 					this.unregister = FE.unregister;
 					return this.Render();
 				}}
