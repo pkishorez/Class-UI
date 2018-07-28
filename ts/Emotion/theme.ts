@@ -15,6 +15,7 @@ export interface IThemes {
 	green: IThemeColors;
 	offline: IThemeColors;
 	pink: IThemeColors;
+	iiitfb: IThemeColors;
 }
 
 export let Themes: IThemes = {
@@ -51,6 +52,13 @@ export let Themes: IThemes = {
 		colorDark: "#ff084a",
 		colorDarker: "#f50041",
 		colorLight: "#ff6289",
+		contrast: "white"
+	},
+	iiitfb: {
+		color: "#009688",
+		colorDark: "#00897B",
+		colorDarker: "#00796B",
+		colorLight: "#26A69A",
 		contrast: "white"
 	}
 };
