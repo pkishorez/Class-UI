@@ -1,5 +1,8 @@
 // Reset CSS Styles.
-import { BaseComponentProps, IBaseComponentProps } from "classui/Components/Base";
+import {
+	BaseComponentProps,
+	IBaseComponentProps
+} from "classui/Components/Base";
 import { css, cx, IThemeColors, IThemes, Themes } from "classui/Emotion";
 import "classui/Emotion/reset";
 import { Overlay } from "classui/Overlay";
@@ -86,7 +89,10 @@ export class ClassUI extends React.Component<IProps, IState> {
 			DummyRouter = withRouter(DummyRouter);
 		}
 		const classui = (
-			<div {...BaseComponentProps(this.props)} className={cls}>
+			<div
+				{...BaseComponentProps(this.props)}
+				className={cx(cls, this.props.className)}
+			>
 				{this.props.children}
 
 				<div

@@ -12,13 +12,14 @@ export class Schema {
 
 	private _validate: AJV.ValidateFunction;
 	private schema: IJSONSchema;
-	constructor(schema: IJSONSchema) {
+	constructor(schema: IJSONSchema, options?: AJV.Options) {
 		this.schema = schema;
 		const ajv = new AJV({
 			allErrors: true,
 			coerceTypes: true,
 			removeAdditional: true,
-			useDefaults: true
+			useDefaults: true,
+			...options
 		});
 		const validate = ajv.compile(schema);
 

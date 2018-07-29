@@ -5,7 +5,7 @@ import {
 import { IValue } from "classui/Components/Form/FormElement";
 import { ITextProps, Text } from "classui/Components/Form/Text";
 import { cx, styled } from "classui/Emotion";
-import { CColors } from "classui/Emotion/theme";
+import { CColors, IThemeColors } from "classui/Emotion/theme";
 import * as React from "react";
 
 export interface IProps extends ITextProps, IBaseComponentProps {
@@ -52,10 +52,10 @@ const EContainer = styled("label")`
 		input[type="number"],
 		input[type="password"],
 		textarea {
-			border-bottom: 2px solid ${p => p.theme.colorDarker};
+			border-bottom: 2px solid ${(p: IThemeColors) => p.theme.colorDarker};
 		}
 		> .label {
-			color: ${p => p.theme.colorDarker};
+			color: ${(p: IThemeColors) => p.theme.colorDarker};
 		}
 	}
 `;

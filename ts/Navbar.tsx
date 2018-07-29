@@ -3,7 +3,7 @@ import {
 	IBaseComponentProps
 } from "classui/Components/Base";
 import { cardClasses } from "classui/Components/Base/Card";
-import { css, cx, styled } from "classui/Emotion";
+import { css, cx, IThemeColors, styled } from "classui/Emotion";
 import * as React from "react";
 
 const ENavBar = styled("div")`
@@ -13,7 +13,7 @@ const ENavBar = styled("div")`
 	left: 0px;
 	width: 100%;
 	padding: 3px;
-	background-color: ${p => p.theme.color};
+	background-color: ${(p: IThemeColors) => p.theme.color};
 	transition: all 1s;
 `;
 const EContent = styled("div")`

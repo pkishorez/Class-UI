@@ -3,7 +3,7 @@ import {
 	IBaseComponentProps
 } from "classui/Components/Base";
 import { FormElement } from "classui/Components/Form/FormElement";
-import { cx, styled } from "classui/Emotion";
+import { cx, IThemeColors, styled } from "classui/Emotion";
 import * as React from "react";
 
 export interface IProps extends IBaseComponentProps {
@@ -49,8 +49,9 @@ const ECheckbox = styled("label")`
 		padding: 0px;
 		&:focus {
 			& ~ .fake {
-				border: 1px solid ${p => p.theme.colorDarker};
-				box-shadow: 0px 0px 5px ${p => p.theme.colorDarker};
+				border: 1px solid ${(p: IThemeColors) => p.theme.colorDarker};
+				box-shadow: 0px 0px 5px
+					${(p: IThemeColors) => p.theme.colorDarker};
 			}
 		}
 	}
@@ -67,8 +68,8 @@ const ECheckbox = styled("label")`
 		transition: 0.3s all;
 
 		&.active {
-			border: 1px solid ${p => p.theme.colorDarker};
-			background-color: ${p => p.theme.color};
+			border: 1px solid ${(p: IThemeColors) => p.theme.colorDarker};
+			background-color: ${(p: IThemeColors) => p.theme.color};
 		}
 		& > * {
 			margin: auto;

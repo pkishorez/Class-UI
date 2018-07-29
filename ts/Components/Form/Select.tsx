@@ -3,7 +3,7 @@ import {
 	IBaseComponentProps
 } from "classui/Components/Base";
 import { FormElement } from "classui/Components/Form/FormElement";
-import { css, cx, styled } from "classui/Emotion";
+import { css, cx, IThemeColors, styled } from "classui/Emotion";
 import { SAnim } from "classui/Helper/Animation";
 import * as _ from "lodash";
 import * as React from "react";
@@ -54,13 +54,13 @@ const ESuggestionItem = styled("li")`
 		&,
 		&:hover {
 			background-color: inherit;
-			color: ${p => p.theme.color};
+			color: ${(p: IThemeColors) => p.theme.color};
 			cursor: default;
 		}
 	}
 	&.hover {
-		background-color: ${p => p.theme.color};
-		color: ${p => p.theme.contrast};
+		background-color: ${(p: IThemeColors) => p.theme.color};
+		color: ${(p: IThemeColors) => p.theme.contrast};
 	}
 `;
 
@@ -102,7 +102,7 @@ export class Select extends FormElement<IProps, IState> {
 				)}
 			>
 				<ESelect
-					innerRef={ref => (this.select = ref)}
+					innerRef={(ref: any) => (this.select = ref)}
 					className={cx({
 						error: this.state.error
 					})}

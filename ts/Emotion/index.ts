@@ -1,5 +1,5 @@
 import { IThemeColors } from "classui/Emotion/theme";
-import emotionStyled, { css, ThemedReactEmotionInterface } from "react-emotion";
+import emotionStyled, { CreateStyled, css } from "react-emotion";
 export {
 	Themes,
 	IThemes,
@@ -8,7 +8,8 @@ export {
 	IPColors
 } from "classui/Emotion/theme";
 
-export let styled = emotionStyled as ThemedReactEmotionInterface<IThemeColors>;
+export let styled = emotionStyled as any; // CreateStyled<IThemeColors>;
+
 export { cx, css } from "react-emotion";
 
 export interface IHoverable {

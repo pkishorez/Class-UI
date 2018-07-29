@@ -3,7 +3,7 @@ import {
 	IBaseComponentProps
 } from "classui/Components/Base";
 import { FormElement } from "classui/Components/Form/FormElement";
-import { cx, styled } from "classui/Emotion";
+import { cx, IThemeColors, styled } from "classui/Emotion";
 import * as React from "react";
 
 export interface IProps extends IBaseComponentProps {
@@ -52,8 +52,9 @@ const ERadio = styled("label")`
 
 		&:focus {
 			& ~ .fake {
-				border: 1px solid ${p => p.theme.colorDarker};
-				box-shadow: 0px 0px 10px ${p => p.theme.colorDarker};
+				border: 1px solid ${(p: IThemeColors) => p.theme.colorDarker};
+				box-shadow: 0px 0px 10px
+					${(p: IThemeColors) => p.theme.colorDarker};
 			}
 		}
 	}
@@ -71,8 +72,8 @@ const ERadio = styled("label")`
 		transition: 0.3s all;
 
 		&.active {
-			border: 1px solid ${p => p.theme.colorDarker};
-			background-color: ${p => p.theme.color};
+			border: 1px solid ${(p: IThemeColors) => p.theme.colorDarker};
+			background-color: ${(p: IThemeColors) => p.theme.color};
 		}
 		> span {
 			margin: auto;

@@ -2,7 +2,7 @@ import {
 	BaseComponentProps,
 	IBaseComponentProps
 } from "classui/Components/Base";
-import { css, cx, styled } from "classui/Emotion";
+import { cx, IThemeColors, styled } from "classui/Emotion";
 import * as React from "react";
 
 export interface IButtonProps extends IBaseComponentProps {
@@ -11,7 +11,6 @@ export interface IButtonProps extends IBaseComponentProps {
 	disable?: boolean;
 	primary?: boolean;
 }
-
 const EButton = styled("div")`
 	user-select: none;
 	padding: 10px;
@@ -42,15 +41,15 @@ const EButton = styled("div")`
 	.__navbar__ & {
 		background-color: inherit;
 		&:hover {
-			background-color: ${p => p.theme.colorDark};
+			background-color: ${(p: IThemeColors) => p.theme.colorDark};
 		}
 		&.active,
 		&:active {
-			background-color: ${p => p.theme.colorDark};
+			background-color: ${(p: IThemeColors) => p.theme.colorDark};
 		}
 	}
 
-	${p => `
+	${(p: IThemeColors) => `
 	&.primary {
 		//background-color: ${p.theme.color};
 		//color: black;
