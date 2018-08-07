@@ -1,6 +1,6 @@
 import { FormElement, IValue } from "classui/Components/Form/FormElement";
 import { IJSONSchema } from "classui/Components/Form/Schema";
-import { css } from "classui/Emotion";
+import { css, cx } from "classui/Emotion";
 import * as React from "react";
 
 export interface ITextProps {
@@ -38,14 +38,18 @@ export class Text extends FormElement<ITextProps, ITextState> {
 		const props = {
 			autoComplete: this.props.name,
 			autoFocus: this.props.autoFocus,
-			className: css`
-				width: 100%;
-				border-bottom: 2px solid grey;
-				padding: 5px 0px 3px 0px;
-				&:focus {
-					border-bottom: 2px solid black;
-				}
-			`,
+			className: cx(
+				css`
+					width: 100%;
+					border-bottom: 2px solid grey;
+					padding: 5px 0px 3px 0px;
+					&:focus {
+						border-bottom: 2px solid black;
+					}
+				`,
+				this.props.className
+			),
+			style: this.props.style,
 			name: this.props.name,
 			onChange: this.onChange,
 			placeholder: this.props.children,

@@ -11,6 +11,7 @@ import * as React from "react";
 export interface IProps extends ITextProps, IBaseComponentProps {
 	label?: string;
 	name: string;
+	containerStyle?: React.CSSProperties;
 }
 
 const EContainer = styled("label")`
@@ -84,6 +85,7 @@ export class TextField extends React.Component<
 					error: this.state.error ? true : false,
 					success: this.state.error === null ? true : false
 				})}
+				style={this.props.containerStyle}
 			>
 				{this.props.label ? (
 					<div className="label">{this.props.label}</div>
