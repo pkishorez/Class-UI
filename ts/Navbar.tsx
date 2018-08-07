@@ -8,6 +8,9 @@ import * as React from "react";
 
 const ENavBar = styled("div")`
 	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	z-index: 10;
 	top: 0px;
 	left: 0px;
