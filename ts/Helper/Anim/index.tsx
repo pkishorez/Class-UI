@@ -12,7 +12,6 @@ interface IAnimState {
 }
 export class Anim extends React.Component<IAnimProps, IAnimState> {
 	public dummyRef: HTMLDivElement | null = null;
-	public shouldUpdate = true;
 
 	constructor(props: IAnimProps) {
 		super(props);
@@ -84,7 +83,6 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 			}
 			return child;
 		});
-		this.shouldUpdate = false;
 		this.setState({
 			children
 		});

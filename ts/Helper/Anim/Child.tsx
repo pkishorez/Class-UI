@@ -14,6 +14,7 @@ export interface IAnimChildProps {
 	status: "add" | "update" | "delete";
 	dimensions: IChildDimensions;
 	delay?: number;
+	onDelete?: (key: any) => void;
 }
 export interface IChildState {
 	mounted: boolean;
@@ -66,19 +67,22 @@ export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
 
 	render() {
 		const { mounted } = this.state;
-		const { kid, status, delay } = this.props;
+		const { kid, status, delay, onDelete } = this.props;
 		if (!mounted) {
 			return this.kid;
 		}
 
-		let style = {
+		let style: React.CSSProperties = {
 			...kid.props.style,
+			boxSizing: "border-box",
+			zIndex: 10,
 			...this.state.dimensions
 		};
 		if (status === "delete") {
 			style = {
 				...style,
-				opacity: 0
+				opacity: 0,
+				zIndex: 1
 			};
 		} else {
 			style = {
