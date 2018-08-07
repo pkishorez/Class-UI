@@ -25,7 +25,8 @@
 	],
 	"scripts": {
 		"start": "./node_modules/.bin/webpack-dev-server",
-		"testpublish": "./testpublish.sh"
+		"testpublish": "./testpublish.sh",
+		"compile": "tsc -p ./tsconfig.publish.json"
 	},
 	"author": "Kishore",
 	"license": "ISC",
