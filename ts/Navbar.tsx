@@ -84,7 +84,7 @@ export class NavBar extends React.Component<IProps> {
 		const dummyNavBar = (
 			<ENavBar
 				{...BaseComponentProps(this.props)}
-				style={{ visibility: "hidden" }}
+				style={{ ...this.props.style, visibility: "hidden" }}
 				className="__navbar__"
 			>
 				{content}
