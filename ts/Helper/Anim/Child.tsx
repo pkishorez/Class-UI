@@ -29,7 +29,7 @@ const defaultClass = css`
 	position: absolute;
 	margin: 0px;
 	opacity: 0;
-	transition: 0.5s all ease-out;
+	transition: 0.5 all ease-out;
 `;
 
 export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
@@ -75,14 +75,13 @@ export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
 		let style: React.CSSProperties = {
 			...kid.props.style,
 			boxSizing: "border-box",
-			zIndex: 10,
+			zIndex: status === "add" ? 10 : status === "update" ? 20 : 0,
 			...this.state.dimensions
 		};
 		if (status === "delete") {
 			style = {
 				...style,
-				opacity: 0,
-				zIndex: 1
+				opacity: 0
 			};
 		} else {
 			style = {

@@ -11,7 +11,6 @@ export interface IProps extends IBaseComponentProps {
 	children: any;
 	inline?: boolean;
 	onChange?: (value: boolean) => void;
-	shouldBeChecked?: boolean;
 }
 
 export interface IState {
@@ -118,9 +117,11 @@ export class Checkbox extends FormElement<IProps, IState> {
 					type="checkbox"
 					checked={this.state.value}
 					onChange={() => {
+						const value = !this.state.value;
+						this.props.onChange && this.props.onChange(value);
 						this.setState(
 							{
-								value: !this.state.value
+								value
 							},
 							this.validate
 						);

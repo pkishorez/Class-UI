@@ -100,18 +100,18 @@ export class SAnim extends React.Component<ISAnimProps, any> {
 }
 
 interface IMAnimProps {
-	data: Array<{
+	data: {
 		id: number;
 		data: any;
-	}>;
+	}[];
 	childRenderer: (props: any) => any;
 }
 interface IMAnimState {
-	data: Array<{
+	data: {
 		id: number;
 		data: any;
 		height?: number;
-	}>;
+	}[];
 }
 
 export class MAnim extends React.Component<IMAnimProps, IMAnimState> {

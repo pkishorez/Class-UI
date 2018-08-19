@@ -50,23 +50,26 @@ const ESuggestionItem = styled("li")`
 	display: block;
 	cursor: pointer;
 	padding: 7px 10px;
-	&.active {
-		&,
-		&:hover {
-			background-color: inherit;
-			color: ${(p: IThemeColors) => p.theme.color};
-			cursor: default;
-		}
+	> .highlight {
+		color: green;
+		font-weight: 900;
 	}
-	&.hover {
+	&.active {
+		background-color: inherit;
+		color: ${(p: IThemeColors) => p.theme.color};
+		cursor: default;
+	}
+	&:hover {
 		background-color: ${(p: IThemeColors) => p.theme.color};
 		color: ${(p: IThemeColors) => p.theme.contrast};
+		> .highlight {
+			color: ${(p: IThemeColors) => p.theme.contrast};
+		}
 	}
 `;
 
 export class Select extends FormElement<IProps, IState> {
-	select: HTMLLabelElement | null = null;
-	suggestions_cache?: IProps["options"];
+	inputRef: any = React.createRef();
 	constructor(props: IProps) {
 		super(props);
 		this.state = {
@@ -78,7 +81,14 @@ export class Select extends FormElement<IProps, IState> {
 		};
 		this.onChange = this.onChange.bind(this);
 		this.suggestions = this.suggestions.bind(this);
-		this.setSuggestions = this.setSuggestions.bind(this);
+		this.getSuggestions = this.getSuggestions.bind(this);
+		this.showSuggestions = this.showSuggestions.bind(this);
+		this.hideSuggestions = this.hideSuggestions.bind(this);
+		window.addEventListener("click", this.hideSuggestions);
+	}
+	componentWillUnmount() {
+		super.componentWillUnmount();
+		window.removeEventListener("click", this.hideSuggestions);
 	}
 	Render() {
 		const width =
@@ -102,21 +112,45 @@ export class Select extends FormElement<IProps, IState> {
 				)}
 			>
 				<ESelect
-					innerRef={(ref: any) => (this.select = ref)}
 					className={cx({
 						error: this.state.error
 					})}
+					onClick={(e: any) => {
+						this.inputRef.current.focus();
+						// this.showSuggestions();
+						e.stopPropagation();
+						e.preventDefault();
+					}}
 				>
+					<div
+						style={{
+							padding: 10,
+							flexGrow: 1,
+							display: this.props.nonEditable ? "block" : "none"
+						}}
+					>
+						{this.props.label + " : " + this.state.value}
+					</div>
 					<input
+						ref={this.inputRef}
 						spellCheck={false}
+						placeholder={this.props.label}
 						readOnly={this.props.nonEditable ? true : false}
 						className={css`
-							color: ${this.props.nonEditable
-								? "transparent"
-								: "black"};
-							cursor: ${this.props.nonEditable
-								? "pointer"
-								: "inherit"};
+							color: black;
+							${
+								this.props.nonEditable
+									? `
+								opacity: 0;
+								position: absolute;
+								width: 0px;
+								height: 0px;
+								padding: 0px;
+								margin: 0px;
+							`
+									: null
+							}
+							cursor: ${this.props.nonEditable ? "pointer" : "inherit"};
 							width: 0;
 							text-shadow: 0px 0px 0px #000;
 							padding: 10px 7px;
@@ -136,15 +170,22 @@ export class Select extends FormElement<IProps, IState> {
 						onFocus={() => {
 							this.showSuggestions();
 						}}
-						value={this.state.value ? this.state.value : ""}
+						value={
+							this.props.nonEditable
+								? this.props.label +
+								  (this.state.value
+										? ` : ${this.state.value}`
+										: "")
+								: this.state.value
+						}
 						name={this.props.name}
 						onKeyDown={this.suggestions}
 						onChange={this.onChange}
-						onBlur={() => {
-							setTimeout(() => {
-								this.hideSuggestions();
-							}, 100);
-						}}
+						// onBlur={() => {
+						// 	setTimeout(() => {
+						// 		this.hideSuggestions();
+						// 	}, 1000);
+						// }}
 					/>
 					<i
 						className="fa fa-angle-down"
@@ -169,8 +210,8 @@ export class Select extends FormElement<IProps, IState> {
 								: `
 						top: ${this.props.nonEditable ? "0px" : "100%"};
 						bottom: auto;
-					`} left: -2px;
-							width: calc(100% + 4px);
+					`} left: 0px;
+							width: calc(100%);
 							z-index: 1;
 							padding: 7px 0px;
 						`}
@@ -190,27 +231,19 @@ export class Select extends FormElement<IProps, IState> {
 						{this.state.suggestions.map((option, i) => {
 							return (
 								<ESuggestionItem
-									onMouseOver={() => {
-										if (
-											this.state.value !==
-											this.state.suggestions[i]
-										) {
-											this.setState({ hover: i });
-										}
-									}}
 									key={option}
 									className={cx({
-										active: option === this.state.value,
-										hover: i === this.state.hover
+										active: option === this.state.value
 									})}
-									onClick={() => {
+									onClick={(e: any) => {
+										e.stopPropagation();
 										this.setState(
 											{
-												value: option
+												value: option,
+												showSuggestions: false
 											},
 											this.validate
 										);
-										this.hideSuggestions();
 									}}
 								>
 									{highlight(option, this.state.value)}
@@ -244,7 +277,6 @@ export class Select extends FormElement<IProps, IState> {
 	}
 	private hideSuggestions() {
 		this.setState({
-			hover: -1,
 			showSuggestions: false
 		});
 	}
@@ -256,81 +288,39 @@ export class Select extends FormElement<IProps, IState> {
 		}
 		this.setState(
 			{
-				value: e.target.value
+				value: e.target.value,
+				suggestions: this.getSuggestions(e.target.value)
 			},
 			this.validate
 		);
 	}
 	private suggestions(e: React.KeyboardEvent<HTMLInputElement>) {
 		// Suggestions and navigating the suggestions logic goes here... TODO
-		const { suggestions, hover } = this.state;
-		let dHover = hover;
 
-		const sIndexes = suggestions.filter(
-			(i: any) => suggestions[i] !== this.state.value
-		);
-		const length = sIndexes.length;
-
-		const move = {
-			down: () => {
-				dHover = sIndexes.indexOf(dHover);
-				dHover = dHover === -1 ? 0 : dHover + 1;
-				dHover = dHover >= length ? 0 : dHover;
-				dHover = sIndexes[dHover] as number;
-				this.setState({
-					hover: dHover,
-					showSuggestions: true
-				});
-			},
-			up: () => {
-				dHover = sIndexes.indexOf(dHover);
-				dHover -= 1;
-				dHover = dHover < 0 ? length - 1 : dHover;
-				dHover = sIndexes[dHover] as number;
-				this.setState({
-					hover: dHover,
-					showSuggestions: true
-				});
-			}
-		};
-
-		if (e.key === "ArrowDown") {
-			move.down();
-		} else if (e.key === "ArrowUp") {
-			move.up();
+		console.log(e.key);
+		if (e.key === "Escape") {
+			this.showSuggestions();
+		} else if (e.key === "Tab") {
+			this.hideSuggestions();
 		} else if (e.key === "Enter") {
-			if (dHover !== -1) {
-				this.setState({
-					hover: -1,
-					showSuggestions: false,
-					value: suggestions[dHover]
-				});
-				e.preventDefault();
-				e.stopPropagation();
-			}
-		} else if (e.key === "Escape") {
-			this.setState({
-				hover: -1,
-				showSuggestions: false
-			});
+			this.hideSuggestions();
+			e.preventDefault();
 		}
 	}
-	private setSuggestions() {
+	private getSuggestions(val: string) {
 		const options = _.uniq(this.props.options);
 		if (this.props.nonEditable) {
 			return options;
 		}
 		const suggestions = options.filter(option => {
-			let value = this.state.value ? this.state.value : "";
+			let value = val;
 			value = value + "";
 			option = option + "";
 			if (option.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
 				return option;
 			}
 		});
-		return this.setState({
-			suggestions
-		});
+		return suggestions;
 	}
 }
 
@@ -344,11 +334,7 @@ const highlight = (option: string | number, hLight = "") => {
 	return (
 		<>
 			{option.substring(0, index)}
-			<span
-				style={{
-					color: "green"
-				}}
-			>
+			<span className="highlight">
 				{option.substring(index, index + hLight.length)}
 			</span>
 			{option.substring(index + hLight.length)}

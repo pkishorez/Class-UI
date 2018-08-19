@@ -11,13 +11,13 @@ export interface IState {
 	show: boolean;
 }
 
-let EFeedBack = styled("div")`
+const EFeedBack = styled("div")`
 	position: fixed;
 	top: 0px;
 	left: 50%;
 	z-index: 2000;
 `;
-let EContent = styled("div")`
+const EContent = styled("div")`
 	display: inline-block;
 	position: relative;
 	right: 50%;
@@ -40,18 +40,6 @@ let EContent = styled("div")`
 let _instance: Feedback | null = null;
 export class Feedback extends React.Component<IProps, IState> {
 	static timeout: any = null;
-	constructor(props: IProps, context: any) {
-		super(props, context);
-		this.state = {
-			show: false,
-			type: "success"
-		};
-		_instance = this;
-		this.hide = this.hide.bind(this);
-	}
-	componentWillUnmount() {
-		_instance = null;
-	}
 	static show(
 		content: string,
 		type: IState["type"] = "success",
@@ -71,6 +59,18 @@ export class Feedback extends React.Component<IProps, IState> {
 			this.timeout = null;
 		}
 		this.timeout = setTimeout(_instance.hide, timeout * 1000);
+	}
+	constructor(props: IProps, context: any) {
+		super(props, context);
+		this.state = {
+			show: false,
+			type: "success"
+		};
+		_instance = this;
+		this.hide = this.hide.bind(this);
+	}
+	componentWillUnmount() {
+		_instance = null;
 	}
 	hide() {
 		this.setState({
