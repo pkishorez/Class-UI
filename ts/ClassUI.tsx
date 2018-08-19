@@ -73,6 +73,8 @@ export class ClassUI extends React.Component<IProps, IState> {
 	render() {
 		const cls = cx(
 			css`
+				display: flex;
+				flex-direction: column;
 				background-color: #ececec;
 				${this.props.fullHeight ? `min-height: 100vh;` : null};
 			`,
@@ -89,10 +91,7 @@ export class ClassUI extends React.Component<IProps, IState> {
 			DummyRouter = withRouter(DummyRouter);
 		}
 		const classui = (
-			<div
-				{...BaseComponentProps(this.props)}
-				className={cx(cls, this.props.className)}
-			>
+			<div {...BaseComponentProps(this.props)} className={cls}>
 				{this.props.children}
 
 				<div
