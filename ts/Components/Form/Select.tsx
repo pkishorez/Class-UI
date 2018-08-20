@@ -129,7 +129,17 @@ export class Select extends FormElement<IProps, IState> {
 							display: this.props.nonEditable ? "block" : "none"
 						}}
 					>
-						{this.props.label + " : " + this.state.value}
+						{this.props.label}{" "}
+						{this.state.value ? (
+							<span>
+								:{" "}
+								<span style={{ fontWeight: 900 }}>
+									{this.state.value}
+								</span>
+							</span>
+						) : (
+							""
+						)}
 					</div>
 					<input
 						ref={this.inputRef}

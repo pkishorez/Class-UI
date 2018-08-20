@@ -8,7 +8,7 @@ export {
 	IPColors
 } from "classui/Emotion/theme";
 
-export let styled = emotionStyled as any; //CreateStyled<IThemeColors>;
+export let styled = emotionStyled as any; // CreateStyled<IThemeColors>;
 
 export { cx, css } from "react-emotion";
 
