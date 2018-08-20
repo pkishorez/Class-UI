@@ -17,6 +17,8 @@
 		"Emotion",
 		"ClassUI.d.ts",
 		"ClassUI.js",
+		"Content.d.ts",
+		"Content.js",
 		"index.js",
 		"index.d.ts",
 		"Navbar.d.ts",
