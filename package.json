@@ -41,6 +41,7 @@
 		"@types/redux": "^3.6.31",
 		"@types/uuid": "^3.4.3",
 		"ajv": "^6.5.3",
+		"create-emotion": "^9.2.6",
 		"emotion": "^9.2.5",
 		"emotion-theming": "^9.2.5",
 		"enquire.js": "^2.1.6",
