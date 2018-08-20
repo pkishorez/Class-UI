@@ -29,7 +29,7 @@ const defaultClass = css`
 	position: absolute;
 	margin: 0px;
 	opacity: 0;
-	transition: 0.5 all ease-out;
+	transition: 0.5s all ease-out;
 `;
 
 export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
