@@ -88,7 +88,7 @@ export class NavBar extends React.Component<IProps> {
 			<ENavBar
 				{...BaseComponentProps(this.props)}
 				style={{ ...this.props.style, visibility: "hidden" }}
-				className="__navbar__"
+				className={cx("__navbar__", this.props.className)}
 			>
 				{content}
 			</ENavBar>
@@ -105,6 +105,7 @@ export class NavBar extends React.Component<IProps> {
 					}}
 					className={cx(
 						"__navbar__",
+						this.props.className,
 						css`
 							${cardClasses["2"]};
 						`
