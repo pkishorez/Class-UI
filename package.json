@@ -8,10 +8,6 @@
 		"type": "git",
 		"url": "git+https://www.github.com/kishoreiiitn/Class-UI"
 	},
-	"files": [
-		"dist",
-		"sass"
-	],
 	"scripts": {
 		"start": "./node_modules/.bin/webpack-dev-server",
 		"testpublish": "./testpublish.sh",
