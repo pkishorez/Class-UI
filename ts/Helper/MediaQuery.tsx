@@ -2,8 +2,7 @@ import * as _ from "lodash";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import * as Enquire from "enquire.js";
-
+import Enquire from "enquire.js";
 export interface IProps {
 	media: string;
 	children?: React.ReactElement<any>;
@@ -46,20 +45,20 @@ export class MediaQuery extends React.Component<IProps, IState> {
 	}
 
 	render() {
-		if (React.Children.count(this.props.children) != 1) {
+		if (React.Children.count(this.props.children) !== 1) {
 			console.error("MediaQuery should only contain 1 Child.");
 		}
 		let child: any = this.props.children;
 
-		let mProps = _.pick(
+		const mProps = _.pick(
 			child.props,
-			Object.keys(child.props["mediaNoMatch"])
+			Object.keys(child.props.mediaNoMatch)
 		);
 		child = this.state.matched
 			? child
 			: React.cloneElement(
 					child,
-					_.merge(mProps, child.props["mediaNoMatch"])
+					_.merge(mProps, child.props.mediaNoMatch)
 			  );
 		return child;
 	}
