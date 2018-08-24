@@ -1,13 +1,16 @@
 {
 	"name": "classui",
-	"version": "0.0.119",
+	"version": "0.0.127",
 	"description": "Class-UI - A Web based User interface Framework.",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"main": "./index.js",
+	"types": "./index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git+https://www.github.com/kishoreiiitn/Class-UI"
 	},
+	"files": [
+		"*"
+	],
 	"scripts": {
 		"start": "./node_modules/.bin/webpack-dev-server",
 		"testpublish": "./testpublish.sh",
@@ -44,9 +47,9 @@
 		"source-map-loader": "^0.2.4",
 		"ts-loader": "^4.5.0",
 		"tslint": "^5.11.0",
-		"tslint-config-prettier": "^1.14.0",
+		"tslint-config-prettier": "^1.15.0",
 		"typescript": "^3.0.1",
-		"webpack": "^4.16.5",
+		"webpack": "^4.17.1",
 		"webpack-cli": "^3.1.0",
 		"webpack-dev-server": "^3.1.5"
 	}
