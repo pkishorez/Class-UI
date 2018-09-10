@@ -76,6 +76,10 @@ export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
 			...kid.props.style,
 			boxSizing: "border-box",
 			zIndex: status === "add" ? 10 : status === "update" ? 20 : 0,
+			// marginLeft: 0,
+			// marginRight: 0,
+			// marginTop: 0,
+			// marginBottom: 0,
 			...this.state.dimensions
 		};
 		if (status === "delete") {

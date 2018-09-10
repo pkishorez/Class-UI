@@ -118,7 +118,15 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 							key={child.key}
 							status={child.status}
 							dimensions={child.dimensions}
-							kid={child.kid}
+							kid={React.cloneElement(child.kid, {
+								style: {
+									...child.kid.props.style,
+									marginLeft: 0,
+									marginTop: 0,
+									marginRight: 0,
+									marginBottom: 0
+								}
+							})}
 							delay={d}
 						/>
 					);
