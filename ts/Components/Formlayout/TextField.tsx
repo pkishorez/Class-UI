@@ -1,12 +1,12 @@
+import * as React from "react";
+import { cx, styled } from "../../Emotion";
+import { CColors, IThemeColors } from "../../Emotion/theme";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { IValue } from "classui/Components/Form/FormElement";
-import { ITextProps, Text } from "classui/Components/Form/Text";
-import { cx, styled } from "classui/Emotion";
-import { CColors, IThemeColors } from "classui/Emotion/theme";
-import * as React from "react";
+} from "../Base";
+import { IValue } from "../Form/FormElement";
+import { ITextProps, Text } from "../Form/Text";
 
 export interface IProps extends ITextProps, IBaseComponentProps {
 	label?: string;

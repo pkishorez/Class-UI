@@ -1,6 +1,6 @@
-import { AnimChild, IAnimChildProps } from "classui/Helper/Anim/Child";
-import _ = require("lodash");
+import * as _ from "lodash";
 import * as React from "react";
+import { AnimChild, IAnimChildProps } from "./Child";
 
 export interface IAnimProps {
 	style?: React.CSSProperties;
@@ -111,7 +111,7 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 						}
 					})
 				)}
-				{this.state.children.map(child => {
+				{this.state.children.map((child, i) => {
 					const d = child.status === "add" ? delay++ : undefined;
 					return (
 						<AnimChild
@@ -127,7 +127,12 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 									marginBottom: 0
 								}
 							})}
-							delay={d}
+							delay={i/10}
+							onDelete={()=>{
+								this.setState({
+									children: this.state.children.filter(c=>c.key!==child.key)
+								})
+							}}
 						/>
 					);
 				})}

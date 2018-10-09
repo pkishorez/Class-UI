@@ -1,9 +1,8 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Layout, Section } from 'classui/Components/Layout';
 import * as _ from 'lodash';
-import { Menu, MItem } from 'classui/Components/Menu';
-import { cx, styled } from 'classui/Emotion';
+import * as React from 'react';
+import { cx, styled } from '../Emotion';
+import { Layout, Section } from './Layout';
+import { Menu, MItem } from './Menu';
 
 export interface IProps {
 	hoverable?: boolean
@@ -34,7 +33,7 @@ export interface IState {
 	selected: any[]
 };
 
-let ETable = styled('table')`
+const ETable = styled('table')`
 	display: table;
 	background-color: white;
 	border-collapse: collapse;
@@ -114,8 +113,8 @@ export class Table extends React.Component<IProps, IState> {
 
 	getItems(): any[] {
 		let data = this.props.data;
-		if (this.state.sort.by!=""){
-			let sortBy = (row: any)=>_.isString(row[this.state.sort.by])?row[this.state.sort.by].toLowerCase():row[this.state.sort.by];
+		if (this.state.sort.by!==""){
+			const sortBy = (row: any)=>_.isString(row[this.state.sort.by])?row[this.state.sort.by].toLowerCase():row[this.state.sort.by];
 			data = _.orderBy(data, 
 				[sortBy],
 			this.state.sort.order);
@@ -123,8 +122,9 @@ export class Table extends React.Component<IProps, IState> {
 		if (this.state.group.by && this.state.group.value) {
 			data = _.groupBy(data, this.state.group.by)[this.state.group.value];
 		}
-		if (!_.isArray(data))
+		if (!_.isArray(data)) {
 			data = [];
+		}
 		return data;
 	}
 	groupBy(item?: string, value?: string) {
@@ -138,26 +138,26 @@ export class Table extends React.Component<IProps, IState> {
 	sortBy(key: string) {
 		if (_.includes(this.props.sortableItems, key)) {
 			let order = "asc" as IState["sort"]["order"];
-			if (this.state.sort.by==key) {
-				order = this.state.sort.order=="asc"?"desc":"asc";
+			if (this.state.sort.by===key) {
+				order = this.state.sort.order==="asc"?"desc":"asc";
 			}
 			this.setState({
 				sort: {
 					by: key,
-					order: order
+					order
 				}
 			});
 		}
 	}
 	selectRow(row: any) {
-		let toggle = (arr: any[], elem: any)=>{
-			let index = _.findIndex(arr, (e: any)=>_.isEqual(e, elem));
-			if (index!=-1) {
+		const toggle = (arr: any[], elem: any)=>{
+			const index = _.findIndex(arr, (e: any)=>_.isEqual(e, elem));
+			if (index!==-1) {
 				return arr.filter(e=>!_.isEqual(e, elem));
 			}
 			return [...arr,elem];
 		}
-		let selectedElems = toggle(this.state.selected, row);
+		const selectedElems = toggle(this.state.selected, row);
 		this.setState({
 			selected: selectedElems
 		});
@@ -165,7 +165,7 @@ export class Table extends React.Component<IProps, IState> {
 	}
 	render() {
 
-		let headerItems = this.props.headerItems.map((item, i)=>{
+		const headerItems = this.props.headerItems.map((item)=>{
 			const sort = this.state.sort;
 			return <th key={item} onClick={()=>{
 				this.sortBy(item);
@@ -174,7 +174,7 @@ export class Table extends React.Component<IProps, IState> {
 					<Section remain>{item}</Section>
 					<Section style={{width: 30, textAlign: 'right'}}>
 						{_.includes(this.props.sortableItems, item)?<i className={
-							(sort.by==item)?"fa fa-sort-amount-"+sort.order:"fa fa-unsorted"}></i>
+							(sort.by===item)?"fa fa-sort-amount-"+sort.order:"fa fa-unsorted"}></i>
 						:null}
 					</Section>
 					<Section>
@@ -188,15 +188,15 @@ export class Table extends React.Component<IProps, IState> {
 				</Layout>
 			</th>;
 		});
-		let bodyItems = this.getItems().map((row: any, i)=>{
-			return <tr className={(_.findIndex(this.state.selected, e=>_.isEqual(e, row))!=-1)?"active":""}
+		const bodyItems = this.getItems().map((row: any, i)=>{
+			return <tr className={(_.findIndex(this.state.selected, e=>_.isEqual(e, row))!==-1)?"active":""}
 			onClick={()=>{
 				this.props.rowOnClick?this.props.rowOnClick(row):null;
 				if (this.props.rowSelectable) {
 					this.selectRow(row);
 				}
 			}} key={i}>{
-				this.props.headerItems.map((item, i)=>{
+				this.props.headerItems.map((item)=>{
 					if (this.props.columnUI && this.props.columnUI[item]) {
 						return <td key={item}>{this.props.columnUI[item](row)}</td>;
 					}
@@ -206,16 +206,16 @@ export class Table extends React.Component<IProps, IState> {
 		});
 
 		
-		let groupMenu = this.state.group.by?<Menu header={_.capitalize(this.state.group.by)}>
+		const groupMenu = this.state.group.by?<Menu header={_.capitalize(this.state.group.by)}>
 			{[undefined, ...Object.keys(_.groupBy(this.props.data, this.state.group.by))].map((item)=>{
-				return <MItem key={item?item:Math.random()+""} active={this.state.group.value==item}
+				return <MItem key={item?item:Math.random()+""} active={this.state.group.value===item}
 					style={{minWidth: 150}} onClick={()=>{
 					this.state.group.by?this.groupBy(this.state.group.by, item):null;
 				}}>{item?item:"All"}</MItem>;
 			})}
 		</Menu>:null;
 
-		let dataTable = <ETable className={cx({
+		const dataTable = <ETable className={cx({
 			hoverable: !!this.props.hoverable
 		})}>
 			<THead>
@@ -232,7 +232,7 @@ export class Table extends React.Component<IProps, IState> {
 	}
 }
 
-let THead = (props: any)=>{
+const THead = (props: any)=>{
 	return <thead>
 		<tr>
 			{props.children}
@@ -240,7 +240,7 @@ let THead = (props: any)=>{
 	</thead>;
 }
 
-let TBody = (props: any)=>{
+const TBody = (props: any)=>{
 	return <tbody>
 		{props.children}
 	</tbody>

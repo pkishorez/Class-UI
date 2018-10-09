@@ -1,8 +1,8 @@
-import { Button } from "classui/Components/Button";
-import { css, cx, styled } from "classui/Emotion";
-import { ISAnimProps, SAnim } from "classui/Helper/Animation";
-import { IOverlayProps } from "classui/Overlay";
 import * as React from "react";
+import { Button } from "../Components/Button";
+import { css, cx, styled } from "../Emotion";
+import { ISAnimProps, SAnim } from "../Helper/Animation";
+import { IOverlayProps } from "./";
 
 export interface IFlashProps {
 	noDismiss?: boolean;
@@ -17,7 +17,7 @@ export interface IState {
 	show: boolean;
 }
 
-let EFlash = styled("div")`
+const EFlash = styled("div")`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -32,13 +32,13 @@ let EFlash = styled("div")`
 		background-color: rgba(0, 0, 0, 0.8);
 	}
 `;
-let EContent = styled("div")`
+const EContent = styled("div")`
 	position: relative;
 	max-width: 100%;
 	max-height: 100%;
 	overflow: auto;
 `;
-let Close = css`
+const Close = css`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -74,7 +74,7 @@ export class Flash extends React.Component<IProps, IState> {
 		if (this.props.noDismiss) {
 			return;
 		}
-		if (e.key == "Escape") {
+		if (e.key === "Escape") {
 			this.dismiss();
 			window.removeEventListener("keydown", this.escapeDismiss);
 		}
@@ -94,7 +94,7 @@ export class Flash extends React.Component<IProps, IState> {
 		this.setState({ show: false });
 	}
 	render() {
-		let content = (
+		const content = (
 			<EFlash
 				className={cx({ noDismiss: !!this.props.noDismiss })}
 				onClick={this.clickDismiss}

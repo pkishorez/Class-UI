@@ -1,7 +1,6 @@
-import { IBaseComponentProps } from "classui/Components/Base";
-import { css, cx, styled } from "classui/Emotion";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { css, cx, styled } from "../Emotion";
+import { IBaseComponentProps } from "./Base";
 
 export interface IProps extends IBaseComponentProps {
 	basis?: number | string;

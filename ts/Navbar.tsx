@@ -1,10 +1,10 @@
+import * as React from "react";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { cardClasses } from "classui/Components/Base/Card";
-import { css, cx, IThemeColors, styled } from "classui/Emotion";
-import * as React from "react";
+} from "./Components/Base";
+import { cardClasses } from "./Components/Base/Card";
+import { css, cx, IThemeColors, styled } from "./Emotion";
 
 const ENavBar = styled("div")`
 	position: relative;

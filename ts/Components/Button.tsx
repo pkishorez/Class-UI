@@ -1,9 +1,9 @@
+import * as React from "react";
+import { cx, IThemeColors, styled } from "../Emotion";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { cx, IThemeColors, styled } from "classui/Emotion";
-import * as React from "react";
+} from "./Base";
 
 export interface IButtonProps extends IBaseComponentProps {
 	children?: any;

@@ -1,12 +1,12 @@
-import { IThemeColors } from "classui/Emotion/theme";
 import emotionStyled, { CreateStyled, css } from "react-emotion";
+import { IThemeColors } from "./theme";
 export {
 	Themes,
 	IThemes,
 	IThemeColors,
 	PColors,
 	IPColors
-} from "classui/Emotion/theme";
+} from "./theme";
 
 export let styled = emotionStyled as any; // CreateStyled<IThemeColors>;
 

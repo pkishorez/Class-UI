@@ -1,4 +1,3 @@
-import { css, styled } from "classui/Emotion";
 
 export interface IThemeColors {
 	color: string;

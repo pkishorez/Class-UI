@@ -1,8 +1,8 @@
+import * as React from "react";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import * as React from "react";
+} from "./";
 
 export interface ICardProps extends IBaseComponentProps {
 	card?: "1" | "2" | "3" | "4" | "5";

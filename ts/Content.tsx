@@ -1,9 +1,9 @@
+import * as React from "react";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { css, cx } from "classui/Emotion";
-import * as React from "react";
+} from "./Components/Base";
+import { css, cx } from "./Emotion";
 
 export interface IContentProps extends IBaseComponentProps {}
 

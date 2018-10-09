@@ -1,9 +1,9 @@
+import * as React from "react";
+import { css, cx, Hoverable } from "../../Emotion";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { css, cx, Hoverable } from "classui/Emotion";
-import * as React from "react";
+} from "../Base";
 
 export interface ISubmitProps extends IBaseComponentProps {
 	disabled?: boolean;

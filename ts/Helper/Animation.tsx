@@ -114,6 +114,7 @@ interface IMAnimState {
 	}[];
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class MAnim extends React.Component<IMAnimProps, IMAnimState> {
 	public dummy: HTMLDivElement | null = null;
 	constructor(props: IMAnimProps, context: any) {
@@ -122,6 +123,7 @@ export class MAnim extends React.Component<IMAnimProps, IMAnimState> {
 			data: this.props.data
 		};
 	}
+	// tslint:disable-next-line:no-empty
 	public componentDidMount() {}
 	public render() {
 		const children = this.state.data.map(d => {
@@ -159,6 +161,7 @@ export class MAnim extends React.Component<IMAnimProps, IMAnimState> {
 								const height = r.getBoundingClientRect().height;
 								this.setState({
 									data: this.state.data.map(
+										// tslint:disable-next-line:no-shadowed-variable
 										d =>
 											d.id === currentID
 												? {
@@ -206,14 +209,8 @@ interface IHAnimState {
 	children: IChild[];
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class HAnim extends React.Component<IHAnimProps, IHAnimState> {
-	public dummy: HTMLDivElement | null = null;
-	constructor(props: IHAnimProps, context: any) {
-		super(props, context);
-		this.state = {
-			children: []
-		};
-	}
 	public static getDerivedStateFromProps(
 		props: IHAnimProps & { children: any },
 		state: IHAnimState
@@ -231,9 +228,9 @@ export class HAnim extends React.Component<IHAnimProps, IHAnimState> {
 			})
 			.filter(u => u && u.key);
 
-		let ui = 0,
-			ci = 0,
-			view = [];
+		let ui = 0;
+		let	ci = 0;
+		const view = [];
 		while (true) {
 			if (ci >= state.children.length || ui >= update.length) {
 				for (; ci < state.children.length; ci++) {
@@ -243,6 +240,7 @@ export class HAnim extends React.Component<IHAnimProps, IHAnimState> {
 					});
 				}
 				for (; ui < update.length; ui++) {
+					// tslint:disable-next-line:no-shadowed-variable
 					const found = _.find(
 						state.children,
 						c => c.key === update[ui].key
@@ -284,6 +282,13 @@ export class HAnim extends React.Component<IHAnimProps, IHAnimState> {
 			children: view
 		};
 	}
+	public dummy: HTMLDivElement | null = null;
+	constructor(props: IHAnimProps, context: any) {
+		super(props, context);
+		this.state = {
+			children: []
+		};
+	}
 	public render() {
 		return (
 			<div
@@ -321,7 +326,13 @@ interface IHChildState {
 	height?: number;
 	status: IChild["status"];
 }
+// tslint:disable-next-line:max-classes-per-file
 class HChild extends React.Component<IHChildProps, IHChildState> {
+	public static getDerivedStateFromProps(props: IHChildProps) {
+		return {
+			status: props.child.status
+		};
+	}
 	public hidden = true;
 	constructor(props: IHChildProps, context: any) {
 		super(props, context);
@@ -330,11 +341,6 @@ class HChild extends React.Component<IHChildProps, IHChildState> {
 			status: props.child.status
 		};
 		console.log("Constructor", props.child.key);
-	}
-	public static getDerivedStateFromProps(props: IHChildProps) {
-		return {
-			status: props.child.status
-		};
 	}
 	public render() {
 		const { child, status, key } = this.props.child;
@@ -355,6 +361,7 @@ class HChild extends React.Component<IHChildProps, IHChildState> {
 						if (!r) {
 							return;
 						}
+						// tslint:disable-next-line:no-shadowed-variable
 						const height = r.getBoundingClientRect().height;
 						// alert(height);
 						this.setState({

@@ -1,17 +1,17 @@
-export { Badge } from "classui/Components/Badge";
-export { Button } from "classui/Components/Button";
-export { TextField } from "classui/Components/Formlayout/TextField";
-export { Div } from "classui/Components/Div";
+export { Badge } from "./Badge";
+export { Button } from "./Button";
+export { TextField } from "./Formlayout/TextField";
+export { Div } from "./Div";
 export { Card } from "./Base/Card";
 
-import * as _layout from "classui/Components/Layout";
+import * as _layout from "./Layout";
 export let Layout = _layout;
 
-import * as _menu from "classui/Components/Menu";
+import * as _menu from "./Menu";
 export let Menu = _menu;
 
-import * as _dd from "classui/Components/Dropdown";
+import * as _dd from "./Dropdown";
 export let Dropdown = _dd;
 
-import * as _form from "classui/Components/Form";
+import * as _form from "./Form";
 export let Form = _form;

@@ -1,5 +1,5 @@
-import { IBaseComponentProps } from "classui/Components/Base";
-import React = require("react");
+import React from "react";
+import { IBaseComponentProps } from "./Base";
 
 export interface IDivProps extends IBaseComponentProps {
 	children: any;

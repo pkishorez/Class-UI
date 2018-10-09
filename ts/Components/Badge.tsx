@@ -1,10 +1,10 @@
+import * as React from "react";
+import { HTMLProps } from "react";
+import { css, cx, IPColors, PColors } from "../Emotion";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { css, cx, IPColors, PColors } from "classui/Emotion";
-import * as React from "react";
-import { HTMLProps } from "react";
+} from "./Base";
 
 export interface IBadgeProps extends IBaseComponentProps {
 	type?: keyof (IPColors);

@@ -1,10 +1,10 @@
+import * as React from "react";
 import {
 	FormContext,
 	IFormContext,
 	IRegisterFunc
-} from "classui/Components/Form/Form";
-import { Schema } from "classui/Components/Form/Schema";
-import * as React from "react";
+} from "./Form";
+import { Schema } from "./Schema";
 
 export interface IValue {
 	value: any;

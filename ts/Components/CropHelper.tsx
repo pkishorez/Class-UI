@@ -1,6 +1,6 @@
-import { css, styled } from "classui/Emotion";
-import _ = require("lodash");
+import * as _ from "lodash";
 import * as React from "react";
+import { css, styled } from "../Emotion";
 
 const ECropper = styled("div")`
 	position: relative;

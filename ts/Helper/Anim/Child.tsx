@@ -1,4 +1,4 @@
-import { css, cx } from "emotion";
+import { css, cx, keyframes } from "emotion";
 import React = require("react");
 
 export interface IChildDimensions {
@@ -14,89 +14,84 @@ export interface IAnimChildProps {
 	status: "add" | "update" | "delete";
 	dimensions: IChildDimensions;
 	delay?: number;
-	onDelete?: (key: any) => void;
+	onDelete?: () => void;
 }
 export interface IChildState {
-	mounted: boolean;
-	dimensions: IChildDimensions;
 }
 
+const showAnimation = keyframes`
+	from {
+		opacity: 0;
+		transform: translateY(-50px);
+	}
+	to {
+		transform: translateY(0px);
+		opacity: 1;
+	}
+`;
+const hideAnimation = keyframes`
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+`
+
 const defaultClass = css`
-	/* width: 0px;
-	height: 0px; */
-	/* top: 0px;
-	left: 0px; */
 	position: absolute;
 	margin: 0px;
-	opacity: 0;
-	transition: 0.5s all ease-out;
+	/* opacity: 0; */
+	transition: 0.5s all ease;
+	box-sizing: border-box;
+
+	/* Animation is for entry style animation... */
+	animation-duration: 0.5s;
+	animation-timing-function: ease;
+	animation-fill-mode: both;
 `;
 
 export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
-	static getDerivedStateFromProps(
-		nextProps: IAnimChildProps,
-		prevState: IChildState
-	): Partial<IChildState> | null {
-		if (nextProps.status === "delete") {
-			return null;
-		}
-		return {
-			dimensions: nextProps.dimensions
-		};
-	}
-
-	kid: React.DetailedReactHTMLElement<{ className: string }, HTMLElement>;
-
+	style: React.CSSProperties = {};
 	constructor(props: IAnimChildProps) {
 		super(props);
-		this.kid = React.cloneElement(props.kid, {
-			className: cx(props.kid.props.className, defaultClass)
-		});
-		this.state = {
-			dimensions: props.dimensions,
-			mounted: false
-		};
-	}
-	componentDidMount() {
-		requestAnimationFrame(() => {
-			this.setState({
-				mounted: true
-			});
-		});
 	}
 
 	render() {
-		const { mounted } = this.state;
-		const { kid, status, delay, onDelete } = this.props;
-		if (!mounted) {
-			return this.kid;
-		}
+		const {  } = this.state;
+		const { kid, status, delay, onDelete, dimensions } = this.props;
 
-		let style: React.CSSProperties = {
+		this.style = {
+			...this.style,
 			...kid.props.style,
-			boxSizing: "border-box",
 			zIndex: status === "add" ? 10 : status === "update" ? 20 : 0,
-			// marginLeft: 0,
-			// marginRight: 0,
-			// marginTop: 0,
-			// marginBottom: 0,
-			...this.state.dimensions
+			animationDelay: delay?`${delay}s`:undefined,
+			animationName: showAnimation
 		};
-		if (status === "delete") {
-			style = {
-				...style,
-				opacity: 0
-			};
-		} else {
-			style = {
-				...style,
-				opacity: 1,
-				transitionDelay: `${delay ? delay * 0.01 : 0}s`
-			} as React.CSSProperties;
+		if (status !== "delete") {
+			this.style={
+				...this.style,
+				...dimensions,
+				
+			}
 		}
-
-		return React.cloneElement(this.kid, {
-			style
+		else {
+			this.style={
+				...this.style,
+				animationDelay: "0s",
+				animationName: hideAnimation
+			}
+		}
+		console.log(this.props)
+		return React.cloneElement(kid, {
+			"data-child": this.props.kid.key,
+			className: cx(defaultClass, kid.props.className),
+			style: this.style,
+			onAnimationEnd: ()=>{
+				if (this.props.status==="delete") {
+					onDelete && onDelete();
+				}
+			}
 		});
 	}
 }

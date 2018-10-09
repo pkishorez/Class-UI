@@ -1,10 +1,10 @@
+import * as React from "react";
+import { cx, IThemeColors, styled } from "../../Emotion";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { FormElement } from "classui/Components/Form/FormElement";
-import { cx, IThemeColors, styled } from "classui/Emotion";
-import * as React from "react";
+} from "../Base";
+import { FormElement } from "./FormElement";
 
 export interface IProps extends IBaseComponentProps {
 	name: string;

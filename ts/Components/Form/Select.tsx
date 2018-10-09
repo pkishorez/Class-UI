@@ -1,12 +1,12 @@
+import * as _ from "lodash";
+import * as React from "react";
+import { css, cx, IThemeColors, styled } from "../../Emotion";
+import { SAnim } from "../../Helper/Animation";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { FormElement } from "classui/Components/Form/FormElement";
-import { css, cx, IThemeColors, styled } from "classui/Emotion";
-import { SAnim } from "classui/Helper/Animation";
-import * as _ from "lodash";
-import * as React from "react";
+} from "../Base";
+import { FormElement } from "./FormElement";
 
 export interface IProps extends IBaseComponentProps {
 	name: string;

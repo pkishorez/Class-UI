@@ -1,9 +1,9 @@
+import * as React from "react";
+import { css, cx, Hoverable, styled } from "../Emotion";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { css, cx, Hoverable, styled } from "classui/Emotion";
-import * as React from "react";
+} from "./Base";
 
 export interface IProps extends IBaseComponentProps {
 	header?: string;

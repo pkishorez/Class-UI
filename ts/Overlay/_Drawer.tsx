@@ -1,7 +1,7 @@
-import { cx, styled } from "classui/Emotion";
-import { ISAnimProps, SAnim } from "classui/Helper/Animation";
-import { IOverlayProps } from "classui/Overlay";
 import * as React from "react";
+import { cx, styled } from "../Emotion";
+import { ISAnimProps, SAnim } from "../Helper/Animation";
+import { IOverlayProps } from "./";
 
 export interface IDrawerProps {
 	animation?: ISAnimProps["animType"];

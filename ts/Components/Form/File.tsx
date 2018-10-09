@@ -1,5 +1,5 @@
-import { FormElement } from "classui/Components/Form/FormElement";
 import * as React from "react";
+import { FormElement } from "./FormElement";
 
 export interface IFileProps {
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;

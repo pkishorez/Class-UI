@@ -1,12 +1,12 @@
+import * as _ from "lodash";
+import * as React from "react";
+import { cx } from "../../Emotion";
 import {
 	BaseComponentProps,
 	IBaseComponentProps
-} from "classui/Components/Base";
-import { FormElement } from "classui/Components/Form/FormElement";
-import { IJSONSchema, Schema } from "classui/Components/Form/Schema";
-import { cx } from "classui/Emotion";
-import * as _ from "lodash";
-import * as React from "react";
+} from "../Base";
+import { FormElement } from "./FormElement";
+import { IJSONSchema, Schema } from "./Schema";
 
 export type IRegisterFunc = (
 	schema: IJSONSchema | undefined,

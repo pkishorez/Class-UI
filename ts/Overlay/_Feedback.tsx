@@ -1,7 +1,6 @@
-import { styled } from "classui/Emotion";
-import { SAnim } from "classui/Helper/Animation";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { styled } from "../Emotion";
+import { SAnim } from "../Helper/Animation";
 
 export interface IProps {}
 

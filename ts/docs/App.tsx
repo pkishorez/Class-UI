@@ -1,24 +1,33 @@
-import { Button } from "classui/Components";
-import { Anim } from "classui/Helper/Anim";
-import { ClassUI } from "classui/index";
-import { NavBar } from "classui/Navbar";
-import _ = require("lodash");
+import * as _ from "lodash";
 import * as React from "react";
+import { Button } from "../Components";
+import { Anim } from "../Helper/Anim";
+import { ClassUI } from "../index";
 
 export class App extends React.Component {
+	state = {
+		users: [
+			"Kishore",
+			"User1",
+			"User2",
+			"User5",
+			"User6"
+		]
+	}
 	render() {
 		return (
 			<ClassUI theme="iiitfb" fullHeight>
-				<NavBar>
-					<Button
+				{/* <NavBar>
+					
+				</NavBar> */}
+				<h2>Test</h2>
+				<Button
 						onClick={() => {
 							this.forceUpdate();
 						}}
 					>
 						Button
 					</Button>
-				</NavBar>
-				<h2>Test</h2>
 				<div style={{ maxHeight: 100 }}>
 					<Anim
 						style={{
@@ -27,15 +36,9 @@ export class App extends React.Component {
 							backgroundColor: "white"
 						}}
 					>
-						{_
-							.shuffle([
-								"Kishore",
-								"User1",
-								"User2",
-								"User5",
-								"User6"
-							])
-							.map(key => (
+						{
+							(this.state.users)
+							.map(user => (
 								<div
 									style={{
 										padding: 10,
@@ -43,9 +46,12 @@ export class App extends React.Component {
 										color: "white",
 										margin: 10
 									}}
-									key={key}
+									onClick={()=>this.setState({
+										users: this.state.users.filter(u=>u!==user)
+									})}
+									key={user}
 								>
-									{key}
+									{user}
 								</div>
 							))}
 					</Anim>

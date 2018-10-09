@@ -1,9 +1,8 @@
-import { Drawer, IDrawerProps } from "classui/Overlay/_Drawer";
-import { Feedback } from "classui/Overlay/_Feedback";
-import { Flash, IFlashProps } from "classui/Overlay/_Flash";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { v4 } from "uuid";
+import { Drawer, IDrawerProps } from "./_Drawer";
+import { Feedback } from "./_Feedback";
+import { Flash, IFlashProps } from "./_Flash";
 
 export interface IProps {}
 
@@ -25,14 +24,13 @@ export class Overlay extends React.Component<IProps, IState> {
 			console.error("Overlay component should be rendered to use it.");
 			return;
 		}
-		let id = v4();
-		let fref: any;
+		const id = v4();
 		_instance.overlay(
 			id,
 			<Flash
 				{...options}
 				key={id}
-				ref={r => (fref = r)}
+				ref={r => (r = r)}
 				remove={() => {
 					Overlay.removeOverlay(id);
 				}}
@@ -44,14 +42,13 @@ export class Overlay extends React.Component<IProps, IState> {
 			console.error("Overlay component should be rendered to use it.");
 			return;
 		}
-		let id = v4();
-		let dref: any;
+		const id = v4();
 		_instance.overlay(
 			id,
 			<Drawer
 				{...options}
 				key={id}
-				ref={r => (dref = r)}
+				ref={r => (r = r)}
 				remove={() => {
 					Overlay.removeOverlay(id);
 				}}
@@ -73,9 +70,16 @@ export class Overlay extends React.Component<IProps, IState> {
 		}
 		_instance.removeOverlay(id);
 	}
+	constructor(props: IProps, context: any) {
+		super(props, context);
+		_instance = this;
+		this.state = {
+			overlays: []
+		};
+	}
 	removeOverlay(id: string) {
 		this.setState({
-			overlays: this.state.overlays.filter(o => o.id != id)
+			overlays: this.state.overlays.filter(o => o.id !== id)
 		});
 	}
 	overlay(id: string, component: any) {
@@ -91,13 +95,6 @@ export class Overlay extends React.Component<IProps, IState> {
 	}
 	componentWillUnmount() {
 		_instance = null;
-	}
-	constructor(props: IProps, context: any) {
-		super(props, context);
-		_instance = this;
-		this.state = {
-			overlays: []
-		};
 	}
 
 	render() {
