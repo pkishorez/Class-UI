@@ -1,11 +1,8 @@
 import * as React from "react";
 import { css, cx, Hoverable, styled } from "../Emotion";
 import { ISAnimProps, SAnim } from "../Helper/Animation";
-import {
-	BaseComponentProps,
-	cardClasses,
-	IBaseComponentProps
-} from "./Base";
+import { Icon } from "../Helper/Icon";
+import { BaseComponentProps, cardClasses, IBaseComponentProps } from "./Base";
 import { Button, IButtonProps } from "./Button";
 
 export interface IProps extends IBaseComponentProps {
@@ -90,7 +87,7 @@ export class Dropdown extends React.Component<IProps, IState> {
 							>
 								{this.props.button}
 							</span>{" "}
-							<i className="fa fa-angle-down" />
+							<Icon>expand_more</Icon>
 						</>
 					) : (
 						this.props.button

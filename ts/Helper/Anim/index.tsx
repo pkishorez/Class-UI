@@ -65,12 +65,7 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 					width: childRef ? childRef.offsetWidth : 0
 				},
 				key,
-				kid:
-					_.find(curChildren, (c: any) => c.key === key) ||
-					(_.find(
-						this.state.children,
-						(c: any) => c.key === key
-					) as any).kid,
+				kid: _.find(curChildren, (c: any) => c.key === key),
 				status: "add"
 			};
 			if (inPrev && inCur) {
@@ -78,6 +73,10 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 				child.status = "update";
 			} else if (inPrev && !inCur) {
 				child.status = "delete";
+				child.kid = (_.find(
+					this.state.children,
+					(c: any) => c.key === key
+				) as any).kid;
 			} else {
 				child.status = "add";
 			}

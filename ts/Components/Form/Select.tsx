@@ -2,10 +2,7 @@ import * as _ from "lodash";
 import * as React from "react";
 import { css, cx, IThemeColors, styled } from "../../Emotion";
 import { SAnim } from "../../Helper/Animation";
-import {
-	BaseComponentProps,
-	IBaseComponentProps
-} from "../Base";
+import { BaseComponentProps, IBaseComponentProps } from "../Base";
 import { FormElement } from "./FormElement";
 
 export interface IProps extends IBaseComponentProps {
@@ -70,6 +67,7 @@ const ESuggestionItem = styled("li")`
 
 export class Select extends FormElement<IProps, IState> {
 	inputRef: any = React.createRef();
+	_internalClick = false;
 	constructor(props: IProps) {
 		super(props);
 		this.state = {
@@ -84,11 +82,18 @@ export class Select extends FormElement<IProps, IState> {
 		this.getSuggestions = this.getSuggestions.bind(this);
 		this.showSuggestions = this.showSuggestions.bind(this);
 		this.hideSuggestions = this.hideSuggestions.bind(this);
-		window.addEventListener("click", this.hideSuggestions);
+		window.addEventListener("click", this.windowClick);
 	}
+	windowClick = () => {
+		if (!this._internalClick) {
+			// Do not hidesuggestions.
+			this.hideSuggestions();
+		}
+		this._internalClick = false;
+	};
 	componentWillUnmount() {
 		super.componentWillUnmount();
-		window.removeEventListener("click", this.hideSuggestions);
+		window.removeEventListener("click", this.windowClick);
 	}
 	Render() {
 		const width =
@@ -118,8 +123,8 @@ export class Select extends FormElement<IProps, IState> {
 					onClick={(e: any) => {
 						this.inputRef.current.focus();
 						// this.showSuggestions();
-						e.stopPropagation();
-						e.preventDefault();
+						// e.stopPropagation();
+						// e.preventDefault();
 					}}
 				>
 					<div
@@ -175,6 +180,7 @@ export class Select extends FormElement<IProps, IState> {
 						autoComplete="off"
 						type="text"
 						onClick={() => {
+							this._internalClick = true;
 							this.showSuggestions();
 						}}
 						onFocus={() => {
@@ -197,10 +203,7 @@ export class Select extends FormElement<IProps, IState> {
 						// 	}, 1000);
 						// }}
 					/>
-					<i
-						className="fa fa-angle-down"
-						style={{ marginRight: 15 }}
-					/>
+					<Icon style={{ marginRight: 15 }}>expand_more</Icon>
 				</ESelect>
 				<SAnim
 					show={

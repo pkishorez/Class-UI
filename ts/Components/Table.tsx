@@ -1,39 +1,40 @@
-import * as _ from 'lodash';
-import * as React from 'react';
-import { cx, styled } from '../Emotion';
-import { Layout, Section } from './Layout';
-import { Menu, MItem } from './Menu';
+import * as _ from "lodash";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Layout, Section } from "../Components/Layout";
+import { Menu, MItem } from "../Components/Menu";
+import { cx, styled } from "../Emotion";
 
 export interface IProps {
-	hoverable?: boolean
+	hoverable?: boolean;
 
-	rowSelectable?: boolean
-	onSelect?: (elems: any[])=>void
+	rowSelectable?: boolean;
+	onSelect?: (elems: any[]) => void;
 
-	headerItems: string[],
-	sortableItems?: string[]
-	defaultGroup?: string
-	groupableItems?: string[]
+	headerItems: string[];
+	sortableItems?: string[];
+	defaultGroup?: string;
+	groupableItems?: string[];
 
-	data: any[],
-	rowOnClick?: (rowdata: any)=>void
+	data: any[];
+	rowOnClick?: (rowdata: any) => void;
 	columnUI?: {
-		[id: string]: (value: any)=>any
-	}
-};
+		[id: string]: (value: any) => any;
+	};
+}
 export interface IState {
 	sort: {
-		by: string
-		order: "asc"|"desc"
-	}
+		by: string;
+		order: "asc" | "desc";
+	};
 	group: {
-		by?: string
-		value?: any
-	}
-	selected: any[]
-};
+		by?: string;
+		value?: any;
+	};
+	selected: any[];
+}
 
-const ETable = styled('table')`
+const ETable = styled("table")`
 	display: table;
 	background-color: white;
 	border-collapse: collapse;
@@ -49,7 +50,7 @@ const ETable = styled('table')`
 				opacity: 0.7;
 				text-transform: capitalize;
 				&:hover {
-					background-color: rgba(0,0,0,0.01);
+					background-color: rgba(0, 0, 0, 0.01);
 					opacity: 1;
 				}
 			}
@@ -58,29 +59,32 @@ const ETable = styled('table')`
 
 	&.hoverable {
 		> tbody {
-			> tr:hover{
+			> tr:hover {
 				background-color: rgb(245, 245, 245);
 			}
 		}
 	}
 
 	> tbody {
-		tr{
+		tr {
 			@include transition(all 0.3s);
 		}
 		> tr.active {
-			&:hover, & {
+			&:hover,
+			& {
 				background-color: map-get($theme, color);
-				color: white;	
+				color: white;
 			}
 		}
 	}
-	> thead, > tbody {
+	> thead,
+	> tbody {
 		> tr {
-			border-bottom: 1px solid #CACACA;
+			border-bottom: 1px solid #cacaca;
 			text-align: left;
 
-			> td, >th {
+			> td,
+			> th {
 				padding: 7px 17px;
 			}
 		}
@@ -99,7 +103,7 @@ export class Table extends React.Component<IProps, IState> {
 		super(props, context);
 
 		this.state = {
-			sort: {by: "", order: "asc"},
+			sort: { by: "", order: "asc" },
 			group: {
 				by: props.defaultGroup,
 				value: undefined
@@ -113,11 +117,12 @@ export class Table extends React.Component<IProps, IState> {
 
 	getItems(): any[] {
 		let data = this.props.data;
-		if (this.state.sort.by!==""){
-			const sortBy = (row: any)=>_.isString(row[this.state.sort.by])?row[this.state.sort.by].toLowerCase():row[this.state.sort.by];
-			data = _.orderBy(data, 
-				[sortBy],
-			this.state.sort.order);
+		if (this.state.sort.by !== "") {
+			const sortBy = (row: any) =>
+				_.isString(row[this.state.sort.by])
+					? row[this.state.sort.by].toLowerCase()
+					: row[this.state.sort.by];
+			data = _.orderBy(data, [sortBy], this.state.sort.order);
 		}
 		if (this.state.group.by && this.state.group.value) {
 			data = _.groupBy(data, this.state.group.by)[this.state.group.value];
@@ -138,8 +143,8 @@ export class Table extends React.Component<IProps, IState> {
 	sortBy(key: string) {
 		if (_.includes(this.props.sortableItems, key)) {
 			let order = "asc" as IState["sort"]["order"];
-			if (this.state.sort.by===key) {
-				order = this.state.sort.order==="asc"?"desc":"asc";
+			if (this.state.sort.by === key) {
+				order = this.state.sort.order === "asc" ? "desc" : "asc";
 			}
 			this.setState({
 				sort: {
@@ -150,13 +155,13 @@ export class Table extends React.Component<IProps, IState> {
 		}
 	}
 	selectRow(row: any) {
-		const toggle = (arr: any[], elem: any)=>{
-			const index = _.findIndex(arr, (e: any)=>_.isEqual(e, elem));
-			if (index!==-1) {
-				return arr.filter(e=>!_.isEqual(e, elem));
+		const toggle = (arr: any[], elem: any) => {
+			const index = _.findIndex(arr, (e: any) => _.isEqual(e, elem));
+			if (index !== -1) {
+				return arr.filter(e => !_.isEqual(e, elem));
 			}
-			return [...arr,elem];
-		}
+			return [...arr, elem];
+		};
 		const selectedElems = toggle(this.state.selected, row);
 		this.setState({
 			selected: selectedElems
@@ -164,84 +169,132 @@ export class Table extends React.Component<IProps, IState> {
 		this.props.onSelect && this.props.onSelect(selectedElems);
 	}
 	render() {
-
-		const headerItems = this.props.headerItems.map((item)=>{
+		const headerItems = this.props.headerItems.map((item, i) => {
 			const sort = this.state.sort;
-			return <th key={item} onClick={()=>{
-				this.sortBy(item);
-			}}>
-				<Layout gutter={20}>
-					<Section remain>{item}</Section>
-					<Section style={{width: 30, textAlign: 'right'}}>
-						{_.includes(this.props.sortableItems, item)?<i className={
-							(sort.by===item)?"fa fa-sort-amount-"+sort.order:"fa fa-unsorted"}></i>
-						:null}
-					</Section>
-					<Section>
-						{_.includes(this.props.groupableItems, item)?
-							<i className="fa fa-reorder button" onClick={(e)=>{
-								this.groupBy(item);
-								e.stopPropagation();
-							}}></i>
-						:null}
-					</Section>
-				</Layout>
-			</th>;
+			return (
+				<th
+					key={item}
+					onClick={() => {
+						this.sortBy(item);
+					}}
+				>
+					<Layout gutter={20}>
+						<Section remain>{item}</Section>
+						<Section style={{ width: 30, textAlign: "right" }}>
+							{_.includes(this.props.sortableItems, item) ? (
+								<i
+									className={
+										sort.by === item
+											? "fa fa-sort-amount-" + sort.order
+											: "fa fa-unsorted"
+									}
+								/>
+							) : null}
+						</Section>
+						<Section>
+							{_.includes(this.props.groupableItems, item) ? (
+								<i
+									className="fa fa-reorder button"
+									onClick={e => {
+										this.groupBy(item);
+										e.stopPropagation();
+									}}
+								/>
+							) : null}
+						</Section>
+					</Layout>
+				</th>
+			);
 		});
-		const bodyItems = this.getItems().map((row: any, i)=>{
-			return <tr className={(_.findIndex(this.state.selected, e=>_.isEqual(e, row))!==-1)?"active":""}
-			onClick={()=>{
-				this.props.rowOnClick?this.props.rowOnClick(row):null;
-				if (this.props.rowSelectable) {
-					this.selectRow(row);
-				}
-			}} key={i}>{
-				this.props.headerItems.map((item)=>{
-					if (this.props.columnUI && this.props.columnUI[item]) {
-						return <td key={item}>{this.props.columnUI[item](row)}</td>;
+		const bodyItems = this.getItems().map((row: any, i) => {
+			return (
+				<tr
+					className={
+						_.findIndex(this.state.selected, e =>
+							_.isEqual(e, row)
+						) !== -1
+							? "active"
+							: ""
 					}
-					return <td key={item}>{row[item]}</td>
-				})
-			}</tr>;
+					onClick={() => {
+						this.props.rowOnClick
+							? this.props.rowOnClick(row)
+							: null;
+						if (this.props.rowSelectable) {
+							this.selectRow(row);
+						}
+					}}
+					key={i}
+				>
+					{this.props.headerItems.map(item => {
+						if (this.props.columnUI && this.props.columnUI[item]) {
+							return (
+								<td key={item}>
+									{this.props.columnUI[item](row)}
+								</td>
+							);
+						}
+						return <td key={item}>{row[item]}</td>;
+					})}
+				</tr>
+			);
 		});
 
-		
-		const groupMenu = this.state.group.by?<Menu header={_.capitalize(this.state.group.by)}>
-			{[undefined, ...Object.keys(_.groupBy(this.props.data, this.state.group.by))].map((item)=>{
-				return <MItem key={item?item:Math.random()+""} active={this.state.group.value===item}
-					style={{minWidth: 150}} onClick={()=>{
-					this.state.group.by?this.groupBy(this.state.group.by, item):null;
-				}}>{item?item:"All"}</MItem>;
-			})}
-		</Menu>:null;
+		const groupMenu = this.state.group.by ? (
+			<Menu header={_.capitalize(this.state.group.by)}>
+				{[
+					undefined,
+					...Object.keys(
+						_.groupBy(this.props.data, this.state.group.by)
+					)
+				].map(item => {
+					return (
+						<MItem
+							key={item ? item : Math.random() + ""}
+							active={this.state.group.value === item}
+							style={{ minWidth: 150 }}
+							onClick={() => {
+								this.state.group.by
+									? this.groupBy(this.state.group.by, item)
+									: null;
+							}}
+						>
+							{item ? item : "All"}
+						</MItem>
+					);
+				})}
+			</Menu>
+		) : null;
 
-		const dataTable = <ETable className={cx({
-			hoverable: !!this.props.hoverable
-		})}>
-			<THead>
-				{headerItems}
-			</THead>
-			<TBody>
-				{bodyItems}
-			</TBody>
-		</ETable>;
-		return this.state.group.by?<Layout gutter={20} align="flex-start">
-			<Section>{groupMenu}</Section>
-			<Section remain>{dataTable}</Section>
-		</Layout>:dataTable;
+		const dataTable = (
+			<ETable
+				className={cx({
+					hoverable: !!this.props.hoverable
+				})}
+			>
+				<THead>{headerItems}</THead>
+				<TBody>{bodyItems}</TBody>
+			</ETable>
+		);
+		return this.state.group.by ? (
+			<Layout gutter={20} align="flex-start">
+				<Section>{groupMenu}</Section>
+				<Section remain>{dataTable}</Section>
+			</Layout>
+		) : (
+			dataTable
+		);
 	}
 }
 
-const THead = (props: any)=>{
-	return <thead>
-		<tr>
-			{props.children}
-		</tr>
-	</thead>;
-}
+const THead = (props: any) => {
+	return (
+		<thead>
+			<tr>{props.children}</tr>
+		</thead>
+	);
+};
 
-const TBody = (props: any)=>{
-	return <tbody>
-		{props.children}
-	</tbody>
+const TBody = (props: any) => {
+	return <tbody>{props.children}</tbody>;
 };

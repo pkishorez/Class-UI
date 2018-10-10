@@ -15,7 +15,8 @@ const EButton = styled("div")`
 	user-select: none;
 	padding: 10px;
 	cursor: pointer;
-	display: inline-block;
+	display: flex;
+	align-items: center;
 	background-color: #eeeeee;
 	&:hover {
 		background-color: #dddddd;
