@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import * as React from "react";
 import { css, cx, IThemeColors, styled } from "../../Emotion";
 import { SAnim } from "../../Helper/Animation";
+import { Icon } from "../../Helper/Icon";
 import { BaseComponentProps, IBaseComponentProps } from "../Base";
 import { FormElement } from "./FormElement";
 
