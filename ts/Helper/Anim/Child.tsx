@@ -82,7 +82,6 @@ export class AnimChild extends React.Component<IAnimChildProps, IChildState> {
 				animationName: hideAnimation
 			}
 		}
-		console.log(this.props)
 		return React.cloneElement(kid, {
 			"data-child": this.props.kid.key,
 			className: cx(defaultClass, kid.props.className),

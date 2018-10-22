@@ -340,7 +340,6 @@ class HChild extends React.Component<IHChildProps, IHChildState> {
 			height: undefined,
 			status: props.child.status
 		};
-		console.log("Constructor", props.child.key);
 	}
 	public render() {
 		const { child, status, key } = this.props.child;

@@ -310,8 +310,6 @@ export class Select extends FormElement<IProps, IState> {
 	}
 	private suggestions(e: React.KeyboardEvent<HTMLInputElement>) {
 		// Suggestions and navigating the suggestions logic goes here... TODO
-
-		console.log(e.key);
 		if (e.key === "Escape") {
 			this.showSuggestions();
 		} else if (e.key === "Tab") {

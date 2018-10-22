@@ -116,7 +116,6 @@ export class CropHelper extends React.Component<
 		if (!this.ref || !this._cropping || !this.state.cropMarker) {
 			return;
 		}
-		console.log("Cropping");
 		const dRect = this.ref.getBoundingClientRect();
 		const top = dRect.top + window.scrollY;
 		const left = dRect.left + window.scrollX;
