@@ -6,9 +6,8 @@ import { BaseComponentProps, cardClasses, IBaseComponentProps } from "./Base";
 import { Button, IButtonProps } from "./Button";
 
 export interface IProps extends IBaseComponentProps {
-	buttonMaxWidth?: number;
 	button: string | React.ReactElement<any>;
-	btnProps?: IButtonProps;
+	customButton?: React.StatelessComponent<{active: boolean, text: string}>;
 	push?: "left" | "right" | "up";
 	animType?: ISAnimProps["animType"];
 	children: any;
@@ -19,7 +18,7 @@ export interface IState {
 
 const EDropdown = styled("div")`
 	position: relative;
-	display: inline-block;
+	display: flex;
 `;
 const EContent = styled("ul")`
 	position: absolute;
@@ -31,6 +30,15 @@ const EContent = styled("ul")`
 	max-width: 200px;
 	min-width: 150px;
 `;
+
+const DefaultButton = ({ active, text }: any) => {
+	return (
+		<Button active={active}>
+			<span className="inline-block noTextWrap">{text}</span>{" "}
+			<Icon>expand_more</Icon>
+		</Button>
+	);
+};
 
 export class Dropdown extends React.Component<IProps, IState> {
 	static defaultProps: Partial<IProps> = {
@@ -67,40 +75,27 @@ export class Dropdown extends React.Component<IProps, IState> {
 		});
 	}
 	render() {
+		const Btn = this.props.customButton || DefaultButton;
 		return (
 			<EDropdown {...BaseComponentProps(this.props)}>
-				<Button
-					{...this.props.btnProps}
-					active={this.state.active}
+				<div
 					onClick={() => {
 						this.clickedWithinDropdown = true;
 						this.toggle();
 					}}
+					style={{display: "flex"}}
 				>
-					{typeof this.props.button === "string" ? (
-						<>
-							<span
-								className="inline-block noTextWrap"
-								style={{
-									maxWidth: this.props.buttonMaxWidth
-								}}
-							>
-								{this.props.button}
-							</span>{" "}
-							<Icon>expand_more</Icon>
-						</>
-					) : (
-						this.props.button
-					)}
-				</Button>
+					<Btn active={this.state.active} text={this.props.button}/>
+					{/* <CustomButton active={this.state.active}/> */}
+				</div>
 				<SAnim
 					show={this.state.active}
 					animType={
 						this.props.animType
 							? this.props.animType
 							: this.props.push === "up"
-								? "slideTop"
-								: "slideBottom"
+							? "slideTop"
+							: "slideBottom"
 					}
 				>
 					<EContent
@@ -108,7 +103,8 @@ export class Dropdown extends React.Component<IProps, IState> {
 							this.clickedWithinDropdown = true;
 						}}
 						className={cx(css`
-							${cardClasses["3"]} ${(() => {
+							${cardClasses["3"]};
+							${(() => {
 								switch (this.props.push) {
 									case "left":
 										return `right: 0px;`;
@@ -123,7 +119,7 @@ export class Dropdown extends React.Component<IProps, IState> {
 						{typeof this.props.children === "function"
 							? this.props.children(() => {
 									this.setState({
-										active: !this.state.active
+										active: false
 									});
 							  })
 							: this.props.children}
@@ -141,7 +137,10 @@ export interface IDropdownItemProps extends IBaseComponentProps {
 }
 
 const EDItem = styled("li")`
-	padding: 10px;
+	display: flex;
+	align-items: center;
+	min-height: 40px;
+	padding: 7px;
 `;
 export let DItem = (props: IDropdownItemProps) => {
 	return (

@@ -5,7 +5,7 @@ const cls = css`
 	font-family: 'Material Icons';
 	font-weight: normal;
 	font-style: normal;
-	font-size: 24px;  /* Preferred icon size */
+	font-size: 22px;  /* Preferred icon size */
 	display: inline-block;
 	line-height: 1;
 	text-transform: none;
@@ -26,9 +26,8 @@ const cls = css`
 	font-feature-settings: 'liga';
 `;
 
-interface IIconProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
-
-}
-export const Icon = (props: IIconProps)=>{
-	return <i {...props} className={cx(cls, props.className)}>{props.children}</i>
+export const Icon = (props: {
+	[id: string]: any
+})=>{
+	return <i {...props} className={cx("__icon", cls, props.className)}>{props.children}</i>
 }

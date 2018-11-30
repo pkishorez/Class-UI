@@ -79,7 +79,9 @@ injectGlobal(`
 
 // Normalization goes here...
 injectGlobal(`
-
+	body {
+		color: #333;
+	}
 	h1 {
 		font-size: 36px;
 	}
