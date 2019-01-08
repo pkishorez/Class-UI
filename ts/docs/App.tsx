@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import * as React from "react";
 import { Button } from "../Components";
 import { Anim } from "../Helper/Anim";

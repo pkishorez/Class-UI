@@ -1,15 +1,14 @@
 import * as React from "react";
+import { matchPath, RouteComponentProps, withRouter } from "react-router-dom";
 import { cx, IThemeColors, styled } from "../Emotion";
-import {
-	BaseComponentProps,
-	IBaseComponentProps
-} from "./Base";
+import { BaseComponentProps, IBaseComponentProps } from "./Base";
 
 export interface IButtonProps extends IBaseComponentProps {
 	children?: any;
 	active?: boolean;
 	disable?: boolean;
 	primary?: boolean;
+	flat?: boolean;
 }
 const EButton = styled("div")`
 	user-select: none;
@@ -27,6 +26,7 @@ const EButton = styled("div")`
 	&.active {
 		&,
 		&:hover {
+			cursor: default;
 			background-color: #dddddd;
 		}
 	}
@@ -49,11 +49,21 @@ const EButton = styled("div")`
 			background-color: ${(p: IThemeColors) => p.theme.colorDark};
 		}
 	}
+	&.flat {
+		background-color: inherit;
+		color: inherit;
+		&.active,
+		&:active,
+		&:hover {
+			background-color: #dddddd;
+			color: ${(p: IThemeColors)=>p.theme.color}
+		}
+	}
 
-	${(p: IThemeColors) => `
+	${(p: { theme: IThemeColors }) => `
 	&.primary {
-		//background-color: ${p.theme.color};
-		//color: black;
+		background-color: ${p.theme.color};
+		color: ${p.theme.contrast};
 		&:hover {
 			color: ${p.theme.contrast};
 			background-color: ${p.theme.colorLight};
@@ -77,10 +87,33 @@ export const Button = (props: IButtonProps) => {
 			{...BaseComponentProps(props)}
 			className={cx(props.className, {
 				active: !!props.active,
-				disable: !!props.disable
+				primary: !!props.primary,
+				disable: !!props.disable,
+				flat: !!props.flat
 			})}
 		>
 			{props.children}
 		</EButton>
 	);
 };
+const _NavButton = (
+	props: IButtonProps & RouteComponentProps<any> & { to: string }
+) => {
+	const match = matchPath(props.location.pathname, {
+		path: props.to
+	});
+	return (
+		<Button
+			{...props}
+			active={!!(match && match.isExact)}
+			onClick={(e: any) => {
+				props.onClick && props.onClick(e);
+				props.history.push(props.to);
+			}}
+		>
+			{props.children}
+		</Button>
+	);
+};
+
+export const NavButton = withRouter(_NavButton);

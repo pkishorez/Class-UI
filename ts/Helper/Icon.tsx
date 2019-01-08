@@ -27,6 +27,7 @@ const cls = css`
 `;
 
 export const Icon = (props: {
+	style?: React.CSSProperties,
 	[id: string]: any
 })=>{
 	return <i {...props} className={cx("__icon", cls, props.className)}>{props.children}</i>

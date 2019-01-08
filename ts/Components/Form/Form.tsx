@@ -1,10 +1,7 @@
-import * as _ from "lodash";
+import { get as _get, set as _set } from "lodash-es";
 import * as React from "react";
 import { cx } from "../../Emotion";
-import {
-	BaseComponentProps,
-	IBaseComponentProps
-} from "../Base";
+import { BaseComponentProps, IBaseComponentProps } from "../Base";
 import { FormElement } from "./FormElement";
 import { IJSONSchema, Schema } from "./Schema";
 
@@ -70,7 +67,7 @@ export class Form extends React.Component<IProps> {
 					ref.validate(true);
 				}
 			} else {
-				formData = _.set(formData, key, data.value);
+				formData = _set(formData, key, data.value);
 			}
 		}
 		if (this.props.onSubmit && !fErrorRef) {
@@ -100,7 +97,7 @@ export class Form extends React.Component<IProps> {
 		if (this.props.schema) {
 			pschema = Schema.getSchema(this.props.schema, key);
 		}
-		const defaultValue = _.get(this.props.default, key);
+		const defaultValue = _get(this.props.default, key);
 		if (elementRegister) {
 			elementRegister(pschema, defaultValue);
 		}

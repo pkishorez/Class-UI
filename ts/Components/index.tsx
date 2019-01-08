@@ -1,5 +1,5 @@
 export { Badge } from "./Badge";
-export { Button } from "./Button";
+export { Button, NavButton } from "./Button";
 export { TextField } from "./Formlayout/TextField";
 export { Div } from "./Div";
 export { Card } from "./Base/Card";

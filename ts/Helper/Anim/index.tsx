@@ -1,11 +1,13 @@
-import * as _ from "lodash";
+import { find, includes, throttle, union } from "lodash-es";
 import * as React from "react";
+import { BaseComponentProps, IBaseComponentProps } from "../../Components/Base";
 import { AnimChild, IAnimChildProps } from "./Child";
 
-export interface IAnimProps {
+export interface IAnimProps extends IBaseComponentProps {
 	style?: React.CSSProperties;
 	className?: string;
 	children: any;
+	stagger?: boolean;
 }
 interface IAnimState {
 	children: IAnimChildProps[];
@@ -19,7 +21,7 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 			children: []
 		};
 		this.addRef = this.addRef.bind(this);
-		this.updateChildren = _.throttle(this.updateChildren.bind(this), 100);
+		this.updateChildren = throttle(this.updateChildren.bind(this), 100);
 		window.addEventListener("resize", this.updateChildren);
 	}
 	public addRef(r: HTMLDivElement | null) {
@@ -42,11 +44,11 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 
 		const newKeys = curChildren.map((c: any) => c.key);
 		const oldKeys = this.state.children.map(c => c.key);
-		const allKeys = _.union(oldKeys, newKeys) as string[];
+		const allKeys = union(oldKeys, newKeys) as string[];
 
 		const children: IAnimState["children"] = allKeys.map(key => {
-			const inPrev = _.includes(oldKeys, key);
-			const inCur = _.includes(newKeys, key);
+			const inPrev = includes(oldKeys, key);
+			const inCur = includes(newKeys, key);
 
 			let childRef: any = null;
 			if (this.dummyRef && this.dummyRef.children) {
@@ -65,7 +67,7 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 					width: childRef ? childRef.offsetWidth : 0
 				},
 				key,
-				kid: _.find(curChildren, (c: any) => c.key === key),
+				kid: find(curChildren, (c: any) => c.key === key),
 				status: "add"
 			};
 			if (inPrev && inCur) {
@@ -73,7 +75,7 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 				child.status = "update";
 			} else if (inPrev && !inCur) {
 				child.status = "delete";
-				child.kid = (_.find(
+				child.kid = (find(
 					this.state.children,
 					(c: any) => c.key === key
 				) as any).kid;
@@ -87,16 +89,16 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 		});
 	}
 	public render() {
-		const { style, className } = this.props;
+		const { style } = this.props;
 		let delay = 0;
 		return (
 			<div
 				ref={this.addRef}
+				{...BaseComponentProps(this.props)}
 				style={{
 					...style,
 					position: "relative"
 				}}
-				className={className}
 			>
 				{/* Dummy first and content later! */}
 				{React.Children.toArray(this.props.children).map((child: any) =>
@@ -126,15 +128,45 @@ export class Anim extends React.Component<IAnimProps, IAnimState> {
 									marginBottom: 0
 								}
 							})}
-							delay={i/10}
-							onDelete={()=>{
+							delay={this.props.stagger ? i / 10 : 0}
+							onDelete={() => {
 								this.setState({
-									children: this.state.children.filter(c=>c.key!==child.key)
-								})
+									children: this.state.children.filter(
+										c => c.key !== child.key
+									)
+								});
 							}}
 						/>
 					);
 				})}
+			</div>
+		);
+	}
+}
+
+interface ISChildProps extends IBaseComponentProps {
+	show: boolean;
+	children?: any;
+	onHide?: () => void;
+}
+export class SChild extends React.Component<ISChildProps> {
+	render() {
+		const { show, onHide, children, ...props } = this.props;
+		return (
+			<div
+				{...BaseComponentProps(this.props)}
+				onTransitionEnd={() => {
+					if (!show) {
+						onHide && onHide();
+					}
+				}}
+				style={{
+					...this.props.style,
+					transition: "all 0.5s",
+					opacity: show ? 1 : 0
+				}}
+			>
+				{children}
 			</div>
 		);
 	}

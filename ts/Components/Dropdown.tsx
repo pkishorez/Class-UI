@@ -7,7 +7,10 @@ import { Button, IButtonProps } from "./Button";
 
 export interface IProps extends IBaseComponentProps {
 	button: string | React.ReactElement<any>;
-	customButton?: React.StatelessComponent<{active: boolean, text: string}>;
+	customButton?: React.StatelessComponent<{
+		active: boolean;
+		text: string | React.ReactElement<any>;
+	}>;
 	push?: "left" | "right" | "up";
 	animType?: ISAnimProps["animType"];
 	children: any;
@@ -53,7 +56,6 @@ export class Dropdown extends React.Component<IProps, IState> {
 		};
 		this.toggle = this.toggle.bind(this);
 		this.windowDismiss = this.windowDismiss.bind(this);
-		window.addEventListener("click", this.windowDismiss);
 	}
 
 	componentWillUnmount() {
@@ -70,8 +72,15 @@ export class Dropdown extends React.Component<IProps, IState> {
 		});
 	}
 	toggle() {
-		this.setState({
-			active: !this.state.active
+		this.setState(state => {
+			if (!state.active) {
+				window.addEventListener("click", this.windowDismiss);
+			} else {
+				window.removeEventListener("click", this.windowDismiss);
+			}
+			return {
+				active: !state.active
+			};
 		});
 	}
 	render() {
@@ -83,9 +92,9 @@ export class Dropdown extends React.Component<IProps, IState> {
 						this.clickedWithinDropdown = true;
 						this.toggle();
 					}}
-					style={{display: "flex"}}
+					style={{ display: "flex" }}
 				>
-					<Btn active={this.state.active} text={this.props.button}/>
+					<Btn active={this.state.active} text={this.props.button} />
 					{/* <CustomButton active={this.state.active}/> */}
 				</div>
 				<SAnim

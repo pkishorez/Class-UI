@@ -1,104 +1,45 @@
 import * as React from "react";
-import { v4 } from "uuid";
-import { Drawer, IDrawerProps } from "./_Drawer";
-import { Feedback } from "./_Feedback";
-import { Flash, IFlashProps } from "./_Flash";
 
-export interface IProps {}
+export interface IOverlayProps {}
 
-export interface IState {
+export interface IOverlayState {
 	overlays: {
 		id: string;
 		component: any;
 	}[];
 }
 
-export interface IOverlayProps {
-	remove: () => void;
-}
-
 let _instance: Overlay | null = null;
-export class Overlay extends React.Component<IProps, IState> {
-	static flash(options: IFlashProps) {
-		if (!_instance) {
-			console.error("Overlay component should be rendered to use it.");
-			return;
+export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
+	static getChild() {
+		if (Overlay.ref) {
+			// Ref is mounted. Cool :)
+			const domNode = document.createElement("div");
+			Overlay.ref.appendChild(domNode);
+			return domNode;
 		}
-		const id = v4();
-		_instance.overlay(
-			id,
-			<Flash
-				{...options}
-				key={id}
-				ref={r => (r = r)}
-				remove={() => {
-					Overlay.removeOverlay(id);
-				}}
-			/>
-		);
+		return null;
 	}
-	static drawer(options: IDrawerProps) {
-		if (!_instance) {
-			console.error("Overlay component should be rendered to use it.");
-			return;
+	static removeChild(child: any) {
+		if (Overlay.ref && child) {
+			Overlay.ref.removeChild(child);
 		}
-		const id = v4();
-		_instance.overlay(
-			id,
-			<Drawer
-				{...options}
-				key={id}
-				ref={r => (r = r)}
-				remove={() => {
-					Overlay.removeOverlay(id);
-				}}
-			/>
-		);
 	}
-
-	static feedback: typeof Feedback["show"] = (
-		content: string,
-		type = "success",
-		timeout = 2
-	) => {
-		Feedback.show(content, type, timeout);
+	private static ref: HTMLDivElement | null = null;
+	private static getRef = (ref: HTMLDivElement | null) => {
+		Overlay.ref = ref;
+		console.log("OVERLAY REF : ", ref);
 	};
 
-	private static removeOverlay(id: string) {
-		if (!_instance) {
+	constructor(props: IOverlayProps) {
+		super(props);
+		if (_instance) {
+			console.error("Overlay component should be rendered only once.");
 			return;
 		}
-		_instance.removeOverlay(id);
-	}
-	constructor(props: IProps, context: any) {
-		super(props, context);
 		_instance = this;
-		this.state = {
-			overlays: []
-		};
 	}
-	removeOverlay(id: string) {
-		this.setState({
-			overlays: this.state.overlays.filter(o => o.id !== id)
-		});
-	}
-	overlay(id: string, component: any) {
-		this.setState({
-			overlays: [
-				...this.state.overlays,
-				{
-					id,
-					component
-				}
-			]
-		});
-	}
-	componentWillUnmount() {
-		_instance = null;
-	}
-
 	render() {
-		// Render all child Overlay components here.
-		return <>{this.state.overlays.map(o => o.component)}</>;
+		return <div ref={Overlay.getRef} />;
 	}
 }

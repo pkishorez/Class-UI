@@ -6,14 +6,10 @@ import {
 	RouteComponentProps,
 	withRouter
 } from "react-router-dom";
-import {
-	BaseComponentProps,
-	IBaseComponentProps
-} from "./Components/Base";
+import { BaseComponentProps, IBaseComponentProps } from "./Components/Base";
 import { css, cx, IThemeColors, IThemes, Themes } from "./Emotion";
 import "./Emotion/reset";
 import { Overlay } from "./Overlay";
-import { Feedback } from "./Overlay/_Feedback";
 
 let instance: ClassUI | undefined;
 
@@ -96,15 +92,14 @@ export class ClassUI extends React.Component<IProps, IState> {
 
 				<div
 					style={{
-						left: 0,
 						position: "absolute",
+						left: 0,
 						top: 0,
 						zIndex: 1000
 					}}
 				>
 					<Overlay />
 				</div>
-				<Feedback />
 				{this.props.enableRouting ? <DummyRouter /> : null}
 			</div>
 		);

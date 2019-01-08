@@ -26,9 +26,10 @@ export let cardStyles = {
 	"5": `0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)`
 };
 
-export const Card = (props: ICardProps) => {
+const ForwardRef = (props: ICardProps, ref: any) => {
 	return (
 		<div
+			ref={ref}
 			{...BaseComponentProps(props)}
 			style={{
 				backgroundColor: "white",
@@ -41,3 +42,5 @@ export const Card = (props: ICardProps) => {
 		</div>
 	);
 };
+ForwardRef.displayName = "Card";
+export const Card = React.forwardRef<HTMLDivElement, ICardProps>(ForwardRef)

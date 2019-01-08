@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { uniq as _uniq } from "lodash-es";
 import * as React from "react";
 import { css, cx, IThemeColors, styled } from "../../Emotion";
 import { SAnim } from "../../Helper/Animation";
@@ -110,9 +110,8 @@ export class Select extends FormElement<IProps, IState> {
 						margin-bottom: 10px;
 						${this.props.inline
 							? `display: inline-block;`
-							: undefined} ${this.props.width
-							? `width: ${width}`
 							: undefined};
+						${this.props.width ? `width: ${width}` : undefined};
 					`,
 					this.props.className
 				)}
@@ -320,7 +319,7 @@ export class Select extends FormElement<IProps, IState> {
 		}
 	}
 	private getSuggestions(val: string) {
-		const options = _.uniq(this.props.options);
+		const options = _uniq(this.props.options);
 		if (this.props.nonEditable) {
 			return options;
 		}

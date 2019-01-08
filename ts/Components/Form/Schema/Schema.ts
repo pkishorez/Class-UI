@@ -1,5 +1,5 @@
 import * as AJV from "ajv";
-import * as _ from "lodash";
+import {get as _get, map as _map} from "lodash-es";
 import { IJSONSchema } from "./JSONSchema";
 
 export class Schema {
@@ -28,12 +28,12 @@ export class Schema {
 
 	getSchema(key: string) {
 		const jschema_key = "properties." + key.replace(/\./g, ".properties.");
-		return _.get(this.schema, jschema_key);
+		return _get(this.schema, jschema_key);
 	}
 	validate(data: any) {
 		const valid = this._validate(data);
 		if (!valid) {
-			return _.map(this._validate.errors, "message").join(".");
+			return _map(this._validate.errors, "message").join(".");
 		}
 		return null;
 	}
