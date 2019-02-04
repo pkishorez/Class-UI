@@ -24,6 +24,7 @@ injectGlobal(`
 	}
 	* {
 		box-sizing: border-box;
+		// color: #333;
 		&, &:hover, &:active {
 			border-width: 0px;
 			outline-width: 0px;

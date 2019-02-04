@@ -1,196 +1,75 @@
 // tslint:disable-next-line: no-var-requires
+import * as anime from "animejs";
 import * as jsdiff from "diff";
-import { TweenMax } from "gsap";
-import { omit } from "lodash-es";
+import { difference } from "lodash-es";
 import * as React from "react";
-import { ResizeObserver } from "resize-observer";
 import { v4 } from "uuid";
 
 (window as any).jsdiff = jsdiff;
 interface ISAnimProps {
+	delay?: number;
+	animeProps: {
+		hidden: any;
+		shown: any;
+	};
+	style?: React.CSSProperties;
 	show?: boolean;
 	children: any;
 	onHide?: any;
 	animTime?: number;
-	hideAnim: any;
-	autoAnim?: string[];
-	dimensionAnimation?: boolean;
-	showAnim: {
-		[id: string]: any;
-	};
 }
 
 export class SAnim extends React.Component<ISAnimProps> {
-	static defaultProps: Partial<ISAnimProps> = {
-		animTime: 0.4,
-		show: true,
-		autoAnim: []
-	};
-	animRef: any;
-	tween?: gsap.TweenMax;
-	contentRef: any;
-	dynamicTween?: TweenMax;
-	observer: any;
-	dynamicDims = { height: 0 };
-	autoAnimTween?: TweenMax;
+	ref: HTMLDivElement | null = null;
+	timeline?: anime.AnimeTimelineInstance;
+	autoTimeline?: gsap.TimelineLite;
+	animState: "hidden"|"shown"|"in transition" = "hidden";
 
-	constructor(props: ISAnimProps) {
-		super(props);
+	get animTime() {
+		return this.props.animTime || 500;
+	}
+	get delay() {
+		return this.props.delay || 0;
 	}
 
-	updateDimensions = () => {
-		if (!this.props.dimensionAnimation) {
-			return;
-		}
-		const contentHeight = this.contentRef.getBoundingClientRect().height;
-		if (this.props.show && contentHeight === this.dynamicDims.height) {
-			// NO CHANGE. IGNORE UPDATE.
-			return;
-		}
-		if (!this.props.show) {
-			this.dynamicDims = { height: 0 };
-		} else {
-			this.dynamicDims = {
-				height: this.contentRef.getBoundingClientRect().height
-			};
-		}
-		this.dynamicTween && this.dynamicTween.kill();
-		this.dynamicTween = TweenMax.to(
-			this.animRef,
-			this.props.animTime!,
-			this.dynamicDims
-		);
-		this.dynamicTween.eventCallback("onComplete", () => {
-			if (!this.props.show) {
-				this.props.onHide();
-				return;
-			}
-			// this.updateDimensions();
-		});
-	};
 	componentDidMount() {
-		if (ResizeObserver && this.props.dimensionAnimation) {
-			TweenMax.set(this.animRef, {
-				height: 0
-			});
-
-			this.observer = new ResizeObserver(() => {
-				setTimeout(this.updateDimensions, 100);
-			});
-			this.observer.observe(this.contentRef);
+		(anime as any).set(this.ref, this.props.animeProps.hidden);
+		this.animState = "in transition";
+		this.timeline = anime.timeline({
+			delay: this.delay,
+			duration: this.animTime
+		} as any);
+		// SET DEFAULTS IF ANY.
+		this.timeline.progress
+	}
+	componentDidUpdate(prevProps: ISAnimProps) {
+		if (prevProps.show !== this.props.show) {
+			this.update();
 		}
-		TweenMax.set(this.animRef, this.props.hideAnim);
-		TweenMax.set(
-			this.animRef,
-			this.props.autoAnim!.reduce(
-				(acc, a) => ({
-					...acc,
-					[a]: "auto"
-				}),
-				{}
-			)
-		);
-		this.autoAnimTween = TweenMax.from(
-			this.animRef,
-			this.props.animTime!,
-			this.props.autoAnim!.reduce(
-				(acc, a) => ({
-					...acc,
-					[a]: 0
-				}),
-				{}
-			)
-		);
-		this.update();
 	}
-	componentWillUnmount() {
-		this.observer && this.observer.disconnect();
-		this.tween && this.tween.kill();
-		this.dynamicTween && this.dynamicTween.kill();
-	}
-	componentDidUpdate() {
-		this.update();
-	}
-	update() {
-		this.updateDimensions();
-		this.tween && this.tween.kill();
-		if (!this.props.show) {
-			TweenMax.set(
-				this.animRef,
-				this.props.autoAnim!.reduce(
-					(acc, a) => ({
-						...acc,
-						[a]: "auto"
-					}),
-					{}
-				)
-			);
-			this.autoAnimTween && this.autoAnimTween.kill();
-			this.tween = TweenMax.to(this.animRef, this.props.animTime!, {
-				...this.props.hideAnim,
-				...this.props.autoAnim!.reduce(
-					(acc, a) => ({
-						...acc,
-						[a]: 0
-					}),
-					{}
-				)
-			});
-		} else {
-			this.tween = TweenMax.to(
-				this.animRef,
-				this.props.animTime!,
-				this.props.show
-					? this.props.showAnim
-					: {
-							css: {
-								...this.props.hideAnim,
-								...this.props.autoAnim!.reduce(
-									(acc, a) => ({
-										...acc,
-										[a]: 0
-									}),
-									{}
-								)
-							}
-					  }
-			);
-		}
-		this.tween.eventCallback("onComplete", () => {
-			if (!this.props.show && !this.props.dimensionAnimation) {
-				this.props.onHide();
-			}
-		});
+	update = () => {};
+	show() {
+		
 	}
 
-	getAnimRef = (r: any) => {
-		this.animRef = r;
-	};
-	getContentRef = (r: any) => {
-		this.contentRef = r;
+	getRef = (r: any) => {
+		this.ref = r;
 	};
 	render() {
-		const child = React.Children.only(this.props.children);
-		const dimensionAnimation = !!this.props.dimensionAnimation;
-		return dimensionAnimation ? (
-			<div ref={this.getAnimRef}>
-				{React.cloneElement(child, {
-					ref: this.getContentRef
-				})}
-			</div>
-		) : (
-			React.cloneElement(child, {
-				ref: this.getAnimRef
-			})
-		);
+		const { children, style } = this.props;
+		const cloneChild = React.Children.only(children);
+		return React.cloneElement(cloneChild, {
+			style: { ...style, ...cloneChild.props.style },
+			ref: this.getRef
+		});
 	}
 }
 
-interface IGenericListProps {
+interface IListProps {
 	children: any;
-	itemProps?: Partial<ISAnimProps>;
+	itemStyle?: React.CSSProperties;
 }
-interface IGenericListState {
+interface IListState {
 	list: {
 		component: any;
 		dynamicKey: string | number;
@@ -199,12 +78,9 @@ interface IGenericListState {
 	}[];
 }
 
-export class GenericList extends React.Component<
-	IGenericListProps,
-	IGenericListState
-> {
+export class GenericList extends React.Component<IListProps, IListState> {
 	private map: any = {};
-	constructor(props: IGenericListProps) {
+	constructor(props: IListProps) {
 		super(props);
 		this.state = {
 			list: []
@@ -213,9 +89,8 @@ export class GenericList extends React.Component<
 	componentDidMount() {
 		this.updateList();
 	}
-	componentDidUpdate(prevProps: IGenericListProps) {
+	componentDidUpdate(prevProps: IListProps) {
 		if (prevProps.children !== this.props.children) {
-			// console.log("UPDATING LIST...");
 			this.updateList();
 		}
 	}
@@ -234,11 +109,10 @@ export class GenericList extends React.Component<
 				component: ch
 			})
 		);
-		// console.log("NEW ITEM", newItems);
 		const diff = jsdiff.diffArrays(oldItems, newItems, {
 			comparator: (o, n) => o.dynamicKey === n.dynamicKey
 		});
-		const update: IGenericListState["list"] = [];
+		const update: IListState["list"] = [];
 		diff.forEach(con => {
 			if (con.added) {
 				// Just add. No deal.
@@ -277,21 +151,38 @@ export class GenericList extends React.Component<
 		});
 	}
 	render() {
-		const render = this.state.list.map(item => {
-			return React.cloneElement(item.component, {
-				...this.props.itemProps,
-				show: item.status === "add",
-				key: item.dynamicKey,
-				onHide: () => {
-					this.setState(state => ({
-						list: state.list.filter(
-							i => i.dynamicKey !== item.dynamicKey
-						)
-					}));
-				}
-			});
-		});
-		// console.log("RENDER : ", render, this.state.list);
-		return render;
+		return (
+			<>
+				{this.state.list.map(item => {
+					return React.cloneElement(item.component, {
+						...item.component.props,
+						key: item.dynamicKey,
+						show: item.status === "add",
+						style: this.props.itemStyle,
+						onHide: () => {
+							this.setState(state => ({
+								list: state.list.filter(
+									i => i.dynamicKey !== item.dynamicKey
+								)
+							}));
+						}
+					});
+					// <SAnim
+					// 	style={this.props.itemStyle}
+					// 	key={item.dynamicKey}
+					// 	show={item.status === "add"}
+					// 	onHide={() => {
+					// 		this.setState(state => ({
+					// 			list: state.list.filter(
+					// 				i => i.dynamicKey !== item.dynamicKey
+					// 			)
+					// 		}));
+					// 	}}
+					// >
+					// 	{item.component}
+					// </SAnim>
+				})}
+			</>
+		);
 	}
 }

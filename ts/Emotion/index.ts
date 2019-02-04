@@ -1,12 +1,6 @@
 import emotionStyled, { CreateStyled, css } from "react-emotion";
 import { IThemeColors } from "./theme";
-export {
-	Themes,
-	IThemes,
-	IThemeColors,
-	PColors,
-	IPColors
-} from "./theme";
+export { Themes, IThemes, IThemeColors, PColors, IPColors } from "./theme";
 
 export let styled = emotionStyled as any; // CreateStyled<IThemeColors>;
 
@@ -26,9 +20,10 @@ export let Hoverable = (props?: IHoverable) => css`
 		&, &:hover {
 			background-color: #DDDDDD;
 		}`
-		: undefined} ${props && props.disable
+		: undefined};
+	${props && props.disable
 		? `
-		&, :hover{
+		&, &:hover{
 			background-color: inherit;
 			cursor: default;
 			color: grey;

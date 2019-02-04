@@ -84,7 +84,6 @@ export class Flash extends React.Component<IFlashProps, IFlashState> {
 	}
 	render() {
 		const { overlayPortal } = this.state;
-		console.log("OVERLAY : ", overlayPortal);
 		if (!overlayPortal) {
 			return null;
 		}

@@ -1,90 +1,94 @@
 import * as React from "react";
-import { styled } from "../Emotion";
-import { SAnim } from "../Helper/Animation";
+import * as ReactDOM from "react-dom";
+import { css } from "../Emotion";
+import { SAnim } from "../Helper/SAnim";
+import { Overlay } from "./index";
 
-export interface IProps {}
-
-export interface IState {
-	content?: any;
-	type: "success" | "error";
+export interface IFeedbackProps {
 	show: boolean;
+	hide: () => void;
+	children: any;
 }
 
-const EFeedBack = styled("div")`
+export interface IFeedbackState {
+	overlayPortal: HTMLDivElement | null;
+}
+
+const EFlash = css`
 	position: fixed;
 	top: 0px;
-	left: 50%;
-	z-index: 2000;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.5);
+
+	&.noDismiss {
+		background-color: rgba(0, 0, 0, 0.8);
+	}
 `;
-const EContent = styled("div")`
-	display: inline-block;
+const EContent = css`
 	position: relative;
-	right: 50%;
-	padding: 15px;
-	min-width: 200px;
-	text-align: center;
-
-	&.error {
-		background-color: rgb(255, 223, 223);
-		color: rgb(201, 0, 0);
-		font-weight: 900;
-	}
-	&.success {
-		background-color: rgb(212, 255, 212);
-		color: rgb(0, 119, 0);
-		font-weight: 900;
-	}
+	max-width: 100%;
+	max-height: 100%;
+	overflow: auto;
 `;
 
-let _instance: Feedback | null = null;
-export class Feedback extends React.Component<IProps, IState> {
-	static timeout: any = null;
-	static show(
-		content: string,
-		type: IState["type"] = "success",
-		timeout: number = 2
-	) {
-		if (!_instance) {
-			console.error("Feedback component not found.");
-			return;
-		}
-		_instance.setState({
-			content,
-			type,
-			show: true
-		});
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-		this.timeout = setTimeout(_instance.hide, timeout * 1000);
-	}
-	constructor(props: IProps, context: any) {
+export class Flash extends React.Component<IFeedbackProps, IFeedbackState> {
+	static defaultProps: Partial<IFeedbackProps> = {
+		show: false
+	};
+	private content_click: boolean = false;
+
+	constructor(props: IFeedbackProps, context: any) {
 		super(props, context);
 		this.state = {
-			show: false,
-			type: "success"
+			overlayPortal: null
 		};
-		_instance = this;
-		this.hide = this.hide.bind(this);
 	}
-	componentWillUnmount() {
-		_instance = null;
-	}
-	hide() {
+	componentDidMount() {
 		this.setState({
-			show: false
+			overlayPortal: Overlay.getChild()
 		});
 	}
+	componentWillUnmount() {
+		Overlay.removeChild(this.state.overlayPortal);
+	}
+
 	render() {
-		return (
-			<SAnim animType="slideBottom" show={this.state.show}>
-				<EFeedBack>
-					<EContent className={this.state.type}>
-						{this.state.content}
-					</EContent>
-				</EFeedBack>
-			</SAnim>
+		const { overlayPortal } = this.state;
+		if (!overlayPortal) {
+			return null;
+		}
+		return ReactDOM.createPortal(
+			<SAnim
+				show={this.props.show}
+				animStyle={{
+					hide: { opacity: 0 },
+					show: { opacity: 1 },
+					autoProps: []
+				}}
+				onHidden={this.props.hide}
+			>
+				<div
+					className={EFlash}
+					style={{
+						pointerEvents: this.props.show ? undefined : "none"
+					}}
+				>
+					<div
+						className={EContent}
+						onClick={(e: any) => {
+							e.stopPropagation();
+						}}
+					>
+						{this.props.children}
+					</div>
+				</div>
+			</SAnim>,
+			overlayPortal
 		);
 	}
 }

@@ -28,7 +28,6 @@ export class Overlay extends React.Component<IOverlayProps, IOverlayState> {
 	private static ref: HTMLDivElement | null = null;
 	private static getRef = (ref: HTMLDivElement | null) => {
 		Overlay.ref = ref;
-		console.log("OVERLAY REF : ", ref);
 	};
 
 	constructor(props: IOverlayProps) {

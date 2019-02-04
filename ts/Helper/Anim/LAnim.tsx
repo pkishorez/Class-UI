@@ -3,85 +3,13 @@ import * as jsdiff from "diff";
 import { TimelineLite, TweenLite } from "gsap";
 import * as React from "react";
 import { v4 } from "uuid";
+import { ISAnimProps, SAnim } from "./SAnim";
 
-(window as any).jsdiff = jsdiff;
-interface ISAnimProps {
-	show?: boolean;
+interface ILAnimProps {
 	children: any;
-	onHide?: any;
-	style?: React.CSSProperties
+	SAnimProps?: ISAnimProps;
 }
-
-export class SAnim extends React.Component<ISAnimProps> {
-	ref: HTMLDivElement | null = null;
-	timeline!: gsap.TimelineLite;
-
-	componentDidMount() {
-		if (this.props.show) {
-			this.update();
-		}
-		else {
-			new TimelineLite().set(this.ref as any, {
-				height: 0,
-				scaleY: 0
-			})
-		}
-	}
-	componentDidUpdate(prevProps: ISAnimProps) {
-		if (prevProps.show !== this.props.show) {
-			this.update();
-		}
-	}
-	update() {
-		if (this.props.show) {
-			this.show();
-		} else {
-			this.hide();
-		}
-	}
-	show() {
-		this.timeline && this.timeline.kill();
-		this.timeline = new TimelineLite();
-		this.timeline.set(this.ref as any, {
-			height: "auto",
-			scaleY: 1,
-			transformOrigin: "center top"
-		});
-		this.timeline.from(this.ref as any, 0.4, {
-			height: 0,
-			scaleY: 0
-		});
-	}
-	hide() {
-		this.timeline && this.timeline.kill();
-		this.timeline = new TimelineLite();
-		this.timeline
-			.to(this.ref as any, 0.4, { height: 0, scaleY: 0 })
-			.eventCallback("onComplete", this.props.onHide);
-	}
-
-	getRef = (r: any) => {
-		this.ref = r;
-	};
-	render() {
-		const { children, show, onHide, ...props } = this.props;
-		return (
-			<div
-				{...props}
-				style={{ ...props.style, boxSizing: "border-box" } as any}
-				ref={this.getRef}
-			>
-				{children}
-			</div>
-		);
-	}
-}
-
-interface IListProps {
-	children: any;
-	itemStyle?: React.CSSProperties;
-}
-interface IListState {
+interface ILAnimState {
 	list: {
 		component: any;
 		dynamicKey: string | number;
@@ -90,9 +18,9 @@ interface IListState {
 	}[];
 }
 
-export class List extends React.Component<IListProps, IListState> {
+export class LAnim extends React.Component<ILAnimProps, ILAnimState> {
 	private map: any = {};
-	constructor(props: IListProps) {
+	constructor(props: ILAnimProps) {
 		super(props);
 		this.state = {
 			list: []
@@ -101,7 +29,7 @@ export class List extends React.Component<IListProps, IListState> {
 	componentDidMount() {
 		this.updateList();
 	}
-	componentDidUpdate(prevProps: IListProps) {
+	componentDidUpdate(prevProps: ILAnimProps) {
 		if (prevProps.children !== this.props.children) {
 			this.updateList();
 		}
@@ -124,7 +52,7 @@ export class List extends React.Component<IListProps, IListState> {
 		const diff = jsdiff.diffArrays(oldItems, newItems, {
 			comparator: (o, n) => o.dynamicKey === n.dynamicKey
 		});
-		const update: IListState["list"] = [];
+		const update: ILAnimState["list"] = [];
 		diff.forEach(con => {
 			if (con.added) {
 				// Just add. No deal.
@@ -163,12 +91,13 @@ export class List extends React.Component<IListProps, IListState> {
 		});
 	}
 	render() {
+		const { SAnimProps } = this.props;
 		return (
 			<>
 				{this.state.list.map(item => {
 					return (
 						<SAnim
-							style={this.props.itemStyle}
+							{...SAnimProps}
 							key={item.dynamicKey}
 							show={item.status === "add"}
 							onHide={() => {
