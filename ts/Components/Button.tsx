@@ -56,7 +56,7 @@ const EButton = styled("div")`
 		&:active,
 		&:hover {
 			background-color: #dddddd;
-			color: ${(p: IThemeColors)=>p.theme.color}
+			/* color: ${(p: IThemeColors)=>p.theme.color} */
 		}
 	}
 

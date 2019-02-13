@@ -50,8 +50,10 @@ export let MDivider = () => {
 };
 
 const EItem = styled("div")`
+	display: flex;
+	align-items: center;
 	padding: 7px 10px;
-	min-height: 48px;
+	/* min-height: 48px; */
 `;
 export let MItem = (props: IItemProps) => {
 	return (

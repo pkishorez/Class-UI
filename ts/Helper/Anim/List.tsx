@@ -1,31 +1,74 @@
 // tslint:disable-next-line: no-var-requires
 import * as jsdiff from "diff";
-import { TimelineLite, TweenLite } from "gsap";
+import { Power0, TimelineLite, TweenLite, Power1, Power4 } from "gsap";
 import * as React from "react";
 import { v4 } from "uuid";
 
-(window as any).jsdiff = jsdiff;
 interface ISAnimProps {
-	show?: boolean;
+	show: boolean;
+	initProps: any;
+	animProps: string[];
+	animTime: number;
+	autoHeight: boolean;
 	children: any;
 	onHide?: any;
-	style?: React.CSSProperties
+	unMountOnHide: boolean;
+}
+interface ISAnimState {
+	show: boolean;
 }
 
-export class SAnim extends React.Component<ISAnimProps> {
+const ease = Power4;
+export class SAnim extends React.Component<ISAnimProps, ISAnimState> {
+	static defaultProps = {
+		animTime: 0.4,
+		show: true,
+		initProps: {
+			transformOrigin: "center top"
+		},
+		autoHeight: false,
+		unMountOnHide: true,
+		animProps: ["scaleY", "opacity"]
+	};
 	ref: HTMLDivElement | null = null;
-	timeline!: gsap.TimelineLite;
+	tween!: gsap.TweenLite;
+	autoTween: any;
+	state = {
+		show: true
+	};
 
+	constructor(props: ISAnimProps) {
+		super(props);
+	}
+	animProps(show: boolean) {
+		return this.props.animProps.reduce(
+			(agg, key) => ({
+				...agg,
+				[key]: show ? 1 : 0
+			}),
+			{}
+		);
+	}
 	componentDidMount() {
-		if (this.props.show) {
-			this.update();
+		TweenLite.set(this.ref, this.props.initProps);
+		if (!this.props.show) {
+			TweenLite.set(this.ref, this.animProps(true));
+		} else {
+			TweenLite.set(this.ref, this.animProps(false));
 		}
-		else {
-			new TimelineLite().set(this.ref as any, {
-				height: 0,
-				scaleY: 0
-			})
+		this.props.autoHeight && TweenLite.set(this.ref, { height: 0 });
+		this.update();
+	}
+	onHide() {
+		this.props.onHide && this.props.onHide();
+		if (this.props.unMountOnHide) {
+			this.setState({
+				show: false
+			});
 		}
+	}
+	componentWillUnmount() {
+		this.tween.kill();
 	}
 	componentDidUpdate(prevProps: ISAnimProps) {
 		if (prevProps.show !== this.props.show) {
@@ -40,54 +83,71 @@ export class SAnim extends React.Component<ISAnimProps> {
 		}
 	}
 	show() {
-		this.timeline && this.timeline.kill();
-		this.timeline = new TimelineLite();
-		this.timeline.set(this.ref as any, {
-			height: "auto",
-			scaleY: 1,
-			transformOrigin: "center top"
+		if (!this.ref) {
+			return;
+		}
+		this.tween && this.tween.kill();
+		this.tween = TweenLite.to(this.ref, this.props.animTime, {
+			...this.animProps(true),
+			ease: ease.easeOut
 		});
-		this.timeline.from(this.ref as any, 0.4, {
-			height: 0,
-			scaleY: 0
-		});
+
+		if (this.props.autoHeight) {
+			this.autoTween && this.autoTween.kill();
+			// Get current height;
+			const height = this.ref.clientHeight;
+			TweenLite.set(this.ref, { height: "auto" });
+			this.autoTween = TweenLite.from(this.ref, this.props.animTime, {
+				height,
+				ease: ease.easeOut
+			});
+		}
 	}
 	hide() {
-		this.timeline && this.timeline.kill();
-		this.timeline = new TimelineLite();
-		this.timeline
-			.to(this.ref as any, 0.4, { height: 0, scaleY: 0 })
-			.eventCallback("onComplete", this.props.onHide);
+		this.tween && this.tween.kill();
+		this.tween = TweenLite.to(this.ref, this.props.animTime, {
+			...this.animProps(false),
+			ease: ease.easeOut
+		});
+		this.tween.eventCallback("onComplete", () => {
+			if (!this.props.show && this.props.onHide) {
+				this.props.onHide();
+			}
+		});
+		if (this.props.autoHeight) {
+			this.autoTween && this.autoTween.kill();
+			this.autoTween = TweenLite.to(this.ref, this.props.animTime, {
+				height: 0,
+				ease: ease.easeOut
+			});
+		}
 	}
 
 	getRef = (r: any) => {
 		this.ref = r;
 	};
 	render() {
-		const { children, show, onHide, ...props } = this.props;
-		return (
-			<div
-				{...props}
-				style={{ ...props.style, boxSizing: "border-box" } as any}
-				ref={this.getRef}
-			>
-				{children}
-			</div>
-		);
+		const { children } = this.props;
+		return this.state.show
+			? React.cloneElement(children, {
+					ref: this.getRef
+			  })
+			: null;
 	}
 }
 
 interface IListProps {
 	children: any;
-	itemStyle?: React.CSSProperties;
+	animProps?: Partial<ISAnimProps>
+}
+interface IListItem {
+	component: any;
+	dynamicKey: string | number;
+	key: string | number;
+	status: "delete" | "add";
 }
 interface IListState {
-	list: {
-		component: any;
-		dynamicKey: string | number;
-		key: string | number;
-		status: "delete" | "add";
-	}[];
+	list: IListItem[];
 }
 
 export class List extends React.Component<IListProps, IListState> {
@@ -162,26 +222,34 @@ export class List extends React.Component<IListProps, IListState> {
 			list: update
 		});
 	}
+	removeItem = (item: IListItem) => (e: any) => {
+		this.setState(state => ({
+			list: state.list.filter(i => i.dynamicKey !== item.dynamicKey)
+		}));
+	};
 	render() {
 		return (
 			<>
 				{this.state.list.map(item => {
-					return (
-						<SAnim
-							style={this.props.itemStyle}
-							key={item.dynamicKey}
-							show={item.status === "add"}
-							onHide={() => {
-								this.setState(state => ({
-									list: state.list.filter(
-										i => i.dynamicKey !== item.dynamicKey
-									)
-								}));
-							}}
-						>
-							{item.component}
-						</SAnim>
-					);
+					console.log("LIST ITEM ", item.component);
+					if (item.component.name !== "SAnim") {
+						// Create SAnim here.
+						return (
+							<SAnim
+								{...this.props.animProps}
+								show={item.status === "add"}
+								onHide={this.removeItem(item)}
+								key={item.dynamicKey}
+							>
+								{item.component}
+							</SAnim>
+						);
+					}
+					return React.cloneElement(item.component, {
+						key: item.dynamicKey,
+						show: item.status === "add",
+						onHide: this.removeItem(item)
+					});
 				})}
 			</>
 		);
