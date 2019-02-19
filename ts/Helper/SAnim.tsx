@@ -127,7 +127,7 @@ export class SAnim extends React.Component<ISAnimProps, ISAnimState> {
 
 	render() {
 		const child = React.cloneElement(
-			React.Children.only(this.props.children),
+			React.Children.only(this.props.children as any),
 			{
 				ref: this.getRef
 			}

@@ -1,4 +1,4 @@
-import * as AJV from "ajv";
+import AJV from "ajv";
 import {get as _get, map as _map} from "lodash-es";
 import { IJSONSchema } from "./JSONSchema";
 

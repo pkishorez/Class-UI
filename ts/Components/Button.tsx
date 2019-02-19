@@ -1,6 +1,7 @@
 import * as React from "react";
 import { matchPath, RouteComponentProps, withRouter } from "react-router-dom";
 import { cx, IThemeColors, styled } from "../Emotion";
+import { Ink } from "../Helper/Ink";
 import { BaseComponentProps, IBaseComponentProps } from "./Base";
 
 export interface IButtonProps extends IBaseComponentProps {
@@ -11,12 +12,14 @@ export interface IButtonProps extends IBaseComponentProps {
 	flat?: boolean;
 }
 const EButton = styled("div")`
-	user-select: none;
-	padding: 10px;
-	cursor: pointer;
+	position: relative;
 	display: flex;
 	align-items: center;
 	background-color: #eeeeee;
+	padding: 10px;
+	user-select: none;
+	cursor: pointer;
+	
 	&:hover {
 		background-color: #dddddd;
 	}
@@ -92,6 +95,7 @@ export const Button = (props: IButtonProps) => {
 				flat: !!props.flat
 			})}
 		>
+			<Ink />
 			{props.children}
 		</EButton>
 	);

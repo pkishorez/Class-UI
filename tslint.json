@@ -1,6 +1,6 @@
 {
 	"defaultSeverity": "error",
-	"extends": ["tslint:recommended", "tslint-config-prettier"],
+	"extends": ["tslint:recommended", "tslint-config-prettier", "tslint-react-hooks"],
 	"jsRules": {},
 	"rules": {
 		"indent": [true, "tabs", 4],
@@ -11,7 +11,8 @@
 		"object-literal-sort-keys": false,
 		"no-console": false,
 		"no-empty-interface": false,
-		"max-classes-per-file": false
+		"max-classes-per-file": false,
+		"react-hooks-nesting": "error"
 	},
 	"rulesDirectory": []
 }
