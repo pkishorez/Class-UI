@@ -1,34 +1,30 @@
-import * as React from 'react';
-import { css, cx } from '../Emotion';
+import React from "react";
+import { cx } from "../styles";
+import { css } from "linaria";
 
-const cls = css`
-	font-family: 'Material Icons';
+const icon = css`
+	font-family: "Material Icons";
 	font-weight: normal;
 	font-style: normal;
-	font-size: 22px;  /* Preferred icon size */
-	display: inline-block;
+	font-size: 24px;
 	line-height: 1;
-	text-transform: none;
 	letter-spacing: normal;
-	word-wrap: normal;
+	text-transform: none;
+	display: inline-block;
 	white-space: nowrap;
+	word-wrap: normal;
 	direction: ltr;
-
-	/* Support for all WebKit browsers. */
+	font-feature-settings: "liga";
+	-webkit-font-feature-settings: "liga";
 	-webkit-font-smoothing: antialiased;
-	/* Support for Safari and Chrome. */
-	text-rendering: optimizeLegibility;
-
-	/* Support for Firefox. */
-	-moz-osx-font-smoothing: grayscale;
-
-	/* Support for IE. */
-	font-feature-settings: 'liga';
 `;
-
 export const Icon = (props: {
-	style?: React.CSSProperties,
-	[id: string]: any
-})=>{
-	return <i {...props} className={cx("__icon", cls, props.className)}>{props.children}</i>
-}
+	style?: React.CSSProperties;
+	[id: string]: any;
+}) => {
+	return (
+		<i {...props} className={cx(icon, props.className)}>
+			{props.children}
+		</i>
+	);
+};

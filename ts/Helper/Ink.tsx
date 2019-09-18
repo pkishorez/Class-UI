@@ -1,6 +1,6 @@
 import React, { createRef, useState, version } from "react";
 import { v4 } from "uuid";
-import { css } from "../Emotion/index";
+import { css } from "linaria";
 
 console.log(version);
 type IRipples = {
@@ -82,4 +82,4 @@ export function Ink() {
 			})}
 		</div>
 	);
-};
+}
