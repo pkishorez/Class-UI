@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
-import { FormContext } from "./index";
-import { cx } from "../styles";
-import ajv from "ajv";
+import React, { useContext, useState } from 'react';
+import { FormContext } from './index';
+import { cx } from '../styles';
+import ajv from 'ajv';
 
 interface ICheckboxProps {
 	dataPath: string;
@@ -15,8 +15,8 @@ interface ICheckboxProps {
 export const Checkbox = ({
 	dataPath,
 	className,
-	label = "",
-	inputProps
+	label = '',
+	inputProps,
 }: ICheckboxProps) => {
 	const context = useContext(FormContext);
 	const ref = React.createRef<HTMLInputElement>();
@@ -25,36 +25,38 @@ export const Checkbox = ({
 	const [success, setSuccess] = useState<boolean | null>(null);
 	context.register({
 		ref: {
-			setMeta: ({ error, focus, success, value }) => {
+			setMeta: ({ error, focus, success }) => {
 				focus && ref.current && ref.current.focus();
 				setError(error);
 				setSuccess(!!success);
-				value && setValue(value);
-			}
+			},
+			setValue(value) {
+				setValue(value);
+			},
 		},
-		dataPath
+		dataPath,
 	});
 	return (
-		<label className={cx("mb-2 flex items-center p-2", className)}>
+		<label className={cx('mb-2 flex items-center p-2', className)}>
 			<input
 				{...inputProps}
 				type="checkbox"
 				className={cx(
-					"outline-none border-2 border-solid border-gray-300 pr-2 text-gray-800"
+					'outline-none border-2 border-solid border-gray-300 pr-2 text-gray-800'
 				)}
 				checked={value}
 				ref={ref}
 				onChange={e => {
 					context.updateValue({
 						dataPath,
-						value: e.target.checked
+						value: e.target.checked,
 					});
 				}}
 			/>
 			<span
-				className={cx("ml-2 flex-grow select-none", {
-					"text-red-700": !!error,
-					"text-green-700": success
+				className={cx('ml-2 flex-grow select-none', {
+					'text-red-700': !!error,
+					'text-green-700': success,
 				})}
 			>
 				{label}
@@ -62,4 +64,4 @@ export const Checkbox = ({
 		</label>
 	);
 };
-Checkbox.displayName = "Checkbox";
+Checkbox.displayName = 'Checkbox';

@@ -1,13 +1,14 @@
-import React, { useContext, useState } from "react";
-import { FormContext } from "./index";
-import ajv from "ajv";
-import { cx } from "../styles";
-import { Radio as RadioComponent } from "./Components/Radio";
+import React, { useContext, useState } from 'react';
+import { FormContext } from './index';
+import ajv from 'ajv';
+import { cx } from '../styles';
+import { Radio as RadioComponent } from './Components/Radio';
 
 interface IRadioProps {
 	dataPath: string;
 	label?: string;
 	className?: string;
+	optClassName?: string;
 	inputProps?: React.DetailedHTMLProps<
 		React.InputHTMLAttributes<HTMLInputElement>,
 		HTMLInputElement
@@ -17,9 +18,10 @@ interface IRadioProps {
 export const Radio = ({
 	dataPath,
 	className,
-	label = "",
+	optClassName,
+	label = '',
 	inputProps,
-	options
+	options,
 }: IRadioProps) => {
 	const context = useContext(FormContext);
 	const ref = React.createRef<HTMLInputElement>();
@@ -28,25 +30,28 @@ export const Radio = ({
 	const [success, setSuccess] = useState<boolean | null>(null);
 	context.register({
 		ref: {
-			setMeta: ({ error, focus, success, value }) => {
+			setMeta: ({ error, focus, success }) => {
 				focus && ref.current && ref.current.focus();
 				setError(error);
 				setSuccess(!!success);
-				value && setValue(value);
-			}
+			},
+			setValue(value) {
+				setValue(value);
+			},
 		},
-		dataPath
+		dataPath,
 	});
 	return (
-		<div>
+		<div className={className}>
+			{label ?? <div>label</div>}
 			{options.map((option, i) => (
 				<label
-					className={cx("flex items-center p-2 w-full", className)}
+					className={cx('flex items-center p-2 w-full', optClassName)}
 					{...{ key: i }}
 				>
 					<RadioComponent
 						className={cx(
-							"outline-none border-2 border-solid border-gray-300 pr-2 text-gray-800"
+							'outline-none border-2 border-solid border-gray-300 pr-2 text-gray-800'
 						)}
 						value={option.value}
 						checked={value === option.value}
@@ -55,13 +60,13 @@ export const Radio = ({
 							console.log(option.value, dataPath);
 							context.updateValue({
 								dataPath,
-								value: option.value
+								value: option.value,
 							});
 						}}
 					/>
 					<span
-						className={cx("ml-2 flex-grow select-none", {
-							"text-green-700": success && value === option.value
+						className={cx('ml-2 flex-grow select-none', {
+							'text-green-700': success && value === option.value,
 						})}
 					>
 						{option.label}
@@ -71,4 +76,4 @@ export const Radio = ({
 		</div>
 	);
 };
-Radio.displayName = "Radio";
+Radio.displayName = 'Radio';

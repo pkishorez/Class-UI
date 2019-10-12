@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { IJSONSchema, Schema } from "./Schema";
-import ajv from "ajv";
-import jsonptr from "json-ptr";
+import React, { useState, useEffect, useRef } from 'react';
+import { IJSONSchema, Schema } from './Schema';
+import ajv from 'ajv';
+import jsonptr from 'json-ptr';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 interface IFormElement {
 	setMeta: (
@@ -10,9 +11,9 @@ interface IFormElement {
 			error: ajv.ErrorObject | null;
 			success: boolean;
 			focus: boolean;
-			value?: any;
 		}>
 	) => void;
+	setValue: (val: any) => void;
 }
 
 interface IFormContext {
@@ -21,7 +22,7 @@ interface IFormContext {
 }
 export const FormContext = React.createContext<IFormContext>({
 	updateValue: ({}) => ({}),
-	register: ({}) => {}
+	register: ({}) => {},
 });
 
 export interface IFormProps {
@@ -29,108 +30,137 @@ export interface IFormProps {
 	autoComplete?: string;
 	className?: string;
 	defaultValue?: any;
+	value?: any;
 	onChange?: (data: IFormData) => void;
 	onSubmit?: (data: IFormData) => void;
 	onError?: (errors: ajv.ErrorObject[]) => void;
 	formProps?: any;
+	formRef?: any;
 }
 interface IFormData {
 	[key: string]: string | number;
 }
-export const Form: React.SFC<IFormProps> = props => {
-	let compiledSchema = useRef<Schema>();
-	let formData = useRef<{}>(props.defaultValue || {});
-	const elementRefs = useRef<{
+export class Form extends React.Component<IFormProps, any> {
+	compiledSchema?: Schema;
+	formData: any = {};
+	elementRefs: {
 		[dataPath: string]:
 			| { ref: IFormElement; isTouched: boolean }
 			| undefined;
-	}>({});
-
-	useEffect(() => {
-		compiledSchema.current = new Schema(props.schema);
-		compiledSchema.current.validate(formData.current);
-		Object.keys(elementRefs.current).forEach(dataPath => {
-			const elemRef = elementRefs.current[dataPath];
+	} = {};
+	constructor(props) {
+		super(props);
+		this.formData = props.defaultValue || {};
+	}
+	componentDidMount() {
+		this.compiledSchema = new Schema(this.props.schema);
+		this.compiledSchema.validate(this.formData);
+		Object.keys(this.elementRefs).forEach(dataPath => {
+			const elemRef = this.elementRefs[dataPath];
 			elemRef &&
 				elemRef.ref.setMeta({
 					isTouched: false,
 					focus: false,
 					error: null,
 					success: false,
-					value: jsonptr.get(formData.current, dataPath)
 				});
+			console.log(
+				dataPath,
+				'UPDATE',
+				jsonptr.get(this.formData, dataPath)
+			);
 		});
-	}, []);
+		this.refreshForm();
+	}
+	componentDidUpdate(prevProps) {
+		if (prevProps.value !== this.props.value) {
+			this.refreshForm();
+		}
+	}
+	refreshForm() {
+		const formData = this.isControlledComponent
+			? this.props.value
+			: this.formData;
+		const errors =
+			this.compiledSchema && this.compiledSchema.validate(formData);
 
-	const providerValue: IFormContext = {
-		updateValue({ dataPath, value }) {
-			jsonptr.set(formData.current, dataPath, value, true);
-			const errors =
-				compiledSchema.current &&
-				compiledSchema.current.validate(formData.current);
-			const elemRef = elementRefs.current[dataPath];
-			elemRef && (elemRef.isTouched = true);
+		// Reset all elements.
+		Object.keys(this.elementRefs).forEach(key => {
+			const elemRef = this.elementRefs[key];
 			elemRef &&
-				elemRef.ref.setMeta({
-					error: null,
-					success: true,
-					focus: false,
-					value
-				});
-
-			props.onChange &&
-				formData.current &&
-				props.onChange(formData.current);
-
-			Object.keys(elementRefs.current).forEach(key => {
-				const elemRef = elementRefs.current[key];
+				(elemRef.ref.setValue(jsonptr.get(formData, key)),
+				elemRef.isTouched &&
+					elemRef.ref.setMeta({
+						error: null,
+						success: true,
+						focus: false,
+					}));
+		});
+		if (errors) {
+			// Broadcast errors to all elements.
+			console.log('ERRORS : ', errors);
+			errors.forEach(error => {
+				const elemRef = this.elementRefs[error.dataPath];
 				elemRef &&
 					elemRef.isTouched &&
 					elemRef.ref.setMeta({
-						error: null,
-						success: true
+						error,
+						success: false,
+						focus: false,
 					});
 			});
-			if (errors) {
-				// Broadcast errors to all elements.
-				console.log("ERRORS : ", errors);
-				errors.forEach(error => {
-					const elemRef = elementRefs.current[error.dataPath];
-					elemRef &&
-						elemRef.isTouched &&
-						elemRef.ref.setMeta({
-							error,
-							success: false,
-							focus: false
-						});
-				});
-			}
-		},
-		register({ ref, dataPath }) {
-			elementRefs.current[dataPath] = { ref, isTouched: false };
 		}
-	};
-	const validate = (error: ajv.ErrorObject, focus = true) => {
-		const elRef = elementRefs.current[error.dataPath];
-		console.log(error, focus, elRef);
+	}
+
+	get isControlledComponent() {
+		const { value } = this.props;
+		if (value === undefined) {
+			return false;
+		}
+		return true;
+	}
+	get providerValue(): IFormContext {
+		const { value, onChange } = this.props;
+		return {
+			updateValue: ({ dataPath, value: v }) => {
+				const { onChange } = this.props;
+				if (!this.isControlledComponent) {
+					jsonptr.set(this.formData, dataPath, v, true);
+					onChange && onChange(this.formData);
+				} else {
+					const clone = cloneDeep(value);
+					jsonptr.set(clone, dataPath, v, true);
+					onChange && onChange(clone);
+				}
+				const elemRef = this.elementRefs[dataPath];
+				elemRef && (elemRef.isTouched = true);
+				if (!this.isControlledComponent) {
+					this.refreshForm();
+				}
+			},
+			register: ({ ref, dataPath }) => {
+				this.elementRefs[dataPath] = { ref, isTouched: false };
+			},
+		};
+	}
+
+	validate = (error: ajv.ErrorObject, focus = true) => {
+		const elRef = this.elementRefs[error.dataPath];
 		elRef &&
 			elRef.ref.setMeta({
 				error,
 				focus,
 				success: false,
-				value: jsonptr.get(formData.current, error.dataPath)
 			});
 	};
-
-	const validateAll = (focus = true) => {
+	validateAll = (focus = true) => {
 		const errors =
-			compiledSchema.current &&
-			compiledSchema.current.validate(formData.current);
+			this.compiledSchema && this.compiledSchema.validate(this.formData);
 		let focussed = false;
 		if (errors) {
 			if (focus) {
 				errors.forEach(err => {
-					validate(err, !focussed && true);
+					this.validate(err, !focussed && true);
 					focussed = true;
 				});
 			}
@@ -139,27 +169,30 @@ export const Form: React.SFC<IFormProps> = props => {
 			return null;
 		}
 	};
-	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		const { onError, onSubmit, value } = this.props;
 		e.preventDefault();
-		const errors = validateAll(true);
+		const errors = this.validateAll(true);
 		if (errors) {
-			props.onError && props.onError(errors);
+			onError && onError(errors);
 		} else {
-			props.onSubmit &&
-				formData.current &&
-				props.onSubmit(formData.current);
+			onSubmit &&
+				onSubmit(this.isControlledComponent ? value : this.formData);
 		}
 	};
-	return (
-		<form
-			{...props.formProps}
-			className={props.className}
-			onSubmit={onSubmit}
-			autoComplete={props.autoComplete}
-		>
-			<FormContext.Provider value={providerValue}>
-				{props.children}
-			</FormContext.Provider>
-		</form>
-	);
-};
+	render() {
+		const { formProps, className, autoComplete, children } = this.props;
+		return (
+			<form
+				{...formProps}
+				className={className}
+				onSubmit={this.onSubmit}
+				autoComplete={autoComplete}
+			>
+				<FormContext.Provider value={this.providerValue}>
+					{children}
+				</FormContext.Provider>
+			</form>
+		);
+	}
+}
