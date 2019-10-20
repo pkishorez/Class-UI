@@ -3,22 +3,23 @@ import set from "lodash-es/set";
 import isArray from "lodash-es/isArray";
 import isObject from "lodash-es/isObject";
 
-export type IPatch = (
+export type IPatch =
 	| {
 			mutationType: "extend";
+			path: string;
+			value: any;
 	  }
 	| {
 			mutationType: "paginate";
-			operation: "insertAt" | "insertBefore" | "insertAfter" | "deleteAt";
-			ref: {
-				key?: string;
-				value: any;
-			};
+			path: string;
+			operation: IArrayPatch;
 	  }
 	| {
 			mutationType: "update";
-	  }) & { path: string; value: any };
-export const update = (mainObj: any, { path, value, ...patch }: IPatch) => {
+			path: string;
+			value: any;
+	  };
+export const update = (mainObj: any, { path, ...patch }: IPatch) => {
 	const target = get(mainObj, path);
 	if (!target) {
 		throw new Error(`Value not present at path specified. ${path}`);
@@ -28,27 +29,76 @@ export const update = (mainObj: any, { path, value, ...patch }: IPatch) => {
 			if (!isArray(target)) {
 				return new Error("Array expected");
 			}
-			switch (patch.operation) {
-				case "deleteAt": {
-				}
-				case "insertAfter": {
-				}
-				case "insertAt": {
-				}
-				case "insertBefore": {
-				}
-			}
+			return set(mainObj, path, updateArr(target, patch.operation));
 		}
 		case "extend": {
 			if (!isObject(target)) {
 				return new Error("Extend only works on Object.");
 			}
-			const result = set(mainObj, path, Object.assign({}, target, value));
+			const result = set(
+				mainObj,
+				path,
+				Object.assign({}, target, patch.value)
+			);
 			return result;
 		}
 		case "update": {
-			const result = set(mainObj, path, value);
+			const result = set(mainObj, path, patch.value);
 			return result;
+		}
+	}
+};
+
+type IArrayPatch =
+	| {
+			type: "deleteAtIndex";
+			index: number;
+	  }
+	| {
+			type: "delete";
+			ref: { key?: string; value: any };
+	  }
+	| {
+			type: "insertAfter";
+			ref: { key?: string; value: any };
+			value: any;
+	  }
+	| {
+			type: "insertBefore";
+			ref: { key: string; value: any };
+			value: any;
+	  };
+const updateArr = (arr: any[], patch: IArrayPatch) => {
+	switch (patch.type) {
+		case "deleteAtIndex": {
+			if (patch.index === -1) return arr;
+			arr.splice(patch.index, 1);
+			return [...arr];
+		}
+		case "delete": {
+			const { key, value } = patch.ref;
+			return arr.filter(v => (key ? get(v, key) : v) !== value);
+		}
+		case "insertAfter": {
+			const { key, value } = patch.ref;
+			const index = arr.findIndex(v => (key ? get(v, key) : v) === value);
+			console.log("INSERT BEFLORE : ", arr, index, patch);
+			if (index === -1) {
+				return arr;
+			}
+			// insert after.
+			arr.splice(index + 1, 0, patch.value);
+			console.log("INSERT AFTER : ", arr, index, patch);
+			return [...arr];
+		}
+		case "insertBefore": {
+			const { key, value } = patch.ref;
+			const index = arr.findIndex(v => (key ? get(v, key) : v) === value);
+			if (index === -1) {
+				return arr;
+			}
+			arr.splice(index, 0, patch.value);
+			return [...arr];
 		}
 	}
 };
