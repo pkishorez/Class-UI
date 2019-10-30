@@ -64,11 +64,6 @@ export class Form extends React.Component<IFormProps, any> {
 					error: null,
 					success: false,
 				});
-			console.log(
-				dataPath,
-				'UPDATE',
-				jsonptr.get(this.formData, dataPath)
-			);
 		});
 		this.refreshForm();
 	}

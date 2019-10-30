@@ -1,8 +1,7 @@
-import React, { createRef, useState, version } from "react";
-import { v4 } from "uuid";
-import { css } from "linaria";
+import React, { createRef, useState, version } from 'react';
+import { v4 } from 'uuid';
+import { css } from 'linaria';
 
-console.log(version);
 type IRipples = {
 	id: string;
 	x: number;
@@ -31,12 +30,12 @@ export function Ink() {
 		<div
 			ref={ref}
 			style={{
-				position: "absolute",
+				position: 'absolute',
 				top: 0,
 				left: 0,
 				right: 0,
 				bottom: 0,
-				overflow: "hidden"
+				overflow: 'hidden',
 			}}
 			onClick={e => {
 				const r = ref.current;
@@ -56,8 +55,8 @@ export function Ink() {
 						id,
 						x,
 						y,
-						dim: Math.max(dims.width, dims.height)
-					}
+						dim: Math.max(dims.width, dims.height),
+					},
 				]);
 			}}
 		>
@@ -70,7 +69,7 @@ export function Ink() {
 							left: ripple.x,
 							top: ripple.y,
 							height: ripple.dim,
-							width: ripple.dim
+							width: ripple.dim,
 						}}
 						onAnimationEnd={() => {
 							updateRipples(
