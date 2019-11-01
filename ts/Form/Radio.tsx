@@ -57,7 +57,6 @@ export const Radio = ({
 						checked={value === option.value}
 						ref={ref}
 						onChange={e => {
-							console.log(option.value, dataPath);
 							context.updateValue({
 								dataPath,
 								value: option.value,

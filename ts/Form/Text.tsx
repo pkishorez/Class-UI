@@ -57,7 +57,12 @@ export const Text = ({
 				type={type}
 			/>
 			{error && (
-				<div className="text-red-800 pt-2 text-xs">{error.message}</div>
+				<div
+					className="text-red-800 pt-2 text-xs"
+					dangerouslySetInnerHTML={{
+						__html: error.message ? error.message : '',
+					}}
+				></div>
 			)}
 		</div>
 	);

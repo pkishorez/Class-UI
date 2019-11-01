@@ -83,7 +83,7 @@ const updateArr = (arr: any[] = [], patch: IArrayPatch) => {
 		case "insertAfter": {
 			const { key, value } = patch.ref;
 			const index = arr.findIndex(v => (key ? get(v, key) : v) === value);
-			console.log("INSERT BEFLORE : ", arr, index, patch);
+			console.log("INSERT AFTER : ", arr, index, patch);
 			if (index === -1) {
 				return arr;
 			}
@@ -94,7 +94,7 @@ const updateArr = (arr: any[] = [], patch: IArrayPatch) => {
 		}
 		case "insertBefore": {
 			const { key, value } = patch.ref;
-			const index = arr.findIndex(v => (key ? get(v, key) : v) === value);
+			const index = arr.findIndex(v => get(v, key) === value);
 			if (index === -1) {
 				return arr;
 			}
