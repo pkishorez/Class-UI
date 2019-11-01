@@ -20,18 +20,16 @@ export type IPatch =
 			value: any;
 	  };
 export const update = (mainObj: any, { path, ...patch }: IPatch) => {
-	const target = get(mainObj, path);
-	if (!target) {
-		throw new Error(`Value not present at path specified. ${path}`);
-	}
 	switch (patch.mutationType) {
 		case "paginate": {
+			const target = get(mainObj, path, []);
 			if (!isArray(target)) {
-				return new Error("Array expected");
+				throw new Error("Array expected");
 			}
 			return set(mainObj, path, updateArr(target, patch.operation));
 		}
 		case "extend": {
+			const target = get(mainObj, path, {});
 			if (!isObject(target)) {
 				return new Error("Extend only works on Object.");
 			}
@@ -43,6 +41,9 @@ export const update = (mainObj: any, { path, ...patch }: IPatch) => {
 			return result;
 		}
 		case "update": {
+			if (mainObj === undefined) {
+				return patch.value;
+			}
 			const result = set(mainObj, path, patch.value);
 			return result;
 		}
@@ -68,7 +69,7 @@ type IArrayPatch =
 			ref: { key: string; value: any };
 			value: any;
 	  };
-const updateArr = (arr: any[], patch: IArrayPatch) => {
+const updateArr = (arr: any[] = [], patch: IArrayPatch) => {
 	switch (patch.type) {
 		case "deleteAtIndex": {
 			if (patch.index === -1) return arr;

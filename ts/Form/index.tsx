@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { IJSONSchema, Schema } from './Schema';
-import ajv from 'ajv';
-import jsonptr from 'json-ptr';
-import cloneDeep from 'lodash-es/cloneDeep';
+import React, { useState, useEffect, useRef } from "react";
+import { IJSONSchema, Schema } from "./Schema";
+import ajv from "ajv";
+import jsonptr from "json-ptr";
+import cloneDeep from "lodash-es/cloneDeep";
 
 interface IFormElement {
 	setMeta: (
@@ -22,7 +22,7 @@ interface IFormContext {
 }
 export const FormContext = React.createContext<IFormContext>({
 	updateValue: ({}) => ({}),
-	register: ({}) => {},
+	register: ({}) => {}
 });
 
 export interface IFormProps {
@@ -62,13 +62,13 @@ export class Form extends React.Component<IFormProps, any> {
 					isTouched: false,
 					focus: false,
 					error: null,
-					success: false,
+					success: false
 				});
-			console.log(
-				dataPath,
-				'UPDATE',
-				jsonptr.get(this.formData, dataPath)
-			);
+			// console.log(
+			// 	dataPath,
+			// 	'UPDATE',
+			// 	jsonptr.get(this.formData, dataPath)
+			// );
 		});
 		this.refreshForm();
 	}
@@ -93,12 +93,12 @@ export class Form extends React.Component<IFormProps, any> {
 					elemRef.ref.setMeta({
 						error: null,
 						success: true,
-						focus: false,
+						focus: false
 					}));
 		});
 		if (errors) {
 			// Broadcast errors to all elements.
-			console.log('ERRORS : ', errors);
+			console.log("ERRORS : ", errors);
 			errors.forEach(error => {
 				const elemRef = this.elementRefs[error.dataPath];
 				elemRef &&
@@ -106,7 +106,7 @@ export class Form extends React.Component<IFormProps, any> {
 					elemRef.ref.setMeta({
 						error,
 						success: false,
-						focus: false,
+						focus: false
 					});
 			});
 		}
@@ -140,7 +140,7 @@ export class Form extends React.Component<IFormProps, any> {
 			},
 			register: ({ ref, dataPath }) => {
 				this.elementRefs[dataPath] = { ref, isTouched: false };
-			},
+			}
 		};
 	}
 
@@ -150,7 +150,7 @@ export class Form extends React.Component<IFormProps, any> {
 			elRef.ref.setMeta({
 				error,
 				focus,
-				success: false,
+				success: false
 			});
 	};
 	validateAll = (focus = true) => {
